@@ -402,6 +402,7 @@ tbody tr.k-deploy td:first-child{box-shadow:inset 3px 0 0 var(--dep)}
 section{border-top:1px solid var(--rule-2);margin-top:8px}
 #hoy{border-top:0;margin-top:0}
 .sec-head{padding-bottom:2px}
+.note-dot{color:var(--sig-blue);font-weight:700}
 .ced{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);display:block;margin-top:3px;letter-spacing:.02em}
 /* que el nombre del cliente y la zona no se partan en tres líneas */
 @media (min-width:761px){
@@ -918,7 +919,9 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
         return '<tr class="k-' + m.k + '">' +
           '<td class="ch"><span class="ch-l mono"><i class="dot ' + m.k + '"></i>' + m.f + '</span>' +
             '<span class="badge ' + BADGE[m.s] + '">' + t(m.s) + '</span></td>' +
-          '<td class="mono lead m-hide" data-l="' + t('thRef') + '">' + m.f + '</td>' +
+          '<td class="mono lead m-hide" data-l="' + t('thRef') + '"' +
+            (m.note ? ' title="' + esc(m.note) + '"' : '') + '>' + m.f +
+            (m.note ? ' <span class="note-dot" aria-hidden="true">*</span>' : '') + '</td>' +
           '<td data-l="' + t('thClient') + '">' + esc(nameOf(Z.client(m.c))) + '</td>' +
           '<td data-l="' + t('thPerson') + '">' + person(m.p) + '</td>' +
           '<td class="mono" data-l="' + t('thCed') + '">' + Z.ced(m.p) + '</td>' +

@@ -133,6 +133,26 @@ window.ZARPA = (function(){
 
   MOVES.forEach(function(mv){ mv.items = KITS[mv.f] || null; mv.doc = !!mv.items && mv.s === 'done'; });
 
+  /* Las solicitudes que el cliente manda desde su panel se guardan en el
+     navegador, así aparecen también en la cola del panel de operación.
+     En un sistema real esto sería una llamada al servidor. */
+  var STORE = 'zarpa_solicitudes';
+  function loadRequests(){
+    try {
+      var raw = localStorage.getItem(STORE);
+      if (!raw) return [];
+      var list = JSON.parse(raw);
+      return Array.isArray(list) ? list.slice(0, 25) : [];
+    } catch(e){ return []; }
+  }
+  loadRequests().forEach(function(mv){
+    if (!MOVES.some(function(x){ return x.f === mv.f; })){
+      mv.items = null; mv.doc = false;
+      MOVES.unshift(mv);
+      if (mv.ced) PEOPLE[mv.p] = mv.ced;
+    }
+  });
+
   /* lo que sigue en bodega */
   var INV = [
     {sn:'TP-T14-8842',   it:'Laptop ThinkPad T14 Gen 4', en:'ThinkPad T14 Gen 4 laptop',   cl:'c1', u:'06', c:'good', l:'A-03', since:'2026-09-08'},
@@ -203,6 +223,21 @@ window.ZARPA = (function(){
     /* cédula del colaborador; los creados desde el panel la traen consigo */
     ced:function(id){ return PEOPLE[id] || '—'; },
     setCed:function(id, v){ PEOPLE[id] = v; },
+
+    /* una solicitud del cliente entra a la misma cola que ve operación */
+    saveRequest:function(mv){
+      MOVES.unshift(mv);
+      if (mv.ced) PEOPLE[mv.p] = mv.ced;
+      try {
+        var list = loadRequests();
+        list.unshift(mv);
+        localStorage.setItem(STORE, JSON.stringify(list.slice(0, 25)));
+      } catch(e){}
+      return mv;
+    },
+    clearRequests:function(){
+      try { localStorage.removeItem(STORE); } catch(e){}
+    },
 
     byFolio:function(f){
       for (var i = 0; i < MOVES.length; i++) if (MOVES[i].f === f) return MOVES[i];

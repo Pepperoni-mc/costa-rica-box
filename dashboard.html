@@ -413,6 +413,57 @@ td.ch{display:none}
   /* en pantalla chica la barra deja solo tema, idioma y la acción principal */
   .top-right a[href="admin.html"],.top-right a[href="index.html"]{display:none}
 }
+
+/* ================= solicitud del cliente ================= */
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,16px);z-index:80;
+  background:var(--ink);color:var(--off);border-radius:999px;padding:13px 24px;
+  font-size:14.5px;font-weight:500;box-shadow:0 12px 30px rgba(0,0,0,.2);
+  opacity:0;pointer-events:none;transition:opacity .2s var(--ease),transform .2s var(--ease);
+  max-width:calc(100vw - 32px);text-align:center;
+}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+
+#modal{position:fixed;inset:0;z-index:70;display:none}
+#modal.on{display:block}
+#modal .back{position:absolute;inset:0;background:rgba(10,10,12,.5)}
+#modal .box{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(600px,calc(100vw - 28px));max-height:calc(100vh - 40px);overflow:auto;
+  background:var(--paper);border:1px solid var(--rule-2);border-radius:4px;
+  padding:clamp(22px,4vw,34px);
+}
+#modal h3{font-size:clamp(21px,3vw,28px);font-weight:700;letter-spacing:-.03em;margin:0}
+#modal .lede{font-size:14.5px;color:var(--ink-2);margin:8px 0 22px}
+.form{display:grid;gap:15px}
+.form .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:520px){.form .row2{grid-template-columns:1fr}}
+.form label{font-family:var(--f-mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:7px}
+.form .field{width:100%;height:48px;font:inherit;font-size:15.5px;color:var(--ink);
+  background:var(--off);border:2px solid var(--rule-hard);border-radius:6px;padding:0 14px;
+  transition:border-color .15s var(--ease)}
+.form .field:hover{border-color:var(--ink-2)}
+.form .field:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+.form .ta{height:88px;padding:12px 14px;resize:vertical;line-height:1.5}
+.form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:6px;flex-wrap:wrap}
+
+/* elegir entrega o recolección */
+.pickers{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){.pickers{grid-template-columns:1fr}}
+.picker{cursor:pointer;margin:0}
+.picker input{position:absolute;opacity:0;width:0;height:0}
+.picker .pk{
+  display:block;border:2px solid var(--rule-2);border-radius:6px;padding:14px 16px;
+  background:var(--off);transition:border-color .15s var(--ease),background-color .15s var(--ease);
+}
+.picker .pk b{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:700;letter-spacing:-.02em;color:var(--ink)}
+.picker .pk b::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--rule-hard);flex:none}
+.picker .pk i{display:block;font-style:normal;font-size:13.5px;color:var(--ink-2);margin-top:5px;line-height:1.45}
+.picker:hover .pk{border-color:var(--ink-2)}
+.picker input:focus-visible + .pk{outline:2px solid var(--accent);outline-offset:2px}
+.picker input:checked + .pk{border-color:var(--ink);background:var(--raised)}
+.picker:nth-child(1) input:checked + .pk b::before{background:var(--sig-blue)}
+.picker:nth-child(2) input:checked + .pk b::before{background:var(--sig-orange)}
 </style>
 <script>(function(){try{var t=localStorage.getItem('theme');
 if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
@@ -437,7 +488,7 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
     <button class="mini" id="lang" type="button">EN</button>
     <a class="mini" href="admin.html" data-en="Operations">Operación</a>
     <a class="mini" href="index.html" data-en="Site">Sitio</a>
-    <a class="mini solid" href="index.html#contacto" data-en="Request a move">Solicitar movimiento</a>
+    <button class="mini solid" id="new-req" type="button" data-en="Request a move">Solicitar movimiento</button>
   </div>
 </header>
 
@@ -473,7 +524,7 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
     </div>
   </div>
 
-  <section class="block">
+  <section class="block" id="movimientos">
     <div class="block-head">
       <h2 data-en="Moves">Movimientos</h2>
       <div class="tools">
@@ -530,7 +581,7 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
 
 <footer>
   <span>Zarpa · Costa Rica</span>
-  <nav class="foot-links">
+  <nav class="foot-links" id="foot-nav">
     <a href="index.html" data-en="Site">Sitio</a>
     <a href="admin.html" data-en="Operations">Operación</a>
   </nav>
@@ -573,7 +624,10 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
     thUser:{es:'Último usuario', en:'Last user'},
     thCond:{es:'Estado', en:'Condition'},
     thLoc:{es:'Ubicación', en:'Location'},
-    thSince:{es:'En bodega desde', en:'Stored since'}
+    thSince:{es:'En bodega desde', en:'Stored since'},
+    tSent:{es:'Solicitud {f} enviada a operación', en:'Request {f} sent to operations'},
+    needCed:{es:'La cédula va en formato 1-1234-5678.', en:'The ID number must look like 1-1234-5678.'},
+    needZone:{es:'Falta la zona.', en:'The area is missing.'}
   };
 
   /* los colaboradores son de prueba: se numeran, no se inventan nombres */
@@ -717,6 +771,93 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
     setLang(lang === 'en' ? 'es' : 'en');
   });
 
+
+  /* ---------------- solicitud de entrega o recolección ----------------
+     Lo que el cliente manda desde aquí entra a la misma cola que ve
+     operación: estado "sin agendar" y sin mensajero asignado. */
+  var modal = document.getElementById('modal');
+  var toastTimer;
+  function toast(msg){
+    var el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ el.classList.remove('on'); }, 3200);
+  }
+  function fillStr(k, o){
+    var str = t(k);
+    Object.keys(o).forEach(function(x){ str = str.replace('{' + x + '}', o[x]); });
+    return str;
+  }
+  function openReq(){
+    document.getElementById('r-ced').value = '';
+    document.getElementById('r-person').value = '';
+    document.getElementById('r-zone').value = '';
+    document.getElementById('r-note').value = '';
+    document.getElementById('r-date').value = window.ZARPA.days(window.ZARPA.TODAY, 3);
+    modal.classList.add('on');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    setTimeout(function(){ document.getElementById('r-ced').focus(); }, 30);
+  }
+  function closeReq(){
+    modal.classList.remove('on');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('new-req').addEventListener('click', openReq);
+  document.getElementById('modal-back').addEventListener('click', closeReq);
+  document.getElementById('modal-cancel').addEventListener('click', closeReq);
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && modal.classList.contains('on')) closeReq();
+  });
+
+  /* la cédula se escribe corrida y se formatea sola */
+  var rCed = document.getElementById('r-ced');
+  rCed.addEventListener('input', function(){
+    var d = this.value.replace(/\D/g, '').slice(0, 9);
+    this.value = d.length > 5 ? d[0] + '-' + d.slice(1, 5) + '-' + d.slice(5)
+               : d.length > 1 ? d[0] + '-' + d.slice(1)
+               : d;
+  });
+
+  document.getElementById('req-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var ced = rCed.value.trim();
+    if (!/^[1-9]-\d{4}-\d{4}$/.test(ced)){ toast(t('needCed')); rCed.focus(); return; }
+    var zone = document.getElementById('r-zone').value.trim();
+    if (!zone){ toast(t('needZone')); document.getElementById('r-zone').focus(); return; }
+
+    var p = document.getElementById('r-person').value.trim() || String(MOVES.length + 20);
+    var mv = {
+      f: window.ZARPA.nextFolio(),
+      c: CLIENT,
+      d: document.getElementById('r-date').value || window.ZARPA.days(window.ZARPA.TODAY, 3),
+      p: ('0' + p).slice(-2),
+      ced: ced,
+      k: document.querySelector('input[name="kind"]:checked').value,
+      z: zone,
+      gam: document.getElementById('r-gam').value === '1',
+      s: 'new',
+      m: null,
+      w: '—',
+      note: document.getElementById('r-note').value.trim(),
+      items: null,
+      doc: false
+    };
+    window.ZARPA.saveRequest(mv);
+    MOVES.unshift(mv);
+    closeReq();
+    filter = 'all';
+    Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(b){
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-filter') === 'all'));
+    });
+    drawMoves(); drawKpis();
+    toast(fillStr('tSent', { f: mv.f }));
+    document.getElementById('movimientos').scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+
+
   if (lang === 'en') setLang('en');
   else { drawMoves(); drawInv(); drawKpis(); }
 })();
@@ -742,5 +883,59 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
   btn.title = current() === 'dark' ? 'Modo claro / light mode' : 'Modo oscuro / dark mode';
 })();
 </script>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<div id="modal" aria-hidden="true">
+  <div class="back" id="modal-back"></div>
+  <div class="box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <h3 id="modal-title" data-en="Request a movement">Solicitar un movimiento</h3>
+    <p class="lede" data-en="Tell us who and where. We contact the person, agree on a window and take it from there.">Decinos quién y dónde. Nosotros contactamos a la persona, acordamos la ventana y nos encargamos del resto.</p>
+    <form class="form" id="req-form">
+      <div>
+        <label data-en="What do you need">Qué necesitás</label>
+        <div class="pickers">
+          <label class="picker">
+            <input type="radio" name="kind" value="pickup" checked>
+            <span class="pk">
+              <b data-en="Pickup">Recolección</b>
+              <i data-en="Someone is leaving and their gear has to come back">Alguien sale y hay que traer su equipo</i>
+            </span>
+          </label>
+          <label class="picker">
+            <input type="radio" name="kind" value="deploy">
+            <span class="pk">
+              <b data-en="Delivery">Entrega</b>
+              <i data-en="Someone is joining and needs their workstation">Alguien entra y necesita su puesto</i>
+            </span>
+          </label>
+        </div>
+      </div>
+      <div class="row2">
+        <div><label for="r-ced" data-en="ID number">Cédula</label>
+          <input class="field" id="r-ced" inputmode="numeric" placeholder="1-1234-5678" maxlength="11" autocomplete="off"></div>
+        <div><label for="r-person" data-en="Employee number">Número de colaborador</label>
+          <input class="field" id="r-person" inputmode="numeric" placeholder="27"></div>
+      </div>
+      <div class="row2">
+        <div><label for="r-zone" data-en="Area">Zona</label>
+          <input class="field" id="r-zone" placeholder="Santa Ana"></div>
+        <div><label for="r-gam" data-en="Coverage">Cobertura</label>
+          <select class="field" id="r-gam">
+            <option value="1" data-en="Inside the GAM · 48 h">Dentro del GAM · 48 h</option>
+            <option value="0" data-en="Outside the GAM · 72 h">Fuera del GAM · 72 h</option>
+          </select></div>
+      </div>
+      <div><label for="r-date" data-en="Preferred date">Fecha deseada</label>
+        <input class="field" id="r-date" type="date"></div>
+      <div><label for="r-note" data-en="Address and notes">Dirección y notas</label>
+        <textarea class="field ta" id="r-note" placeholder="Dirección exacta, horario en que la persona puede recibir, piezas extra." data-en-ph="Exact address, when the person can be reached, any extra items."></textarea></div>
+      <div class="form-actions">
+        <button class="mini" type="button" id="modal-cancel" data-en="Cancel">Cancelar</button>
+        <button class="mini solid" type="submit" data-en="Send request">Enviar solicitud</button>
+      </div>
+    </form>
+  </div>
+</div>
 </body>
 </html>
