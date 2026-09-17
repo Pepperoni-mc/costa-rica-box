@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Panel de cliente · Zarpa</title>
+<meta name="description" content="Inventario en custodia, movimientos en curso y actas firmadas.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --paper:#EFEDEA;
+  --paper-2:#E6E3DD;
+  --raised:#F7F5F2;
+  --ink:#26262A;
+  --ink-2:#4E4E52;
+  --muted:#8B8B84;
+  --rule:#D9D5CE;
+  --rule-hard:#C2BDB3;
+  --amber:#F2A63C;
+  --accent:#2FB5EE;
+  --green:#3E9E7A;
+  --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --pad:clamp(18px,4vw,56px);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--f-display);font-size:16px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+
+/* ---------- topbar ---------- */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:16px var(--pad);border-bottom:1px solid var(--rule);
+  position:sticky;top:0;background:var(--paper);z-index:20;flex-wrap:wrap;
+}
+.brandmark{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brandmark svg{width:28px;height:28px;display:block;flex:none}
+.brandmark .word{font-weight:700;font-size:21px;letter-spacing:-.035em}
+.brandmark .sep{width:1px;height:22px;background:var(--rule-hard);margin:0 4px}
+.brandmark .sub{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.top-right{display:flex;align-items:center;gap:10px}
+.mini{
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-decoration:none;
+  border:1.5px solid var(--rule-hard);color:var(--ink-2);border-radius:999px;
+  padding:9px 15px;cursor:pointer;background:transparent;line-height:1;
+}
+.mini:hover{border-color:var(--ink);color:var(--ink)}
+.mini.solid{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.mini.solid:hover{background:var(--ink-2)}
+
+main{padding:clamp(26px,4vh,46px) var(--pad) 80px;max-width:1340px;margin:0 auto}
+
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+h1{font-size:clamp(30px,4.6vw,54px);font-weight:700;letter-spacing:-.04em;line-height:1;margin:0}
+.head .when{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);letter-spacing:.06em}
+.label{
+  font-family:var(--f-mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);display:block;margin:0 0 14px;
+}
+
+/* ---------- kpis ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:34px}
+@media (max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:460px){.kpis{grid-template-columns:1fr}}
+.kpi{background:var(--paper);padding:24px 22px 26px}
+.kpi .n{font-size:clamp(32px,4vw,50px);font-weight:700;letter-spacing:-.05em;line-height:1;display:block;font-variant-numeric:tabular-nums}
+.kpi .t{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:12px;display:block;line-height:1.5}
+.kpi .d{font-size:13px;color:var(--ink-2);margin-top:8px;display:block}
+
+/* ---------- bloques ---------- */
+.block{margin-top:54px}
+.block-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+h2{font-size:clamp(20px,2.4vw,27px);font-weight:700;letter-spacing:-.03em;margin:0}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tab{
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid var(--rule-hard);background:transparent;color:var(--ink-2);
+  border-radius:999px;padding:8px 14px;cursor:pointer;line-height:1;
+}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.search{
+  font:inherit;font-size:14px;padding:9px 13px;border:1px solid var(--rule-hard);
+  border-radius:999px;background:var(--raised);color:var(--ink);min-width:200px;
+}
+.search:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+
+.tw{overflow-x:auto;border:1px solid var(--rule);background:var(--raised)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14.5px}
+th{
+  font-family:var(--f-mono);font-size:10px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);text-align:left;padding:13px 16px;background:var(--paper-2);
+  border-bottom:1px solid var(--rule-hard);white-space:nowrap;
+}
+td{padding:14px 16px;border-bottom:1px solid var(--rule);color:var(--ink-2);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr{background:var(--paper);transition:background .2s}
+tbody tr:hover{background:var(--raised)}
+td.lead{color:var(--ink);font-weight:600}
+td.mono{font-family:var(--f-mono);font-size:13px;white-space:nowrap}
+.empty{padding:34px 16px;text-align:center;color:var(--muted);font-size:14.5px;background:var(--paper)}
+
+.badge{
+  display:inline-flex;align-items:center;gap:7px;font-family:var(--f-mono);font-size:11px;
+  letter-spacing:.06em;padding:5px 11px;border-radius:999px;white-space:nowrap;
+  border:1px solid var(--rule-hard);color:var(--ink-2);background:var(--paper-2);
+}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--rule-hard)}
+.badge.ok{color:var(--green);border-color:color-mix(in srgb,var(--green) 40%,transparent)}
+.badge.ok::before{background:var(--green)}
+.badge.go{color:#1B87B8;border-color:color-mix(in srgb,var(--accent) 55%,transparent)}
+.badge.go::before{background:var(--accent)}
+.badge.wait{color:#9A6B16;border-color:color-mix(in srgb,var(--amber) 55%,transparent)}
+.badge.wait::before{background:var(--amber)}
+
+.doc{font-family:var(--f-mono);font-size:12px;text-decoration:none;border-bottom:1.5px solid var(--accent);padding-bottom:1px;white-space:nowrap}
+.doc.none{border:none;color:var(--muted)}
+
+.note{font-size:13px;color:var(--muted);margin-top:14px;line-height:1.6}
+
+footer{
+  border-top:1px solid var(--rule);padding:24px var(--pad);
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brandmark" href="index.html">
+    <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <ellipse cx="7.5" cy="10.5" rx="3" ry="4" fill="currentColor"/>
+      <ellipse cx="15.2" cy="7.6" rx="3.1" ry="4.3" fill="currentColor"/>
+      <ellipse cx="23" cy="10.5" rx="3" ry="4" fill="currentColor"/>
+      <rect x="6.5" y="16.6" width="19" height="11.4" rx="4" fill="var(--accent)"/>
+      <path d="M16 16.6v11.4M6.5 21.5h19" stroke="var(--paper)" stroke-width="1.7"/>
+    </svg>
+    <span class="word">Zarpa</span>
+    <span class="sep"></span>
+    <span class="sub" data-en="Client dashboard">Panel de cliente</span>
+  </a>
+  <div class="top-right">
+    <button class="mini" id="lang" type="button">EN</button>
+    <a class="mini" href="index.html" data-en="Back to site">Volver al sitio</a>
+    <a class="mini solid" href="index.html#contacto" data-en="Request a move">Solicitar movimiento</a>
+  </div>
+</header>
+
+<main>
+  <div class="head">
+    <div>
+      <span class="label" data-en="Account">Cuenta</span>
+      <h1>Acme Nearshore CR</h1>
+    </div>
+    <span class="when" data-en="Updated today, 9:12 a.m.">Actualizado hoy, 9:12 a. m.</span>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi">
+      <span class="n">24</span>
+      <span class="t" data-en="Workstations in storage">Puestos en custodia</span>
+      <span class="d" data-en="3 came in this month">3 entraron este mes</span>
+    </div>
+    <div class="kpi">
+      <span class="n">7</span>
+      <span class="t" data-en="Moves this month">Movimientos este mes</span>
+      <span class="d" data-en="4 pickups · 3 deployments">4 recolecciones · 3 despliegues</span>
+    </div>
+    <div class="kpi">
+      <span class="n">3</span>
+      <span class="t" data-en="In transit right now">En tránsito ahora</span>
+      <span class="d" data-en="2 of them outside the GAM">2 de ellos fuera del GAM</span>
+    </div>
+    <div class="kpi">
+      <span class="n">100%</span>
+      <span class="t" data-en="SLA met">SLA cumplido</span>
+      <span class="d" data-en="Last 90 days">Últimos 90 días</span>
+    </div>
+  </div>
+
+  <section class="block">
+    <div class="block-head">
+      <h2 data-en="Moves">Movimientos</h2>
+      <div class="tools">
+        <button class="tab" data-filter="all" aria-pressed="true" data-en="All">Todos</button>
+        <button class="tab" data-filter="pickup" aria-pressed="false" data-en="Pickups">Recolecciones</button>
+        <button class="tab" data-filter="deploy" aria-pressed="false" data-en="Deployments">Despliegues</button>
+        <input class="search" id="q-moves" type="search" placeholder="Buscar persona o zona" data-en-ph="Search person or area">
+      </div>
+    </div>
+    <div class="tw">
+      <table>
+        <thead>
+          <tr>
+            <th data-en="Date">Fecha</th>
+            <th data-en="Person">Persona</th>
+            <th data-en="Type">Tipo</th>
+            <th data-en="Area">Zona</th>
+            <th data-en="Status">Estado</th>
+            <th data-en="Record">Acta</th>
+          </tr>
+        </thead>
+        <tbody id="moves"></tbody>
+      </table>
+    </div>
+    <p class="note" data-en="The record is the PDF signed by the person on the day of the visit. It is available as soon as the visit is closed.">El acta es el PDF que la persona firma el día de la visita. Queda disponible apenas se cierra el movimiento.</p>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <h2 data-en="Inventory in storage">Inventario en bodega</h2>
+      <div class="tools">
+        <input class="search" id="q-inv" type="search" placeholder="Buscar serie, equipo o persona" data-en-ph="Search serial, item or person">
+      </div>
+    </div>
+    <div class="tw">
+      <table>
+        <thead>
+          <tr>
+            <th data-en="Serial">Serie</th>
+            <th data-en="Item">Equipo</th>
+            <th data-en="Last user">Último usuario</th>
+            <th data-en="Condition">Estado</th>
+            <th data-en="Location">Ubicación</th>
+            <th data-en="Stored since">En bodega desde</th>
+          </tr>
+        </thead>
+        <tbody id="inv"></tbody>
+      </table>
+    </div>
+    <p class="note" data-en="Every item is registered by serial number with photos of the condition it came in. Decommissioned gear is stored tagged and separate from active inventory.">Cada pieza queda registrada por número de serie con fotos del estado en que entró. El equipo fuera de servicio se resguarda identificado y separado del inventario activo.</p>
+  </section>
+</main>
+
+<footer>
+  <span>Zarpa · Costa Rica</span>
+  <span data-en="Sample data">Datos de ejemplo</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var T = {
+    pickup:{es:'Recolección', en:'Pickup'},
+    deploy:{es:'Despliegue', en:'Deployment'},
+    scheduled:{es:'Agendado', en:'Scheduled'},
+    transit:{es:'En tránsito', en:'In transit'},
+    done:{es:'Cerrado', en:'Closed'},
+    signing:{es:'Pendiente de firma', en:'Awaiting signature'},
+    good:{es:'Bueno', en:'Good'},
+    fair:{es:'Con desgaste', en:'Worn'},
+    out:{es:'Fuera de servicio', en:'Decommissioned'},
+    view:{es:'Ver PDF', en:'View PDF'},
+    pending:{es:'Pendiente', en:'Pending'},
+    none:{es:'Nada que mostrar con ese filtro.', en:'Nothing matches that filter.'},
+    title:{es:'Panel de cliente · Zarpa', en:'Client dashboard · Zarpa'}
+  };
+
+  var MOVES = [
+    {d:'2026-09-16', p:'Marianela Vargas',  k:'pickup', z:'Pérez Zeledón',        s:'transit',   doc:false},
+    {d:'2026-09-15', p:'Kevin Mora',        k:'deploy', z:'Heredia centro',       s:'transit',   doc:false},
+    {d:'2026-09-15', p:'Génesis Araya',     k:'pickup', z:'Liberia',              s:'transit',   doc:false},
+    {d:'2026-09-11', p:'Josué Cordero',     k:'deploy', z:'Desamparados',         s:'done',      doc:true},
+    {d:'2026-09-09', p:'Adriana Solís',     k:'pickup', z:'Cartago centro',       s:'signing',   doc:false},
+    {d:'2026-09-08', p:'Randall Chaves',    k:'pickup', z:'Santa Cruz',           s:'done',      doc:true},
+    {d:'2026-09-04', p:'Fabiola Jiménez',   k:'deploy', z:'Alajuela centro',      s:'done',      doc:true},
+    {d:'2026-09-02', p:'Diego Ramírez',     k:'pickup', z:'Limón centro',         s:'done',      doc:true},
+    {d:'2026-08-28', p:'Noelia Campos',     k:'deploy', z:'Grecia',               s:'done',      doc:true},
+    {d:'2026-08-26', p:'Esteban Ureña',     k:'pickup', z:'San Ramón',            s:'done',      doc:true},
+    {d:'2026-09-22', p:'Paola Brenes',      k:'deploy', z:'Nicoya',               s:'scheduled', doc:false},
+    {d:'2026-09-23', p:'Mauricio Segura',   k:'pickup', z:'Turrialba',            s:'scheduled', doc:false}
+  ];
+
+  var INV = [
+    {sn:'TP-T14-8842', it:'ThinkPad T14 Gen 4',        u:'Randall Chaves',  c:'good', l:'A-03', since:'2026-09-08'},
+    {sn:'DL-U2722-1190',it:'Monitor Dell U2722D',      u:'Randall Chaves',  c:'good', l:'A-03', since:'2026-09-08'},
+    {sn:'DL-U2722-1191',it:'Monitor Dell U2722D',      u:'Randall Chaves',  c:'good', l:'A-03', since:'2026-09-08'},
+    {sn:'TP-T14-8720',  it:'ThinkPad T14 Gen 3',       u:'Diego Ramírez',   c:'fair', l:'A-05', since:'2026-09-02'},
+    {sn:'LN-DOCK-4411', it:'Dock Lenovo USB-C',        u:'Diego Ramírez',   c:'good', l:'A-05', since:'2026-09-02'},
+    {sn:'JB-EVO2-0098', it:'Headset Jabra Evolve2 40', u:'Diego Ramírez',   c:'good', l:'A-05', since:'2026-09-02'},
+    {sn:'TP-T14-8613',  it:'ThinkPad T14 Gen 3',       u:'Esteban Ureña',   c:'out',  l:'C-01', since:'2026-08-26'},
+    {sn:'DL-P2419-7732',it:'Monitor Dell P2419H',      u:'Esteban Ureña',   c:'fair', l:'B-02', since:'2026-08-26'},
+    {sn:'LG-MK270-3310',it:'Teclado y mouse Logitech',  u:'Esteban Ureña',   c:'good', l:'B-02', since:'2026-08-26'},
+    {sn:'TP-E14-5521',  it:'ThinkPad E14 Gen 5',       u:'Sofía Rodríguez', c:'good', l:'B-04', since:'2026-07-30'},
+    {sn:'LN-DOCK-4402', it:'Dock Lenovo USB-C',        u:'Sofía Rodríguez', c:'good', l:'B-04', since:'2026-07-30'},
+    {sn:'DL-U2419-6650',it:'Monitor Dell U2419H',      u:'Camila Vega',     c:'good', l:'B-06', since:'2026-07-14'}
+  ];
+
+  var BADGE = { scheduled:'wait', transit:'go', done:'ok', signing:'wait' };
+  var COND  = { good:'ok', fair:'wait', out:'' };
+
+  var lang = 'es';
+  try { lang = localStorage.getItem('lang') === 'en' ? 'en' : 'es'; } catch(e){}
+
+  function t(k){ return (T[k] && T[k][lang]) || k; }
+
+  function fmtDate(iso){
+    var p = iso.split('-'), d = new Date(+p[0], +p[1] - 1, +p[2]);
+    return d.toLocaleDateString(lang === 'en' ? 'en-US' : 'es-CR',
+      { day:'2-digit', month:'short', year:'numeric' });
+  }
+
+  var filter = 'all', qMoves = '', qInv = '';
+
+  function drawMoves(){
+    var rows = MOVES.filter(function(m){
+      if (filter !== 'all' && m.k !== filter) return false;
+      if (!qMoves) return true;
+      var s = (m.p + ' ' + m.z).toLowerCase();
+      return s.indexOf(qMoves) !== -1;
+    });
+    var tb = document.getElementById('moves');
+    if (!rows.length){
+      tb.innerHTML = '<tr><td class="empty" colspan="6">' + t('none') + '</td></tr>';
+      return;
+    }
+    tb.innerHTML = rows.map(function(m){
+      return '<tr>' +
+        '<td class="mono">' + fmtDate(m.d) + '</td>' +
+        '<td class="lead">' + m.p + '</td>' +
+        '<td>' + t(m.k) + '</td>' +
+        '<td>' + m.z + '</td>' +
+        '<td><span class="badge ' + BADGE[m.s] + '">' + t(m.s) + '</span></td>' +
+        '<td>' + (m.doc
+            ? '<a class="doc" href="#" onclick="return false">' + t('view') + '</a>'
+            : '<span class="doc none">' + t('pending') + '</span>') + '</td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  function drawInv(){
+    var rows = INV.filter(function(r){
+      if (!qInv) return true;
+      var s = (r.sn + ' ' + r.it + ' ' + r.u).toLowerCase();
+      return s.indexOf(qInv) !== -1;
+    });
+    var tb = document.getElementById('inv');
+    if (!rows.length){
+      tb.innerHTML = '<tr><td class="empty" colspan="6">' + t('none') + '</td></tr>';
+      return;
+    }
+    tb.innerHTML = rows.map(function(r){
+      return '<tr>' +
+        '<td class="mono lead">' + r.sn + '</td>' +
+        '<td>' + r.it + '</td>' +
+        '<td>' + r.u + '</td>' +
+        '<td><span class="badge ' + COND[r.c] + '">' + t(r.c) + '</span></td>' +
+        '<td class="mono">' + r.l + '</td>' +
+        '<td class="mono">' + fmtDate(r.since) + '</td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(btn){
+    btn.addEventListener('click', function(){
+      filter = btn.getAttribute('data-filter');
+      Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(b){
+        b.setAttribute('aria-pressed', String(b === btn));
+      });
+      drawMoves();
+    });
+  });
+  document.getElementById('q-moves').addEventListener('input', function(){
+    qMoves = this.value.trim().toLowerCase(); drawMoves();
+  });
+  document.getElementById('q-inv').addEventListener('input', function(){
+    qInv = this.value.trim().toLowerCase(); drawInv();
+  });
+
+  /* ---------------- idioma ---------------- */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-en]'), function(el){
+    if (!el.hasAttribute('data-es')) el.setAttribute('data-es', el.innerHTML);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-en-ph]'), function(el){
+    if (!el.hasAttribute('data-es-ph')) el.setAttribute('data-es-ph', el.placeholder);
+  });
+
+  function setLang(next){
+    lang = next;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-en]'), function(el){
+      el.innerHTML = el.getAttribute(next === 'en' ? 'data-en' : 'data-es');
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-en-ph]'), function(el){
+      el.placeholder = el.getAttribute(next === 'en' ? 'data-en-ph' : 'data-es-ph');
+    });
+    document.documentElement.lang = next;
+    document.title = t('title');
+    document.getElementById('lang').textContent = next === 'en' ? 'ES' : 'EN';
+    drawMoves(); drawInv();
+    try { localStorage.setItem('lang', next); } catch(e){}
+  }
+
+  document.getElementById('lang').addEventListener('click', function(){
+    setLang(lang === 'en' ? 'es' : 'en');
+  });
+
+  if (lang === 'en') setLang('en');
+  else { drawMoves(); drawInv(); }
+})();
+</script>
+</body>
+</html>

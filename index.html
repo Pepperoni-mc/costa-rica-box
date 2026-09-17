@@ -24,7 +24,7 @@
   --rule:#D9D5CE;
   --rule-hard:#C2BDB3;
   --amber:#F2A63C;
-  --accent:#3FC0F5;
+  --accent:#2FB5EE;
   --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
   --pad:clamp(20px,5vw,72px);
@@ -68,12 +68,18 @@ header.nav{
 .brandmark{display:flex;align-items:center;gap:10px;text-decoration:none}
 .brandmark svg{width:30px;height:30px;display:block;flex:none}
 .brandmark .word{font-weight:700;font-size:23px;letter-spacing:-.035em}
-.nav-right{display:flex;align-items:center;gap:14px}
+.nav-right{display:flex;align-items:center;gap:12px}
+.lang{
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;
+  background:transparent;border:1.5px solid var(--rule-hard);color:var(--ink-2);
+  border-radius:999px;padding:10px 14px;cursor:pointer;line-height:1;
+}
+.lang:hover{border-color:var(--ink);color:var(--ink)}
 .nav-cta{
   display:none;font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
   text-decoration:none;padding:12px 20px;border-radius:999px;background:var(--ink);color:var(--paper);
 }
-@media (min-width:700px){.nav-cta{display:inline-block}}
+@media (min-width:760px){.nav-cta{display:inline-block}}
 .menu-btn{
   width:42px;height:42px;border-radius:50%;border:1.5px solid var(--ink);
   background:transparent;cursor:pointer;display:grid;place-items:center;gap:4px;
@@ -90,7 +96,7 @@ header.nav{
 #overlay.open{transform:translateY(0)}
 #overlay a{
   display:block;text-decoration:none;font-weight:700;letter-spacing:-.03em;
-  font-size:clamp(28px,6vw,62px);line-height:1.14;opacity:.55;transition:opacity .2s,padding-left .2s;
+  font-size:clamp(26px,5.4vw,56px);line-height:1.16;opacity:.55;transition:opacity .2s,padding-left .2s;
 }
 #overlay a:hover{opacity:1;padding-left:14px}
 #overlay .close{
@@ -113,16 +119,30 @@ h3{font-size:19px;font-weight:600;letter-spacing:-.01em;margin:0 0 8px}
 p{margin:0 0 16px;max-width:62ch;color:var(--ink-2);font-size:clamp(15px,1.3vw,17.5px);line-height:1.52}
 .lede{font-size:clamp(17px,1.9vw,23px);line-height:1.38;color:var(--ink-2);max-width:48ch}
 
+/* resaltador que barre de izquierda a derecha */
 .mark{
-  background:var(--amber);padding:0 .1em;margin:0 -.04em;
+  background-image:linear-gradient(var(--amber),var(--amber));
+  background-repeat:no-repeat;background-position:0 0;background-size:100% 100%;
+  padding:0 .1em;margin:0 -.04em;
   box-decoration-break:clone;-webkit-box-decoration-break:clone;
-  transition:background .35s ease;
+  transition:background-size .55s cubic-bezier(.76,0,.24,1);
 }
-.mark.off{background:transparent}
+.mark.off{background-size:0% 100%}
+
+/* revelado por líneas enmascaradas */
+.w{display:inline-block}
+.line{display:block;overflow:hidden;padding-bottom:.06em}
+.line-i{display:block;transform:translateY(115%);transition:transform .9s cubic-bezier(.22,1,.36,1)}
+.split.in .line-i{transform:none}
 
 .rv{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
 .rv.in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+.rv.split{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  .line-i{transform:none;transition:none}
+  .mark,.mark.off{background-size:100% 100%;transition:none}
+}
 
 .two-col{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:start}
 @media (max-width:860px){.two-col{grid-template-columns:1fr}}
@@ -132,17 +152,34 @@ p{margin:0 0 16px;max-width:62ch;color:var(--ink-2);font-size:clamp(15px,1.3vw,1
 .hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:40px;align-items:center}
 @media (max-width:900px){.hero-grid{grid-template-columns:1fr}.hero-art{display:none}}
 .hero-art svg{width:100%;height:auto;color:var(--accent)}
+.hero-art circle,.hero-art path{stroke-dasharray:420;stroke-dashoffset:420;animation:draw 1.9s cubic-bezier(.22,1,.36,1) forwards}
+.hero-art circle{animation-delay:.45s}
+.hero-art path:nth-of-type(1){animation-delay:.9s}
+.hero-art path:nth-of-type(2){animation-delay:1.35s}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.hero-art circle,.hero-art path{stroke-dashoffset:0;animation:none}}
 .hero-sub{margin-top:32px;max-width:46ch}
+.hero-late{opacity:0;transform:translateY(18px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+.hero-late.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.hero-late{opacity:1;transform:none;transition:none}}
 .cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:32px}
 .btn{
+  position:relative;overflow:hidden;z-index:0;
   display:inline-flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer;
   font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
   padding:15px 26px;border-radius:999px;border:1.5px solid var(--ink);
-  background:var(--ink);color:var(--paper);transition:transform .2s,background .2s,color .2s;
+  background:var(--ink);color:var(--paper);transition:color .35s ease;
 }
-.btn:hover{transform:translateY(-2px)}
+.btn::before{
+  content:"";position:absolute;inset:0;z-index:-1;background:var(--accent);
+  transform:translateY(101%);transition:transform .5s cubic-bezier(.76,0,.24,1);
+}
+.btn:hover::before{transform:translateY(0)}
+.btn:hover{color:var(--ink)}
 .btn.ghost{background:transparent;color:var(--ink)}
-.btn.ghost:hover{background:var(--ink);color:var(--paper)}
+.btn.ghost::before{background:var(--ink)}
+.btn.ghost:hover{color:var(--paper)}
+.nav-cta{position:relative;overflow:hidden}
 .scroll-hint{
   font-family:var(--f-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;
   color:var(--muted);margin-top:52px;display:flex;align-items:center;gap:10px;
@@ -178,7 +215,23 @@ section.band{padding-inline:0;padding-block:clamp(36px,5vh,64px);border-bottom:n
 }
 .step:hover{background:var(--raised)}
 @media (max-width:640px){.step{grid-template-columns:1fr;gap:10px}}
-.step .n{font-size:38px;font-weight:700;letter-spacing:-.05em;color:var(--rule-hard);line-height:.9}
+.step .n{font-size:38px;font-weight:700;letter-spacing:-.05em;color:var(--rule-hard);line-height:.9;transition:color .4s ease}
+.step:hover .n{color:var(--accent)}
+
+/* las tarjetas se apilan una sobre otra al bajar */
+@media (min-width:900px) and (prefers-reduced-motion:no-preference){
+  .steps{background:none;border:none;gap:0;padding-bottom:22vh}
+  .step{
+    border:1px solid var(--rule);border-radius:2px;
+    position:sticky;min-height:210px;align-items:center;
+    padding:44px 34px;margin-bottom:18vh;
+  }
+  .step:last-child{margin-bottom:0}
+  .step:nth-child(1){top:104px}
+  .step:nth-child(2){top:128px}
+  .step:nth-child(3){top:152px}
+  .step:nth-child(4){top:176px}
+}
 .step h3{font-size:clamp(20px,2.4vw,28px);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-bottom:10px}
 .step p{margin:0;font-size:15.5px}
 
@@ -249,56 +302,40 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
   justify-content:space-between;border-top:1px solid var(--rule);padding-top:22px;
   font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
 }
-
-/* ---------- demo brand switcher ---------- */
-#switcher{
-  position:fixed;left:14px;bottom:14px;z-index:150;font-family:var(--f-mono);
-  background:var(--ink);color:var(--paper);border-radius:10px;padding:12px;
-  box-shadow:0 10px 30px rgba(0,0,0,.22);max-width:268px;
-}
-#switcher.min{padding:8px 10px}
-#switcher .hd{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.65}
-#switcher .hd button{background:none;border:none;color:inherit;cursor:pointer;font:inherit;font-size:13px;line-height:1;padding:2px 4px}
-#switcher .body{margin-top:10px;display:grid;gap:5px}
-#switcher.min .body,#switcher.min .foot{display:none}
-#switcher .opt{
-  display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;text-align:left;
-  background:rgba(255,255,255,.06);border:1px solid transparent;color:inherit;
-  border-radius:7px;padding:8px 10px;cursor:pointer;font:inherit;
-}
-#switcher .opt:hover{background:rgba(255,255,255,.13)}
-#switcher .opt[aria-pressed="true"]{border-color:var(--accent);background:rgba(255,255,255,.15)}
-#switcher .opt svg{width:22px;height:22px;display:block}
-#switcher .opt b{font-family:var(--f-display);font-size:14px;letter-spacing:-.02em;display:block}
-#switcher .opt small{font-size:9.5px;opacity:.6;letter-spacing:.04em;display:block;line-height:1.35;margin-top:2px}
-#switcher .foot{font-size:9px;opacity:.45;margin-top:9px;line-height:1.5;letter-spacing:.06em}
-@media (max-width:620px){#switcher{max-width:calc(100vw - 28px)}}
-@media print{#switcher,#loader,header.nav{display:none}}
+@media print{#loader,header.nav{display:none}}
 </style>
 </head>
 <body>
 
-<div id="loader"><span class="n">000</span><span class="w">cargando</span></div>
+<div id="loader"><span class="n">000</span><span class="w" data-en="loading">cargando</span></div>
 
 <header class="nav">
-  <a class="brandmark" href="#hero" aria-label="Inicio">
-    <span id="logo-slot"></span>
-    <span class="word" id="word-slot">Zarpa</span>
+  <a class="brandmark" href="#hero" aria-label="Zarpa">
+    <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <ellipse cx="7.5" cy="10.5" rx="3" ry="4" fill="currentColor"/>
+      <ellipse cx="15.2" cy="7.6" rx="3.1" ry="4.3" fill="currentColor"/>
+      <ellipse cx="23" cy="10.5" rx="3" ry="4" fill="currentColor"/>
+      <rect x="6.5" y="16.6" width="19" height="11.4" rx="4" fill="var(--accent)"/>
+      <path d="M16 16.6v11.4M6.5 21.5h19" stroke="var(--paper)" stroke-width="1.7"/>
+    </svg>
+    <span class="word">Zarpa</span>
   </a>
   <div class="nav-right">
-    <a class="nav-cta" href="#contacto">Pedir una visita</a>
-    <button class="menu-btn" id="menu-open" aria-label="Abrir menú"><span></span><span></span></button>
+    <button class="lang" id="lang" type="button">EN</button>
+    <a class="nav-cta" href="#contacto" data-en="Book a visit">Pedir una visita</a>
+    <button class="menu-btn" id="menu-open" aria-label="Menú"><span></span><span></span></button>
   </div>
 </header>
 
 <nav id="overlay" aria-hidden="true">
-  <button class="close" id="menu-close" aria-label="Cerrar menú">✕</button>
-  <a href="#servicio">Servicios</a>
-  <a href="#como">Cómo funciona</a>
-  <a href="#cobertura">Cobertura</a>
-  <a href="#entregables">Qué recibís</a>
-  <a href="#faq">Preguntas</a>
-  <a href="#contacto">Contacto</a>
+  <button class="close" id="menu-close" aria-label="Cerrar">✕</button>
+  <a href="#servicio" data-en="Services">Servicios</a>
+  <a href="#como" data-en="How it works">Cómo funciona</a>
+  <a href="#cobertura" data-en="Coverage">Cobertura</a>
+  <a href="#entregables" data-en="What you get">Qué recibís</a>
+  <a href="#faq" data-en="FAQ">Preguntas</a>
+  <a href="#contacto" data-en="Contact">Contacto</a>
+  <a href="dashboard.html" data-en="Client dashboard">Panel de cliente</a>
 </nav>
 
 <main>
@@ -306,16 +343,16 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
 <!-- 01 -->
 <section id="hero">
   <div class="inner">
-    <span class="label">01 / Inicio</span>
+    <span class="label" data-en="01 / Home">01 / Inicio</span>
     <div class="hero-grid">
       <div>
-        <h1>El equipo de tu gente, <span class="mark" data-cycle>recogido</span>, <span class="mark off" data-cycle>guardado</span> y <span class="mark off" data-cycle>entregado</span> en todo el país</h1>
-        <p class="lede hero-sub">Manejamos el puesto de trabajo completo de las empresas que tienen personal remoto en Costa Rica. Vos nos decís el nombre y la dirección; nosotros hacemos el resto.</p>
-        <div class="cta-row">
-          <a class="btn" href="#contacto">Pedir una visita <span aria-hidden="true">→</span></a>
-          <a class="btn ghost" href="#como">Cómo funciona</a>
+        <h1 class="split" data-en="Your people&apos;s gear, &lt;span class=&quot;mark&quot; data-cycle&gt;picked up&lt;/span&gt;, &lt;span class=&quot;mark off&quot; data-cycle&gt;stored&lt;/span&gt; and &lt;span class=&quot;mark off&quot; data-cycle&gt;delivered&lt;/span&gt; anywhere in the country">El equipo de tu gente, <span class="mark" data-cycle>recogido</span>, <span class="mark off" data-cycle>guardado</span> y <span class="mark off" data-cycle>entregado</span> en todo el país</h1>
+        <p class="lede hero-sub hero-late" data-en="We handle the whole workstation for companies with remote staff in Costa Rica. You send us a name and an address; we take it from there.">Manejamos el puesto de trabajo completo de las empresas que tienen personal remoto en Costa Rica. Vos nos decís el nombre y la dirección; nosotros hacemos el resto.</p>
+        <div class="cta-row hero-late">
+          <a class="btn" href="#contacto" data-en="Book a visit &lt;span aria-hidden=&quot;true&quot;&gt;→&lt;/span&gt;">Pedir una visita <span aria-hidden="true">→</span></a>
+          <a class="btn ghost" href="#como" data-en="How it works">Cómo funciona</a>
         </div>
-        <div class="scroll-hint">Bajá</div>
+        <div class="scroll-hint hero-late" data-en="Scroll">Bajá</div>
       </div>
       <div class="hero-art" aria-hidden="true">
         <svg viewBox="0 0 200 320" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
@@ -336,26 +373,26 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
 <!-- 03 -->
 <section id="servicio">
   <div class="inner">
-    <span class="label rv">02 / Servicios</span>
-    <h2 class="rv">Tres cosas, y las tres las hacemos nosotros.</h2>
+    <span class="label rv" data-en="02 / Services">02 / Servicios</span>
+    <h2 class="rv split" data-en="Three things, and we do all three.">Tres cosas, y las tres las hacemos nosotros.</h2>
     <div class="cards">
       <div class="card rv">
         <svg class="ico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l12-6 12 6-12 6z"/><path d="M4 11v10l12 6 12-6V11"/><path d="M16 17v10"/></svg>
-        <span class="k">Cuando alguien sale</span>
-        <h3>Recolección</h3>
-        <p>Vamos donde esté la persona, en cualquier parte del país. Empacamos el puesto completo en sitio, lo inventariamos por número de serie y levantamos acta con firma digital y fotos del estado.</p>
+        <span class="k" data-en="When someone leaves">Cuando alguien sale</span>
+        <h3 data-en="Pickup">Recolección</h3>
+        <p data-en="We go wherever the person is, anywhere in the country. We pack the full workstation on site, inventory it by serial number, and produce a handover record with a digital signature and photos of its condition.">Vamos donde esté la persona, en cualquier parte del país. Empacamos el puesto completo en sitio, lo inventariamos por número de serie y levantamos acta con firma digital y fotos del estado.</p>
       </div>
       <div class="card rv">
         <svg class="ico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="24" height="18" rx="2"/><path d="M4 13h24M12 7v18"/><circle cx="20" cy="19" r="1.6"/></svg>
-        <span class="k">Mientras no se usa</span>
-        <h3>Custodia</h3>
-        <p>El equipo entra a bodega con acceso controlado y queda en inventario el tiempo que haga falta. Sabés en todo momento qué hay guardado, de quién era y en qué estado está.</p>
+        <span class="k" data-en="While it sits idle">Mientras no se usa</span>
+        <h3 data-en="Storage">Custodia</h3>
+        <p data-en="The gear goes into a warehouse with controlled access and stays in inventory as long as you need. You always know what is stored, whose it was and what condition it is in.">El equipo entra a bodega con acceso controlado y queda en inventario el tiempo que haga falta. Sabés en todo momento qué hay guardado, de quién era y en qué estado está.</p>
       </div>
       <div class="card rv">
         <svg class="ico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="20" height="14" rx="2"/><path d="M9 26h8"/><path d="M23 12h6v10h-6"/></svg>
-        <span class="k">Cuando alguien entra</span>
-        <h3>Despliegue</h3>
-        <p>Armamos el kit de bienvenida completo — laptop, dock, monitores y periféricos — y lo entregamos donde viva la persona nueva, listo para trabajar el día uno. Mismo kit y mismo checklist en toda provincia.</p>
+        <span class="k" data-en="When someone joins">Cuando alguien entra</span>
+        <h3 data-en="Deployment">Despliegue</h3>
+        <p data-en="We assemble the full welcome kit — laptop, dock, monitors and peripherals — and deliver it where the new hire lives, ready to work on day one. Same kit and same checklist in every province.">Armamos el kit de bienvenida completo — laptop, dock, monitores y periféricos — y lo entregamos donde viva la persona nueva, listo para trabajar el día uno. Mismo kit y mismo checklist en toda provincia.</p>
       </div>
     </div>
   </div>
@@ -364,38 +401,38 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
 <!-- 04 -->
 <section id="como">
   <div class="inner">
-    <span class="label rv">03 / Cómo funciona</span>
+    <span class="label rv" data-en="03 / How it works">03 / Cómo funciona</span>
     <div class="two-col">
-      <h2 class="rv">Un correo de tu parte. Cuatro pasos de la nuestra.</h2>
-      <div class="rv"><p>El equipo de Recursos Humanos no persigue a nadie, no busca cajas, no coordina taxis y no llama tres veces a alguien que ya renunció. Eso es trabajo nuestro.</p></div>
+      <h2 class="rv split" data-en="One email from you. Four steps from us.">Un correo de tu parte. Cuatro pasos de la nuestra.</h2>
+      <div class="rv"><p data-en="HR does not chase anyone, hunt for boxes, arrange couriers or call someone three times after they have already resigned. That is our job.">El equipo de Recursos Humanos no persigue a nadie, no busca cajas, no coordina taxis y no llama tres veces a alguien que ya renunció. Eso es trabajo nuestro.</p></div>
     </div>
     <div class="steps">
       <div class="step rv">
         <span class="n">01</span>
         <div>
-          <h3>Nos escribís</h3>
-          <p>Nombre de la persona, dirección y si es una salida o un ingreso. Nada más. Respondemos el mismo día hábil con la ventana de visita disponible.</p>
+          <h3 data-en="You write to us">Nos escribís</h3>
+          <p data-en="The person&apos;s name, their address, and whether it is an exit or an onboarding. That is it. We reply the same business day with an available visit window.">Nombre de la persona, dirección y si es una salida o un ingreso. Nada más. Respondemos el mismo día hábil con la ventana de visita disponible.</p>
         </div>
       </div>
       <div class="step rv">
         <span class="n">02</span>
         <div>
-          <h3>Coordinamos con la persona</h3>
-          <p>La contactamos directamente por teléfono y WhatsApp, acordamos día y hora, y le explicamos qué va a pasar. Si no responde, insistimos y te avisamos.</p>
+          <h3 data-en="We coordinate with the person">Coordinamos con la persona</h3>
+          <p data-en="We contact them directly by phone and WhatsApp, agree on a day and time, and explain what will happen. If they do not answer, we keep trying and we tell you.">La contactamos directamente por teléfono y WhatsApp, acordamos día y hora, y le explicamos qué va a pasar. Si no responde, insistimos y te avisamos.</p>
         </div>
       </div>
       <div class="step rv">
         <span class="n">03</span>
         <div>
-          <h3>Hacemos la visita</h3>
-          <p>Empaque en sitio con materiales incluidos, inventario pieza por pieza con número de serie, fotos del estado y acta que la persona firma desde su propio celular.</p>
+          <h3 data-en="We run the visit">Hacemos la visita</h3>
+          <p data-en="On-site packing with materials included, piece-by-piece inventory with serial numbers, photos of the condition, and a handover record the person signs from their own phone.">Empaque en sitio con materiales incluidos, inventario pieza por pieza con número de serie, fotos del estado y acta que la persona firma desde su propio celular.</p>
         </div>
       </div>
       <div class="step rv">
         <span class="n">04</span>
         <div>
-          <h3>Recibís el reporte</h3>
-          <p>El acta en PDF el mismo día y el inventario actualizado con la ubicación de cada puesto. Sin pedirlo, sin abrir un ticket, sin esperar al cierre de mes.</p>
+          <h3 data-en="You get the report">Recibís el reporte</h3>
+          <p data-en="The signed PDF the same day and an updated inventory with the location of every workstation. No need to ask, no ticket, no waiting for month-end.">El acta en PDF el mismo día y el inventario actualizado con la ubicación de cada puesto. Sin pedirlo, sin abrir un ticket, sin esperar al cierre de mes.</p>
         </div>
       </div>
     </div>
@@ -405,15 +442,15 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
 <!-- 05 -->
 <section id="paraquien">
   <div class="inner">
-    <span class="label rv">04 / Para quién</span>
+    <span class="label rv" data-en="04 / Who it is for">04 / Para quién</span>
     <div class="two-col">
-      <h2 class="rv">Para empresas con gente en Costa Rica y sin manos en Costa Rica.</h2>
+      <h2 class="rv split" data-en="For companies with people in Costa Rica and no hands in Costa Rica.">Para empresas con gente en Costa Rica y sin manos en Costa Rica.</h2>
       <div class="rv">
         <ul class="plain">
-          <li><span><b>Equipos de RR.HH. e IT en el exterior</b> que contratan tico remoto y no tienen a quién mandar a tocar la puerta.</span></li>
-          <li><span><b>BPO y operaciones nearshore</b> con rotación alta y colaboradores repartidos por todo el territorio.</span></li>
-          <li><span><b>Empresas sin oficina en el país</b> que igual necesitan un lugar físico donde guardar equipo entre un movimiento y otro.</span></li>
-          <li><span><b>ONG y organizaciones pequeñas</b> que no pueden sostener un encargado de activos de tiempo completo.</span></li>
+          <li data-en="&lt;span&gt;&lt;b&gt;HR and IT teams abroad&lt;/b&gt; hiring remote Costa Ricans with nobody to send knocking on a door.&lt;/span&gt;"><span><b>Equipos de RR.HH. e IT en el exterior</b> que contratan tico remoto y no tienen a quién mandar a tocar la puerta.</span></li>
+          <li data-en="&lt;span&gt;&lt;b&gt;BPOs and nearshore operations&lt;/b&gt; with high turnover and staff spread across the whole country.&lt;/span&gt;"><span><b>BPO y operaciones nearshore</b> con rotación alta y colaboradores repartidos por todo el territorio.</span></li>
+          <li data-en="&lt;span&gt;&lt;b&gt;Companies with no office here&lt;/b&gt; that still need somewhere physical to keep gear between one move and the next.&lt;/span&gt;"><span><b>Empresas sin oficina en el país</b> que igual necesitan un lugar físico donde guardar equipo entre un movimiento y otro.</span></li>
+          <li data-en="&lt;span&gt;&lt;b&gt;Nonprofits and small organizations&lt;/b&gt; that cannot justify a full-time asset manager.&lt;/span&gt;"><span><b>ONG y organizaciones pequeñas</b> que no pueden sostener un encargado de activos de tiempo completo.</span></li>
         </ul>
       </div>
     </div>
@@ -423,40 +460,40 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
 <!-- 06 -->
 <section id="cobertura">
   <div class="inner">
-    <span class="label rv">05 / Cobertura</span>
-    <h2 class="rv">Las siete provincias. Sin recargo por distancia sorpresa.</h2>
+    <span class="label rv" data-en="05 / Coverage">05 / Cobertura</span>
+    <h2 class="rv split" data-en="All seven provinces. No surprise distance surcharge.">Las siete provincias. Sin recargo por distancia sorpresa.</h2>
     <div class="zones rv">
       <div class="zone">
-        <span class="sla">48 h</span>
-        <span class="zn">Gran Área Metropolitana</span>
-        <span class="zl">San José · Heredia · Alajuela · Cartago<br>Horas hábiles desde que la persona confirma la visita</span>
+        <span class="sla" data-count="48" data-suffix=" h">48 h</span>
+        <span class="zn" data-en="Greater Metropolitan Area">Gran Área Metropolitana</span>
+        <span class="zl" data-en="San José · Heredia · Alajuela · Cartago&lt;br&gt;Business hours from the moment the person confirms the visit">San José · Heredia · Alajuela · Cartago<br>Horas hábiles desde que la persona confirma la visita</span>
       </div>
       <div class="zone">
-        <span class="sla">72 h</span>
-        <span class="zn">Resto del país</span>
-        <span class="zl">Guanacaste · Puntarenas · Limón · zonas rurales<br>Horas hábiles desde que la persona confirma la visita</span>
+        <span class="sla" data-count="72" data-suffix=" h">72 h</span>
+        <span class="zn" data-en="Rest of the country">Resto del país</span>
+        <span class="zl" data-en="Guanacaste · Puntarenas · Limón · rural areas&lt;br&gt;Business hours from the moment the person confirms the visit">Guanacaste · Puntarenas · Limón · zonas rurales<br>Horas hábiles desde que la persona confirma la visita</span>
       </div>
     </div>
     <div class="chips rv">
       <span>Liberia</span><span>Nicoya</span><span>Pérez Zeledón</span><span>San Carlos</span>
       <span>Puerto Viejo</span><span>Golfito</span><span>Turrialba</span><span>Upala</span><span>Jacó</span>
     </div>
-    <p class="rv" style="margin-top:26px">Si la persona vive donde llega un camino, llegamos nosotros. Mensajería propia: el que toca la puerta es empleado nuestro, no un tercero subcontratado.</p>
+    <p class="rv" style="margin-top:26px" data-en="If a road reaches them, we reach them. Our own couriers: whoever knocks on the door works for us, not for a subcontractor.">Si la persona vive donde llega un camino, llegamos nosotros. Mensajería propia: el que toca la puerta es empleado nuestro, no un tercero subcontratado.</p>
   </div>
 </section>
 
 <!-- 07 -->
 <section id="entregables">
   <div class="inner">
-    <span class="label rv">06 / Qué recibís</span>
+    <span class="label rv" data-en="06 / What you get">06 / Qué recibís</span>
     <div class="two-col">
-      <h2 class="rv">Todo movimiento deja papel.</h2>
+      <h2 class="rv split" data-en="Every move leaves a paper trail.">Todo movimiento deja papel.</h2>
       <div class="checks rv">
-        <div><span class="tick">✓</span><div><b>Acta de entrega firmada</b><i>PDF con firma digital de la persona, el mismo día de la visita.</i></div></div>
-        <div><span class="tick">✓</span><div><b>Inventario por número de serie</b><i>Cada pieza con serie, marca, modelo y fotos del estado en que se recibió.</i></div></div>
-        <div><span class="tick">✓</span><div><b>Inventario vivo de bodega</b><i>Qué hay guardado, de quién era y en qué espacio está ubicado.</i></div></div>
-        <div><span class="tick">✓</span><div><b>Checklist de despliegue</b><i>Qué se entregó, a quién, dónde y en qué fecha, con la misma acta firmada.</i></div></div>
-        <div><span class="tick">✓</span><div><b>Un interlocutor</b><i>Un número que contesta, no un ticket en otro huso horario.</i></div></div>
+        <div><span class="tick">✓</span><div><b data-en="Signed handover record">Acta de entrega firmada</b><i data-en="PDF with the person&apos;s digital signature, the same day as the visit.">PDF con firma digital de la persona, el mismo día de la visita.</i></div></div>
+        <div><span class="tick">✓</span><div><b data-en="Serial-number inventory">Inventario por número de serie</b><i data-en="Every item with serial, make, model and photos of the condition it came in.">Cada pieza con serie, marca, modelo y fotos del estado en que se recibió.</i></div></div>
+        <div><span class="tick">✓</span><div><b data-en="Live warehouse inventory">Inventario vivo de bodega</b><i data-en="What is stored, whose it was and which space it sits in.">Qué hay guardado, de quién era y en qué espacio está ubicado.</i></div></div>
+        <div><span class="tick">✓</span><div><b data-en="Deployment checklist">Checklist de despliegue</b><i data-en="What was delivered, to whom, where and on what date, with the same signed record.">Qué se entregó, a quién, dónde y en qué fecha, con la misma acta firmada.</i></div></div>
+        <div><span class="tick">✓</span><div><b data-en="One point of contact">Un interlocutor</b><i data-en="A phone number that answers, not a ticket in another time zone.">Un número que contesta, no un ticket en otro huso horario.</i></div></div>
       </div>
     </div>
   </div>
@@ -465,33 +502,33 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
 <!-- 08 -->
 <section id="faq">
   <div class="inner">
-    <span class="label rv">07 / Preguntas frecuentes</span>
+    <span class="label rv" data-en="07 / FAQ">07 / Preguntas frecuentes</span>
     <div class="two-col">
-      <h2 class="rv">Lo que preguntan siempre.</h2>
+      <h2 class="rv split" data-en="What everyone asks.">Lo que preguntan siempre.</h2>
       <div class="faq rv">
         <details>
-          <summary>¿Cuánto cuesta?</summary>
-          <div class="a">Se cotiza por movimiento según la zona, y la custodia por puesto guardado al mes. Escribinos con el volumen aproximado y te pasamos la tarifa el mismo día hábil. Sin contrato de permanencia ni mínimo de volumen.</div>
+          <summary data-en="How much does it cost?">¿Cuánto cuesta?</summary>
+          <div class="a" data-en="It is quoted per move by zone, and storage per workstation per month. Send us your rough volume and we will send the rate the same business day. No lock-in contract and no minimum volume.">Se cotiza por movimiento según la zona, y la custodia por puesto guardado al mes. Escribinos con el volumen aproximado y te pasamos la tarifa el mismo día hábil. Sin contrato de permanencia ni mínimo de volumen.</div>
         </details>
         <details>
-          <summary>¿Qué se considera un movimiento?</summary>
-          <div class="a">El puesto de trabajo completo de una persona: laptop, dock, hasta dos monitores, headset, teclado, mouse, cargadores y cables. No se cobra por pieza — sale o entra el kit entero en una sola visita.</div>
+          <summary data-en="What counts as a move?">¿Qué se considera un movimiento?</summary>
+          <div class="a" data-en="One person&apos;s complete workstation: laptop, dock, up to two monitors, headset, keyboard, mouse, chargers and cables. We do not charge per item — the whole kit goes out or comes in on a single visit.">El puesto de trabajo completo de una persona: laptop, dock, hasta dos monitores, headset, teclado, mouse, cargadores y cables. No se cobra por pieza — sale o entra el kit entero en una sola visita.</div>
         </details>
         <details>
-          <summary>¿Cuánto tiempo puede quedarse el equipo en bodega?</summary>
-          <div class="a">El que haga falta. No hay plazo máximo ni penalización por dejarlo guardado. Entre más puestos tengas en custodia, menor es la tarifa mensual por puesto.</div>
+          <summary data-en="How long can the gear stay in the warehouse?">¿Cuánto tiempo puede quedarse el equipo en bodega?</summary>
+          <div class="a" data-en="As long as you need. There is no maximum term and no penalty for leaving it stored. The more workstations you keep with us, the lower the monthly rate per workstation.">El que haga falta. No hay plazo máximo ni penalización por dejarlo guardado. Entre más puestos tengas en custodia, menor es la tarifa mensual por puesto.</div>
         </details>
         <details>
-          <summary>¿Qué pasa si la persona no contesta?</summary>
-          <div class="a">Insistimos por teléfono, WhatsApp y correo durante varios días, en distintos horarios. Si aun así no hay respuesta, te lo reportamos con el detalle de los intentos para que decidas el siguiente paso.</div>
+          <summary data-en="What if the person does not answer?">¿Qué pasa si la persona no contesta?</summary>
+          <div class="a" data-en="We keep trying by phone, WhatsApp and email over several days, at different hours. If there is still no answer, we report back with a log of every attempt so you can decide the next step.">Insistimos por teléfono, WhatsApp y correo durante varios días, en distintos horarios. Si aun así no hay respuesta, te lo reportamos con el detalle de los intentos para que decidas el siguiente paso.</div>
         </details>
         <details>
-          <summary>¿Hacen borrado certificado de datos o disposición final?</summary>
-          <div class="a">Hoy no. El equipo fuera de servicio se resguarda identificado y separado del inventario activo, y el destino final lo definís vos. Preferimos decirlo claro antes que prometerlo.</div>
+          <summary data-en="Do you do certified data wiping or disposal?">¿Hacen borrado certificado de datos o disposición final?</summary>
+          <div class="a" data-en="Not today. Decommissioned gear is stored tagged and separate from active inventory, and you decide where it ends up. We would rather say so plainly than promise it.">Hoy no. El equipo fuera de servicio se resguarda identificado y separado del inventario activo, y el destino final lo definís vos. Preferimos decirlo claro antes que prometerlo.</div>
         </details>
         <details>
-          <summary>¿El equipo está asegurado?</summary>
-          <div class="a">La póliza de transporte y responsabilidad de depositario está en gestión. Te confirmamos el alcance exacto antes de arrancar cualquier movimiento.</div>
+          <summary data-en="Is the gear insured?">¿El equipo está asegurado?</summary>
+          <div class="a" data-en="The transit and bailee liability policy is being arranged. We will confirm the exact scope before starting any move.">La póliza de transporte y responsabilidad de depositario está en gestión. Te confirmamos el alcance exacto antes de arrancar cualquier movimiento.</div>
         </details>
       </div>
     </div>
@@ -501,30 +538,30 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
 <!-- 09 -->
 <section id="contacto">
   <div class="inner">
-    <span class="label rv">08 / Contacto</span>
-    <h2 class="rv">Contanos el próximo movimiento que tengas.</h2>
-    <p class="lede rv" style="margin-top:20px">Una salida o un ingreso. Respondemos el mismo día hábil.</p>
+    <span class="label rv" data-en="08 / Contact">08 / Contacto</span>
+    <h2 class="rv split" data-en="Tell us about your next move.">Contanos el próximo movimiento que tengas.</h2>
+    <p class="lede rv" style="margin-top:20px" data-en="One exit or one onboarding. We reply the same business day.">Una salida o un ingreso. Respondemos el mismo día hábil.</p>
 
     <form id="form" class="rv" novalidate>
       <div class="f2">
-        <div><label for="nombre">Tu nombre</label><input id="nombre" name="nombre" autocomplete="name" required></div>
-        <div><label for="empresa">Empresa</label><input id="empresa" name="empresa" autocomplete="organization" required></div>
+        <div><label for="nombre" data-en="Your name">Tu nombre</label><input id="nombre" name="nombre" autocomplete="name" required></div>
+        <div><label for="empresa" data-en="Company">Empresa</label><input id="empresa" name="empresa" autocomplete="organization" required></div>
       </div>
       <div class="f2">
-        <div><label for="correo">Correo</label><input id="correo" name="correo" type="email" autocomplete="email" required></div>
+        <div><label for="correo" data-en="Email">Correo</label><input id="correo" name="correo" type="email" autocomplete="email" required></div>
         <div>
-          <label for="tipo">Qué necesitás</label>
+          <label for="tipo" data-en="What you need">Qué necesitás</label>
           <select id="tipo" name="tipo">
-            <option>Recolección — alguien sale</option>
-            <option>Despliegue — alguien entra</option>
-            <option>Custodia en bodega</option>
-            <option>Las tres cosas</option>
+            <option data-en="Pickup — someone is leaving">Recolección — alguien sale</option>
+            <option data-en="Deployment — someone is joining">Despliegue — alguien entra</option>
+            <option data-en="Warehouse storage">Custodia en bodega</option>
+            <option data-en="All three">Las tres cosas</option>
           </select>
         </div>
       </div>
-      <div><label for="mensaje">Detalle</label><textarea id="mensaje" name="mensaje" placeholder="Cuántos movimientos, en qué zonas, para cuándo."></textarea></div>
+      <div><label for="mensaje" data-en="Details">Detalle</label><textarea id="mensaje" name="mensaje" placeholder="Cuántos movimientos, en qué zonas, para cuándo." data-en-ph="How many moves, which areas, by when."></textarea></div>
       <div class="cta-row" style="margin-top:6px">
-        <button class="btn" type="submit">Enviar <span aria-hidden="true">→</span></button>
+        <button class="btn" type="submit" data-en="Send &lt;span aria-hidden=&quot;true&quot;&gt;→&lt;/span&gt;">Enviar <span aria-hidden="true">→</span></button>
       </div>
     </form>
 
@@ -542,164 +579,157 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
   <div class="foot-grid">
     <div>
       <a class="brandmark" href="#hero" style="margin-bottom:16px">
-        <span id="logo-slot-2"></span>
-        <span class="word" id="word-slot-2">Zarpa</span>
+        <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <ellipse cx="7.5" cy="10.5" rx="3" ry="4" fill="currentColor"/>
+          <ellipse cx="15.2" cy="7.6" rx="3.1" ry="4.3" fill="currentColor"/>
+          <ellipse cx="23" cy="10.5" rx="3" ry="4" fill="currentColor"/>
+          <rect x="6.5" y="16.6" width="19" height="11.4" rx="4" fill="var(--accent)"/>
+          <path d="M16 16.6v11.4M6.5 21.5h19" stroke="var(--paper)" stroke-width="1.7"/>
+        </svg>
+        <span class="word">Zarpa</span>
       </a>
-      <p style="max-width:34ch;font-size:15px" id="tagline-slot">Recolección, custodia y despliegue de equipo de cómputo, dentro de Costa Rica.</p>
+      <p style="max-width:34ch;font-size:15px" data-en="Pickup, storage and deployment of computer equipment, inside Costa Rica.">Recolección, custodia y despliegue de equipo de cómputo, dentro de Costa Rica.</p>
     </div>
     <div>
-      <h4>Sitio</h4>
+      <h4 data-en="Site">Sitio</h4>
       <ul>
-        <li><a href="#servicio">Servicios</a></li>
-        <li><a href="#como">Cómo funciona</a></li>
-        <li><a href="#cobertura">Cobertura</a></li>
-        <li><a href="#faq">Preguntas</a></li>
-        <li><a href="#contacto">Contacto</a></li>
+        <li><a href="#servicio" data-en="Services">Servicios</a></li>
+        <li><a href="#como" data-en="How it works">Cómo funciona</a></li>
+        <li><a href="#cobertura" data-en="Coverage">Cobertura</a></li>
+        <li><a href="#faq" data-en="FAQ">Preguntas</a></li>
+        <li><a href="#contacto" data-en="Contact">Contacto</a></li>
+        <li><a href="dashboard.html" data-en="Client dashboard">Panel de cliente</a></li>
       </ul>
     </div>
     <div>
-      <h4>Cobertura</h4>
+      <h4 data-en="Coverage">Cobertura</h4>
       <ul>
-        <li>GAM · 48 horas hábiles</li>
-        <li>Resto del país · 72 horas hábiles</li>
-        <li>Las siete provincias</li>
+        <li data-en="GAM · 48 business hours">GAM · 48 horas hábiles</li>
+        <li data-en="Rest of the country · 72 business hours">Resto del país · 72 horas hábiles</li>
+        <li data-en="All seven provinces">Las siete provincias</li>
       </ul>
     </div>
   </div>
   <div class="foot-bottom">
-    <span>Costa Rica <span id="year"></span></span>
-    <span>Sitio demo · datos de contacto de muestra</span>
+    <span>Zarpa · Costa Rica <span id="year"></span></span>
+    <span data-en="Pickup · Storage · Deployment">Recolección · Custodia · Despliegue</span>
   </div>
 </footer>
-
-<div id="switcher">
-  <div class="hd"><span>Demo · nombre y logo</span><button id="sw-toggle" aria-label="Minimizar">—</button></div>
-  <div class="body" id="sw-body"></div>
-  <div class="foot">Panel solo para la demo. Se elimina en producción.</div>
-</div>
 
 <script>
 (function(){
   "use strict";
 
-  /* ---------------- opciones de marca ---------------- */
-  var LOGOS = {
-    zarpa:
-      '<svg viewBox="0 0 32 32" fill="none" aria-hidden="true">' +
-      '<ellipse cx="7.5" cy="10.5" rx="3" ry="4" fill="currentColor"/>' +
-      '<ellipse cx="15.2" cy="7.6" rx="3.1" ry="4.3" fill="currentColor"/>' +
-      '<ellipse cx="23" cy="10.5" rx="3" ry="4" fill="currentColor"/>' +
-      '<rect x="6.5" y="16.6" width="19" height="11.4" rx="4" fill="var(--accent)"/>' +
-      '<path d="M16 16.6v11.4M6.5 21.5h19" stroke="var(--paper)" stroke-width="1.7"/>' +
-      '</svg>',
-    caucel:
-      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-      '<path d="M6 14V5l6.5 4.2" stroke="var(--accent)"/>' +
-      '<path d="M26 14V5l-6.5 4.2" stroke="var(--accent)"/>' +
-      '<path d="M6 14v5a10 10 0 0 0 20 0v-5"/>' +
-      '<path d="M12.5 17.5h.01M19.5 17.5h.01" stroke-width="3"/>' +
-      '<path d="M13.5 23h5"/>' +
-      '</svg>',
-    siete:
-      '<svg viewBox="0 0 32 32" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-      '<circle cx="18" cy="12.5" r="7.5" stroke="var(--accent)" stroke-width="3.2"/>' +
-      '<path d="M25.5 12.5v7A8.5 8.5 0 0 1 17 28H8" stroke="currentColor" stroke-width="3.2"/>' +
-      '<circle cx="18" cy="12.5" r="2.2" fill="currentColor"/>' +
-      '</svg>',
-    gatera:
-      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-      '<path d="M4 28V15a12 12 0 0 1 24 0v13"/>' +
-      '<path d="M3 28h26"/>' +
-      '<path d="M11 28v-7a5 5 0 0 1 10 0v7" fill="var(--accent)" stroke="var(--accent)"/>' +
-      '<path d="M16 21.5v6.5" stroke="var(--paper)"/>' +
-      '</svg>',
-    manigordo:
-      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-      '<path d="M5 12V6l5.5 3.4M27 12V6l-5.5 3.4" stroke="var(--accent)"/>' +
-      '<rect x="4" y="12" width="24" height="16" rx="2.5"/>' +
-      '<path d="M4 17.5h24"/>' +
-      '<circle cx="11" cy="23" r="1.6" fill="var(--accent)" stroke="none"/>' +
-      '<circle cx="16.5" cy="24.5" r="1.2" fill="var(--accent)" stroke="none"/>' +
-      '<circle cx="21.5" cy="22.5" r="1.4" fill="var(--accent)" stroke="none"/>' +
-      '</svg>'
+  /* ---------------- idioma ---------------- */
+  var MARQUEE = {
+    es:['San José','Heredia','Alajuela','Cartago','Guanacaste','Puntarenas','Limón',
+        'Recolección en sitio','Custodia en bodega','Despliegue del kit',
+        'Inventario por número de serie','Acta con firma digital'],
+    en:['San José','Heredia','Alajuela','Cartago','Guanacaste','Puntarenas','Limón',
+        'On-site pickup','Warehouse storage','Kit deployment',
+        'Serial-number inventory','Digitally signed handover']
+  };
+  var TITLE = {
+    es:'Zarpa · Equipo de cómputo para empresas con gente remota en Costa Rica',
+    en:'Zarpa · Computer equipment for companies with remote staff in Costa Rica'
   };
 
-  var BRANDS = [
-    { id:'zarpa', name:'Zarpa', accent:'#2FB5EE',
-      why:'Pata de gato + zarpar. Logística y felino en una palabra.',
-      tagline:'Recolección, custodia y despliegue de equipo de cómputo, dentro de Costa Rica.' },
-    { id:'caucel', name:'Caucel', accent:'#C9743A',
-      why:'Felino silvestre tico. Discreto, preciso, se mueve de noche.',
-      tagline:'El felino que mueve, guarda y entrega el equipo de tu gente.' },
-    { id:'siete', name:'Siete', accent:'#3E9E7A',
-      why:'Las siete vidas del gato: sale, se guarda y vuelve a salir.',
-      tagline:'Cada equipo vuelve a la calle. Recolección, custodia y despliegue en Costa Rica.' },
-    { id:'gatera', name:'Gatera', accent:'#6E63D8',
-      why:'La puerta por donde el equipo sale y regresa.',
-      tagline:'La puerta por donde sale y vuelve el equipo de tu gente.' },
-    { id:'manigordo', name:'Manigordo', accent:'#D9A227',
-      why:'Ocelote tico. Manos anchas que cargan sin romper nada.',
-      tagline:'Manos ticas para el equipo de cómputo de tu gente.' }
-  ];
-
-  function applyBrand(b){
-    document.documentElement.style.setProperty('--accent', b.accent);
-    var logo = LOGOS[b.id];
-    ['logo-slot','logo-slot-2'].forEach(function(id){
-      var el = document.getElementById(id); if (el) el.innerHTML = logo;
-    });
-    ['word-slot','word-slot-2'].forEach(function(id){
-      var el = document.getElementById(id); if (el) el.textContent = b.name;
-    });
-    var tg = document.getElementById('tagline-slot');
-    if (tg) tg.textContent = b.tagline;
-    document.title = b.name + ' · Equipo de cómputo para empresas con gente remota en Costa Rica';
-    Array.prototype.forEach.call(document.querySelectorAll('#sw-body .opt'), function(btn){
-      btn.setAttribute('aria-pressed', String(btn.dataset.id === b.id));
-    });
-    try { localStorage.setItem('brand', b.id); } catch(e){}
+  var track = document.getElementById('track');
+  function paintMarquee(lang){
+    var html = MARQUEE[lang].map(function(t){ return '<span>' + t + '</span>'; }).join('');
+    track.innerHTML = html + html;
   }
 
-  var swBody = document.getElementById('sw-body');
-  BRANDS.forEach(function(b){
-    var btn = document.createElement('button');
-    btn.className = 'opt';
-    btn.type = 'button';
-    btn.dataset.id = b.id;
-    btn.setAttribute('aria-pressed','false');
-    btn.innerHTML = '<span style="color:' + b.accent + ';--accent:' + b.accent + '">' + LOGOS[b.id] + '</span>' +
-                    '<span><b>' + b.name + '</b><small>' + b.why + '</small></span>';
-    btn.addEventListener('click', function(){ applyBrand(b); });
-    swBody.appendChild(btn);
+  var lang = 'es';
+  try { lang = localStorage.getItem('lang') === 'en' ? 'en' : 'es'; } catch(e){}
+
+  /* guardar el español original antes de tocar nada */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-en]'), function(el){
+    if (!el.hasAttribute('data-es')) el.setAttribute('data-es', el.innerHTML);
   });
 
-  var saved = null;
-  try { saved = localStorage.getItem('brand'); } catch(e){}
-  var start = BRANDS.filter(function(b){ return b.id === saved; })[0] || BRANDS[0];
-  applyBrand(start);
+  /* ---------------- revelado por líneas enmascaradas ---------------- */
+  function tokenize(el){
+    var out = [];
+    Array.prototype.forEach.call(el.childNodes, function(n){
+      if (n.nodeType === 3){
+        var raw = n.textContent, lead = /^\s/.test(raw);
+        raw.split(/\s+/).forEach(function(t, idx){
+          if (!t) return;
+          if (idx === 0 && !lead && out.length) out[out.length - 1] += t;
+          else out.push(t);
+        });
+      } else if (n.nodeType === 1){
+        out.push(n.outerHTML);
+      }
+    });
+    return out;
+  }
 
-  var sw = document.getElementById('switcher');
-  document.getElementById('sw-toggle').addEventListener('click', function(){
-    sw.classList.toggle('min');
-    this.textContent = sw.classList.contains('min') ? '+' : '—';
+  function splitLines(el){
+    var toks = tokenize(el);
+    if (!toks.length) return;
+    el.innerHTML = toks.map(function(t){ return '<span class="w">' + t + '</span>'; }).join(' ');
+    var lines = [], cur = [], top = null;
+    Array.prototype.forEach.call(el.children, function(w){
+      var t = w.offsetTop;
+      if (top === null) top = t;
+      if (Math.abs(t - top) > 4){ lines.push(cur); cur = []; top = t; }
+      cur.push(w.innerHTML);
+    });
+    if (cur.length) lines.push(cur);
+    el.innerHTML = lines.map(function(ln, n){
+      return '<span class="line"><span class="line-i" style="transition-delay:' + (n * 80) + 'ms">' +
+             ln.join(' ') + '</span></span>';
+    }).join('');
+  }
+
+  function initSplits(){
+    Array.prototype.forEach.call(document.querySelectorAll('.split'), function(el){
+      splitLines(el);
+    });
+  }
+
+  function setLang(next){
+    lang = next;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-en]'), function(el){
+      el.innerHTML = el.getAttribute(next === 'en' ? 'data-en' : 'data-es');
+    });
+    initSplits();
+    Array.prototype.forEach.call(document.querySelectorAll('[data-en-ph]'), function(el){
+      if (!el.hasAttribute('data-es-ph')) el.setAttribute('data-es-ph', el.placeholder);
+      el.placeholder = el.getAttribute(next === 'en' ? 'data-en-ph' : 'data-es-ph');
+    });
+    document.documentElement.lang = next;
+    document.title = TITLE[next];
+    document.getElementById('lang').textContent = next === 'en' ? 'ES' : 'EN';
+    paintMarquee(next);
+    try { localStorage.setItem('lang', next); } catch(e){}
+  }
+
+  paintMarquee('es');
+  if (lang === 'en') setLang('en'); else initSplits();
+  document.getElementById('lang').addEventListener('click', function(){
+    setLang(lang === 'en' ? 'es' : 'en');
   });
-
-  /* ---------------- marquee ---------------- */
-  var ITEMS = ['San José','Heredia','Alajuela','Cartago','Guanacaste','Puntarenas','Limón',
-               'Recolección en sitio','Custodia en bodega','Despliegue del kit',
-               'Inventario por número de serie','Acta con firma digital'];
-  var track = document.getElementById('track');
-  var html = ITEMS.map(function(t){ return '<span>' + t + '</span>'; }).join('');
-  track.innerHTML = html + html;
+  /* las líneas se miden con la tipografía ya cargada */
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(initSplits);
+  var rz;
+  window.addEventListener('resize', function(){
+    clearTimeout(rz);
+    rz = setTimeout(initSplits, 220);
+  });
 
   /* ---------------- resaltador que rota ---------------- */
-  var marks = document.querySelectorAll('[data-cycle]');
-  if (marks.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
     var i = 0;
     setInterval(function(){
-      marks[i].classList.add('off');
-      i = (i + 1) % marks.length;
-      marks[i].classList.remove('off');
+      var m = document.querySelectorAll('[data-cycle]');
+      if (!m.length) return;
+      if (i >= m.length) i = 0;
+      m[i].classList.add('off');
+      i = (i + 1) % m.length;
+      m[i].classList.remove('off');
     }, 2200);
   }
 
@@ -717,6 +747,33 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
     });
   } else {
     Array.prototype.forEach.call(rv, function(el){ el.classList.add('in'); });
+  }
+
+  /* ---------------- números que cuentan ---------------- */
+  function countUp(el){
+    var target = parseInt(el.getAttribute('data-count'), 10);
+    var suf = el.getAttribute('data-suffix') || '';
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      el.textContent = target + suf; return;
+    }
+    var t0 = null, dur = 1200;
+    function step(ts){
+      if (t0 === null) t0 = ts;
+      var p = Math.min(1, (ts - t0) / dur);
+      el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))) + suf;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    el.textContent = '0' + suf;
+    requestAnimationFrame(step);
+  }
+  var nums = document.querySelectorAll('[data-count]');
+  if ('IntersectionObserver' in window){
+    var io2 = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ countUp(e.target); io2.unobserve(e.target); }
+      });
+    }, { threshold:0.6 });
+    Array.prototype.forEach.call(nums, function(el){ io2.observe(el); });
   }
 
   /* ---------------- menú ---------------- */
@@ -739,13 +796,13 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
     e.preventDefault();
     var d = new FormData(form);
     var cuerpo =
-      'Nombre: ' + (d.get('nombre') || '') + '\n' +
-      'Empresa: ' + (d.get('empresa') || '') + '\n' +
-      'Correo: ' + (d.get('correo') || '') + '\n' +
-      'Necesita: ' + (d.get('tipo') || '') + '\n\n' +
+      (lang === 'en' ? 'Name: ' : 'Nombre: ') + (d.get('nombre') || '') + '\n' +
+      (lang === 'en' ? 'Company: ' : 'Empresa: ') + (d.get('empresa') || '') + '\n' +
+      (lang === 'en' ? 'Email: ' : 'Correo: ') + (d.get('correo') || '') + '\n' +
+      (lang === 'en' ? 'Needs: ' : 'Necesita: ') + (d.get('tipo') || '') + '\n\n' +
       (d.get('mensaje') || '');
     window.location.href = 'mailto:hola@ejemplo.cr' +
-      '?subject=' + encodeURIComponent('Solicitud de visita — ' + (d.get('empresa') || 'sitio web')) +
+      '?subject=' + encodeURIComponent((lang === 'en' ? 'Visit request — ' : 'Solicitud de visita — ') + (d.get('empresa') || 'web')) +
       '&body=' + encodeURIComponent(cuerpo);
   });
 
@@ -758,7 +815,16 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
     num.textContent = ('00' + v).slice(-3);
     if (v >= 100){
       clearInterval(tick);
-      setTimeout(function(){ loader.classList.add('done'); }, 220);
+      setTimeout(function(){
+        loader.classList.add('done');
+        /* la portada entra cuando se va el cargador */
+        var h1 = document.querySelector('#hero h1');
+        if (h1) h1.classList.add('in');
+        Array.prototype.forEach.call(document.querySelectorAll('.hero-late'), function(el, n){
+          el.style.transitionDelay = (260 + n * 110) + 'ms';
+          el.classList.add('in');
+        });
+      }, 220);
     }
   }, 60);
 
