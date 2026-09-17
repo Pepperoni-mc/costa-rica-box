@@ -9,7 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
 
 <style>
 :root{
@@ -24,7 +24,7 @@
   --amber:#F2A63C;
   --accent:#2FB5EE;
   --green:#3E9E7A;
-  --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-display:"IBM Plex Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
   --pad:clamp(18px,4vw,56px);
   color-scheme:light;
@@ -32,7 +32,7 @@
 *{box-sizing:border-box}
 body{
   margin:0;background:var(--paper);color:var(--ink);
-  font-family:var(--f-display);font-size:16px;line-height:1.5;
+  font-family:var(--f-display);font-size:16px;line-height:1.5;letter-spacing:-.011em;
   -webkit-font-smoothing:antialiased;
 }
 a{color:inherit}
@@ -105,7 +105,7 @@ td{padding:14px 16px;border-bottom:1px solid var(--rule);color:var(--ink-2);vert
 tr:last-child td{border-bottom:none}
 tbody tr{background:var(--paper);transition:background .2s}
 tbody tr:hover{background:var(--raised)}
-td.lead{color:var(--ink);font-weight:600}
+td.lead{color:var(--ink);font-weight:700}
 td.mono{font-family:var(--f-mono);font-size:13px;white-space:nowrap}
 .empty{padding:34px 16px;text-align:center;color:var(--muted);font-size:14.5px;background:var(--paper)}
 
@@ -160,7 +160,7 @@ footer{
   <div class="head">
     <div>
       <span class="label" data-en="Account">Cuenta</span>
-      <h1>Acme Nearshore CR</h1>
+      <h1>Compañía de prueba</h1>
     </div>
     <span class="when" data-en="Updated today, 9:12 a.m.">Actualizado hoy, 9:12 a. m.</span>
   </div>
