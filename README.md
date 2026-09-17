@@ -8,8 +8,12 @@ Dirección de arte inspirada en [indisea.com](https://indisea.com).
 
 ## Archivos
 
-- `index.html` — el sitio. Un solo archivo, sin build, sin dependencias.
-- `dashboard.html` — panel de cliente de muestra, sin login, con datos de ejemplo.
+- `index.html` — el sitio. Sin build, sin dependencias.
+- `dashboard.html` — panel de cliente de muestra, sin login.
+- `acta.html` — el acta de entrega de un movimiento; recibe el folio por query string
+  (`acta.html?f=ZRP-2026-0032`) y se guarda como PDF con el botón o con Ctrl+P.
+- `data.js` — los movimientos, las piezas de cada acta y el inventario de bodega.
+  Es lo único que habría que reemplazar por datos reales.
 
 Las tipografías (Archivo + IBM Plex Mono) vienen de Google Fonts; sin internet cae a las del
 sistema y se ve bien igual.
@@ -34,9 +38,17 @@ Todo respeta `prefers-reduced-motion`.
 
 ## Panel de cliente
 
-`dashboard.html` no tiene login ni backend: los movimientos y el inventario son arreglos en
-el JS (`MOVES` e `INV`). Los filtros y la búsqueda funcionan de verdad sobre esos datos.
-Sirve para enseñar la idea; para que sea real hay que conectarlo a una base y ponerle acceso.
+`dashboard.html` no tiene login ni backend: todo sale de `data.js`. Los filtros, la búsqueda
+y los indicadores se calculan de verdad sobre esos datos, así que las tablas nunca se
+contradicen entre sí.
+
+**Ver PDF** abre `acta.html` con el folio del movimiento: el acta de entrega y recepción
+completa — encabezado, datos de la visita, detalle por número de serie, declaración y los
+dos bloques de firma con marca de tiempo y huella. El botón *Guardar como PDF* imprime con
+estilos de página carta, sin la barra. Lleva marca de agua **MUESTRA** y lo dice en el pie:
+es un documento de demostración.
+
+Para que sea real hay que conectarlo a una base y ponerle acceso.
 
 ## Qué falta
 
