@@ -48,6 +48,12 @@
   --go-bg:#D6EEFA;  --go-fg:#15688E;
   --wait-bg:#FAE6C4;--wait-fg:#87590C;
   --bad-bg:#F7DAD5; --bad-fg:#8E2F1E;
+  --sig-blue:#1E7FB8;
+  --sig-orange:#C2681A;
+  --sig-green:#1C7A3E;
+  --sig-red:#B8352A;
+  --sig-gray:#5A574F;
+  --chip-fg:#FFFFFF;
   color-scheme:light;
 }
 
@@ -79,6 +85,12 @@
   --mark-fg:#17181C;
   --wm:rgba(255,255,255,.055);
   --shadow:0 1px 2px rgba(0,0,0,.45),0 16px 32px -22px rgba(0,0,0,.95);
+  --sig-blue:#3C9ED2;
+  --sig-orange:#C87C2E;
+  --sig-green:#3DA35F;
+  --sig-red:#D9544A;
+  --sig-gray:#8C8880;
+  --chip-fg:#141519;
   color-scheme:dark;
   }
 }
@@ -108,6 +120,12 @@
   --mark-fg:#17181C;
   --wm:rgba(255,255,255,.055);
   --shadow:0 1px 2px rgba(0,0,0,.45),0 16px 32px -22px rgba(0,0,0,.95);
+  --sig-blue:#3C9ED2;
+  --sig-orange:#C87C2E;
+  --sig-green:#3DA35F;
+  --sig-red:#D9544A;
+  --sig-gray:#8C8880;
+  --chip-fg:#141519;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -427,6 +445,58 @@ section{border-top:1px solid var(--rule-2);margin-top:8px}
   .act{width:100%}
 }
 .iconbtn{width:42px;padding:0;display:inline-grid;place-items:center;border-radius:50%;flex:0 0 auto}
+
+/* ================= paleta de señal =================
+   Plano y saturado en vez de pastel: los estados son bloques de color
+   con tipografía mono en versales, esquina recta y texto de alto contraste.
+   La pareja recolección / despliegue pasó el validador en claro y en oscuro. */
+.badge,.type,.cond{
+  border-radius:2px;padding:5px 9px;gap:0;
+  font-family:var(--f-mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  background:var(--sig-gray);color:var(--chip-fg);
+}
+.badge::before,.type::before,.cond::before{display:none}
+.badge .gl{display:none}
+.type.pickup{background:var(--sig-blue);color:var(--chip-fg)}
+.type.deploy{background:var(--sig-orange);color:var(--chip-fg)}
+.badge.ok,.cond.good{background:var(--sig-green);color:var(--chip-fg)}
+.badge.go{background:var(--sig-blue);color:var(--chip-fg)}
+.badge.wait,.cond.fair{background:var(--sig-orange);color:var(--chip-fg)}
+.badge.bad{background:var(--sig-red);color:var(--chip-fg)}
+.cond.out{background:var(--sig-gray);color:var(--chip-fg)}
+
+/* sin sombras suaves: la jerarquía la dan las reglas y el peso */
+.tw,.panel,.kpis,.sheet{box-shadow:none}
+.tw,.panel,.kpis{border:1px solid var(--rule-2)}
+
+/* cabecera de tabla en negativo, como una herramienta de verdad */
+th{background:var(--ink);color:var(--paper);border-bottom:0;font-weight:600;letter-spacing:.13em}
+
+/* el borde de color de la fila se engrosa y usa la paleta de señal */
+tbody tr td:first-child{box-shadow:inset 4px 0 0 var(--rule-hard)}
+tbody tr.k-pickup td:first-child{box-shadow:inset 4px 0 0 var(--sig-blue)}
+tbody tr.k-deploy td:first-child{box-shadow:inset 4px 0 0 var(--sig-orange)}
+
+.kpi{border-top-width:4px}
+
+.kpi:nth-child(1){border-top-color:var(--sig-gray)}
+.kpi:nth-child(2){border-top-color:var(--sig-blue)}
+.kpi:nth-child(3){border-top-color:var(--sig-orange)}
+.kpi:nth-child(4){border-top-color:var(--sig-red)}
+.kpi:nth-child(5){border-top-color:var(--sig-green)}
+.kpi.alert .n{color:var(--sig-red)}
+.rail a.on{border-bottom-color:var(--ink)}
+.panel-head{background:var(--paper-2);border-bottom:1px solid var(--rule-2)}
+.bars .bar,.bars .bar[data-last="1"]{background:var(--sig-blue)}
+.bars .bar:hover{background:var(--ink)}
+.meter i{background:var(--ink)}
+.meter i.hot{background:var(--sig-orange)}
+.pick.unset{border-color:var(--sig-orange);color:var(--sig-orange)}
+@media (max-width:760px){
+  tbody tr.k-pickup{border-left-color:var(--sig-blue)}
+  tbody tr.k-deploy{border-left-color:var(--sig-orange)}
+}
 </style>
 <script>(function(){try{var t=localStorage.getItem('theme');
 if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>

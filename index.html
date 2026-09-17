@@ -170,21 +170,37 @@ header.nav{
 .menu-btn span{display:block;width:16px;height:1.6px;background:currentColor;border-radius:2px}
 
 #overlay{
-  position:fixed;inset:0;z-index:99;background:var(--invert-bg);color:var(--invert-fg);
+  position:fixed;inset:0;z-index:99;background:#262626;color:#fff;
   display:flex;flex-direction:column;justify-content:center;padding:var(--pad);
   transform:translateY(-101%);transition:transform .55s cubic-bezier(.76,0,.24,1);
 }
 #overlay.open{transform:translateY(0)}
+#overlay .menu{display:grid;gap:clamp(2px,1.2vh,10px);max-width:1280px;width:100%;margin:0 auto}
 #overlay a{
-  display:block;text-decoration:none;font-weight:700;letter-spacing:-.03em;
-  font-size:clamp(26px,5.4vw,56px);line-height:1.16;opacity:.55;transition:opacity .2s,padding-left .2s;
+  display:grid;grid-template-columns:clamp(34px,4vw,54px) 1fr;align-items:baseline;
+  text-decoration:none;color:#8C8C8C;transition:color .18s var(--ease);
 }
-#overlay a:hover{opacity:1;padding-left:14px}
+#overlay a .n{
+  font-size:12px;font-weight:600;letter-spacing:.07em;line-height:1;
+}
+#overlay a .t{
+  font-size:clamp(34px,7.4vw,78px);font-weight:600;letter-spacing:-.035em;line-height:1.1;
+}
+#overlay a:hover,#overlay a:focus-visible{color:#fff;outline:none}
+/* numeración con colores de señal, uno por entrada */
+#overlay a:nth-child(1) .n{color:#2AA8E8}
+#overlay a:nth-child(2) .n{color:#F0952B}
+#overlay a:nth-child(3) .n{color:#35C15E}
+#overlay a:nth-child(4) .n{color:#E8463C}
+#overlay a:nth-child(5) .n{color:#A78BFA}
+#overlay a:nth-child(6) .n{color:#F2D03C}
+#overlay a:nth-child(7) .n{color:#F062A8}
 #overlay .close{
   position:absolute;top:20px;right:var(--pad);width:42px;height:42px;border-radius:50%;
-  border:1.5px solid var(--invert-fg);background:transparent;color:var(--invert-fg);
-  font-size:20px;line-height:1;cursor:pointer;
+  border:1.5px solid #8C8C8C;background:transparent;color:#fff;
+  font-size:20px;line-height:1;cursor:pointer;transition:border-color .18s var(--ease);
 }
+#overlay .close:hover{border-color:#fff}
 
 /* ---------- cursor circular, con las medidas del sitio de referencia ---------- */
 #cursor{display:none}
@@ -443,13 +459,15 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
 
 <nav id="overlay" aria-hidden="true">
   <button class="close" id="menu-close" aria-label="Cerrar">✕</button>
-  <a href="#servicio" data-en="Services">Servicios</a>
-  <a href="#como" data-en="How it works">Cómo funciona</a>
-  <a href="#cobertura" data-en="Coverage">Cobertura</a>
-  <a href="#entregables" data-en="What you get">Qué recibís</a>
-  <a href="#faq" data-en="FAQ">Preguntas</a>
-  <a href="#contacto" data-en="Contact">Contacto</a>
-  <a href="dashboard.html" data-en="Client dashboard">Panel de cliente</a>
+  <div class="menu">
+    <a href="#servicio"><span class="n">01</span><span class="t" data-en="Services">Servicios</span></a>
+    <a href="#como"><span class="n">02</span><span class="t" data-en="How it works">Cómo funciona</span></a>
+    <a href="#cobertura"><span class="n">03</span><span class="t" data-en="Coverage">Cobertura</span></a>
+    <a href="#entregables"><span class="n">04</span><span class="t" data-en="What you get">Qué recibís</span></a>
+    <a href="#faq"><span class="n">05</span><span class="t" data-en="FAQ">Preguntas</span></a>
+    <a href="#contacto"><span class="n">06</span><span class="t" data-en="Contact">Contacto</span></a>
+    <a href="dashboard.html"><span class="n">07</span><span class="t" data-en="Client dashboard">Panel de cliente</span></a>
+  </div>
 </nav>
 
 <main>
