@@ -136,8 +136,8 @@ a{color:inherit}
   position:sticky;top:0;background:var(--paper);z-index:10;
 }
 .bar-left{display:flex;align-items:center;gap:10px}
-.bar svg{width:26px;height:26px;display:block;flex:none}
-.bar .word{font-weight:700;font-size:20px;letter-spacing:-.035em}
+.bar svg{width:36px;height:36px;display:block;flex:none}
+.bar .word{font-weight:700;font-size:26px;letter-spacing:-.035em}
 .bar-right{display:flex;align-items:center;gap:10px}
 .mini{
   display:inline-flex;align-items:center;white-space:nowrap;
@@ -173,8 +173,8 @@ a{color:inherit}
 .doc-head .id{text-align:right;font-family:var(--f-mono);font-size:12px;color:var(--muted);line-height:1.8}
 .doc-head .id b{display:block;color:var(--ink);font-size:14px;font-weight:600;letter-spacing:.02em}
 .issuer{display:flex;align-items:center;gap:10px}
-.issuer svg{width:28px;height:28px;display:block}
-.issuer .word{font-weight:700;font-size:21px;letter-spacing:-.035em;display:block}
+.issuer svg{width:40px;height:40px;display:block}
+.issuer .word{font-weight:700;font-size:27px;letter-spacing:-.035em;display:block}
 .issuer .sub{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:block;margin-top:2px}
 
 h1{font-size:clamp(25px,3.4vw,36px);font-weight:700;letter-spacing:-.035em;line-height:1.08;margin:28px 0 0}
@@ -513,16 +513,32 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
 
     var y = M + 4;
 
-    /* encabezado */
-    doc.setFont('helvetica', 'bold'); doc.setFontSize(17); setC(INK);
-    doc.text('Zarpa', M, y);
+    /* encabezado: la marca se dibuja en vectores, no como imagen */
+    function paw(x, top, size){
+      var u = size / 32;                       // el trazo original va en 32×32
+      doc.setFillColor(INK[0], INK[1], INK[2]);
+      doc.ellipse(x + 7.5 * u, top + 10.5 * u, 3 * u, 4 * u, 'F');
+      doc.ellipse(x + 15.2 * u, top + 7.6 * u, 3.1 * u, 4.3 * u, 'F');
+      doc.ellipse(x + 23 * u, top + 10.5 * u, 3 * u, 4 * u, 'F');
+      doc.setFillColor(BLUE[0], BLUE[1], BLUE[2]);
+      doc.roundedRect(x + 6.5 * u, top + 16.6 * u, 19 * u, 11.4 * u, 4 * u, 4 * u, 'F');
+      doc.setDrawColor(255, 255, 255);
+      doc.setLineWidth(0.45);
+      doc.line(x + 16 * u, top + 16.6 * u, x + 16 * u, top + 28 * u);
+      doc.line(x + 6.5 * u, top + 21.5 * u, x + 25.5 * u, top + 21.5 * u);
+    }
+
+    var LOGO = 11;
+    paw(M, y - 6.5, LOGO);
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(21); setC(INK);
+    doc.text('Zarpa', M + LOGO + 3.4, y + 0.6);
     doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); setC(MUTED);
-    doc.text('COSTA RICA', M, y + 4.6, { charSpace:0.5 });
+    doc.text('COSTA RICA', M + LOGO + 3.6, y + 5.4, { charSpace:0.5 });
     doc.setFont('helvetica', 'bold'); doc.setFontSize(11); setC(INK);
-    doc.text(mv.f, M + CW, y, { align:'right' });
+    doc.text(mv.f, M + CW, y - 1, { align:'right' });
     doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); setC(MUTED);
-    doc.text(t('issued') + ' ' + fmtDate(mv.d), M + CW, y + 4.6, { align:'right' });
-    y += 8.5;
+    doc.text(t('issued') + ' ' + fmtDate(mv.d), M + CW, y + 4, { align:'right' });
+    y += 9.5;
     doc.setDrawColor(INK[0], INK[1], INK[2]); doc.setLineWidth(0.6);
     doc.line(M, y, M + CW, y);
 
