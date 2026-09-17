@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Zarpa · Recolección, custodia y despliegue de equipo de cómputo en Costa Rica</title>
-<meta name="description" content="Recogemos el puesto de trabajo cuando alguien sale, lo guardamos mientras haga falta y lo entregamos armado cuando alguien entra. En todo el territorio nacional.">
+<title>Zarpa · Equipo de cómputo para empresas con gente remota en Costa Rica</title>
+<meta name="description" content="Recogemos, guardamos y entregamos el puesto de trabajo de tu gente en cualquier parte de Costa Rica. Inventario por número de serie, acta firmada y reporte el mismo día.">
 <meta property="og:title" content="Zarpa · Equipo de cómputo, manejado dentro de Costa Rica">
-<meta property="og:description" content="Recolección, custodia y despliegue del puesto de trabajo completo. 48 h en el GAM, 72 h en el resto del país.">
+<meta property="og:description" content="Recolección, custodia y despliegue del puesto de trabajo completo. Las siete provincias.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,7 +50,7 @@ a{color:inherit}
 }
 #loader.done{opacity:0;visibility:hidden}
 #loader .n{
-  font-family:var(--f-display);font-weight:700;font-size:clamp(56px,11vw,120px);
+  font-weight:700;font-size:clamp(56px,11vw,120px);
   letter-spacing:-.05em;line-height:.8;font-variant-numeric:tabular-nums;
 }
 #loader .w{
@@ -68,6 +68,12 @@ header.nav{
 .brandmark{display:flex;align-items:center;gap:10px;text-decoration:none}
 .brandmark svg{width:30px;height:30px;display:block;flex:none}
 .brandmark .word{font-weight:700;font-size:23px;letter-spacing:-.035em}
+.nav-right{display:flex;align-items:center;gap:14px}
+.nav-cta{
+  display:none;font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  text-decoration:none;padding:12px 20px;border-radius:999px;background:var(--ink);color:var(--paper);
+}
+@media (min-width:700px){.nav-cta{display:inline-block}}
 .menu-btn{
   width:42px;height:42px;border-radius:50%;border:1.5px solid var(--ink);
   background:transparent;cursor:pointer;display:grid;place-items:center;gap:4px;
@@ -84,7 +90,7 @@ header.nav{
 #overlay.open{transform:translateY(0)}
 #overlay a{
   display:block;text-decoration:none;font-weight:700;letter-spacing:-.03em;
-  font-size:clamp(30px,6.5vw,68px);line-height:1.12;opacity:.55;transition:opacity .2s,padding-left .2s;
+  font-size:clamp(28px,6vw,62px);line-height:1.14;opacity:.55;transition:opacity .2s,padding-left .2s;
 }
 #overlay a:hover{opacity:1;padding-left:14px}
 #overlay .close{
@@ -101,8 +107,8 @@ section{padding:clamp(72px,11vh,132px) var(--pad);position:relative;border-botto
   text-transform:uppercase;color:var(--muted);margin:0 0 30px;display:block;
 }
 h1,h2{font-weight:700;letter-spacing:-.04em;line-height:.96;text-wrap:balance;margin:0}
-h1{font-size:clamp(42px,8.4vw,116px)}
-h2{font-size:clamp(32px,5.4vw,74px);line-height:1}
+h1{font-size:clamp(40px,8vw,108px)}
+h2{font-size:clamp(30px,5vw,68px);line-height:1.02}
 h3{font-size:19px;font-weight:600;letter-spacing:-.01em;margin:0 0 8px}
 p{margin:0 0 16px;max-width:62ch;color:var(--ink-2);font-size:clamp(15px,1.3vw,17.5px);line-height:1.52}
 .lede{font-size:clamp(17px,1.9vw,23px);line-height:1.38;color:var(--ink-2);max-width:48ch}
@@ -114,18 +120,20 @@ p{margin:0 0 16px;max-width:62ch;color:var(--ink-2);font-size:clamp(15px,1.3vw,1
 }
 .mark.off{background:transparent}
 
-/* reveal */
 .rv{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
 .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
 
+.two-col{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:start}
+@media (max-width:860px){.two-col{grid-template-columns:1fr}}
+
 /* ---------- hero ---------- */
-#hero{min-height:100svh;display:flex;align-items:center;padding-top:120px}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:40px;align-items:center}
+#hero{min-height:100svh;display:flex;align-items:center;padding-top:118px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:40px;align-items:center}
 @media (max-width:900px){.hero-grid{grid-template-columns:1fr}.hero-art{display:none}}
 .hero-art svg{width:100%;height:auto;color:var(--accent)}
-.hero-sub{margin-top:34px;max-width:46ch}
-.cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:34px}
+.hero-sub{margin-top:32px;max-width:46ch}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:32px}
 .btn{
   display:inline-flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer;
   font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
@@ -137,14 +145,14 @@ p{margin:0 0 16px;max-width:62ch;color:var(--ink-2);font-size:clamp(15px,1.3vw,1
 .btn.ghost:hover{background:var(--ink);color:var(--paper)}
 .scroll-hint{
   font-family:var(--f-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--muted);margin-top:56px;display:flex;align-items:center;gap:10px;
+  color:var(--muted);margin-top:52px;display:flex;align-items:center;gap:10px;
 }
 .scroll-hint::after{content:"";width:46px;height:1px;background:var(--rule-hard)}
 
 /* ---------- marquee ---------- */
-.marquee{overflow:hidden;padding:26px 0;border-block:1px solid var(--rule);background:var(--paper-2);white-space:nowrap}
 section.band{padding-inline:0;padding-block:clamp(36px,5vh,64px);border-bottom:none}
-.marquee .track{display:inline-flex;gap:0;animation:slide 38s linear infinite;will-change:transform}
+.marquee{overflow:hidden;padding:26px 0;border-block:1px solid var(--rule);background:var(--paper-2);white-space:nowrap}
+.marquee .track{display:inline-flex;animation:slide 40s linear infinite;will-change:transform}
 @media (prefers-reduced-motion:reduce){.marquee .track{animation:none}}
 @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .marquee span{
@@ -153,96 +161,87 @@ section.band{padding-inline:0;padding-block:clamp(36px,5vh,64px);border-bottom:n
 }
 .marquee span::after{content:"·";position:absolute;right:-3px;color:var(--rule-hard)}
 
-/* ---------- stats ---------- */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:52px}
-@media (max-width:860px){.stats{grid-template-columns:repeat(2,1fr)}}
-.stats > div{background:var(--paper);padding:26px 22px}
-.stats .n{font-size:clamp(34px,4.4vw,56px);font-weight:700;letter-spacing:-.05em;line-height:1;display:block;font-variant-numeric:tabular-nums}
-.stats .t{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:12px;display:block}
-
-.two-col{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:start}
-@media (max-width:860px){.two-col{grid-template-columns:1fr}}
-
 /* ---------- cards ---------- */
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:52px}
 @media (max-width:860px){.cards{grid-template-columns:1fr}}
 .card{background:var(--paper);padding:32px 26px 36px;transition:background .3s}
 .card:hover{background:var(--raised)}
-.card .k{font-family:var(--f-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:24px}
+.card .k{font-family:var(--f-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:22px}
 .card p{font-size:15px;margin:0}
 .card .ico{width:34px;height:34px;color:var(--ink);margin-bottom:22px;display:block}
 
-/* ---------- flow diagram ---------- */
-.flow{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;margin-top:46px}
-@media (max-width:760px){.flow{grid-template-columns:1fr}}
-.flow .hub{
-  border:1.5px solid var(--ink);border-radius:4px;padding:22px 20px;text-align:center;
-  font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;min-width:190px;
+/* ---------- pasos ---------- */
+.steps{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:52px}
+.step{
+  background:var(--paper);display:grid;grid-template-columns:94px minmax(0,1fr);
+  gap:26px;padding:32px 26px;align-items:start;transition:background .3s;
 }
-.flow .spokes{display:grid;gap:10px}
-.flow .spoke{
-  display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;
-  border:1px solid var(--rule);border-radius:4px;padding:15px 18px;background:var(--raised);
-}
-.flow .spoke b{font-size:15.5px;font-weight:600}
-.flow .spoke .arrow{color:var(--accent);font-family:var(--f-mono);font-weight:600}
-.flow .spoke .when{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:right}
+.step:hover{background:var(--raised)}
+@media (max-width:640px){.step{grid-template-columns:1fr;gap:10px}}
+.step .n{font-size:38px;font-weight:700;letter-spacing:-.05em;color:var(--rule-hard);line-height:.9}
+.step h3{font-size:clamp(20px,2.4vw,28px);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-bottom:10px}
+.step p{margin:0;font-size:15.5px}
 
-/* ---------- reasons ---------- */
-.reasons{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:52px}
-.reason{background:var(--paper);display:grid;grid-template-columns:120px minmax(0,1fr) 90px;gap:24px;padding:36px 26px;align-items:start}
-@media (max-width:760px){.reason{grid-template-columns:1fr;gap:12px}.reason .big{text-align:left}}
-.reason .k{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-.reason h3{font-size:clamp(21px,2.6vw,32px);font-weight:700;letter-spacing:-.03em;line-height:1.08;margin-bottom:14px}
-.reason p{margin:0;font-size:15.5px}
-.reason .big{font-size:56px;font-weight:700;letter-spacing:-.05em;color:var(--rule-hard);text-align:right;line-height:.8}
-
-/* ---------- pricing ---------- */
-.prices{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:46px}
-@media (max-width:700px){.prices{grid-template-columns:1fr}}
-.price{background:var(--paper);padding:34px 28px}
-.price .n{font-size:clamp(48px,6.6vw,84px);font-weight:700;letter-spacing:-.05em;line-height:1;display:block}
-.price .zone{font-size:18px;font-weight:600;margin-top:16px;display:block}
-.price .sla{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;color:var(--muted);margin-top:6px;display:block;line-height:1.5}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:30px}
+/* ---------- cobertura ---------- */
+.zones{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:46px}
+@media (max-width:700px){.zones{grid-template-columns:1fr}}
+.zone{background:var(--paper);padding:30px 26px}
+.zone .sla{font-size:clamp(34px,4.6vw,54px);font-weight:700;letter-spacing:-.05em;line-height:1;display:block}
+.zone .zn{font-size:17px;font-weight:600;margin-top:14px;display:block}
+.zone .zl{font-family:var(--f-mono);font-size:12px;color:var(--muted);margin-top:8px;display:block;line-height:1.6}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
 .chips span{
   font-family:var(--f-mono);font-size:12px;padding:8px 13px;border-radius:999px;
   border:1px solid var(--rule-hard);color:var(--ink-2);background:var(--raised);
 }
-table{border-collapse:collapse;width:100%;margin-top:34px;font-size:15.5px}
-th{
-  font-family:var(--f-mono);font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--rule-hard);
-}
-td{padding:14px 16px;border-bottom:1px solid var(--rule);color:var(--ink-2)}
-td.lead{color:var(--ink);font-weight:600}
-td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink)}
-.tw{overflow-x:auto}
-.note{font-size:13px;color:var(--muted);line-height:1.55;margin-top:20px;max-width:78ch}
 
-/* ---------- checklist ---------- */
-.checks{margin-top:44px;border-top:1px solid var(--rule)}
+/* ---------- entregables ---------- */
+.checks{margin-top:8px;border-top:1px solid var(--rule)}
 .checks > div{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:18px 0;border-bottom:1px solid var(--rule);align-items:start}
 .checks .tick{color:var(--accent);font-family:var(--f-mono);font-weight:600}
 .checks b{font-size:16.5px;font-weight:600;display:block;margin-bottom:3px}
 .checks i{font-style:normal;font-size:15px;color:var(--ink-2)}
 
-/* ---------- why local ---------- */
 .plain{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:16px}
 .plain li{display:grid;grid-template-columns:auto 1fr;gap:14px;font-size:16px;color:var(--ink-2);line-height:1.45}
 .plain li::before{content:"→";font-family:var(--f-mono);color:var(--accent);font-weight:600}
 .plain b{color:var(--ink);font-weight:600}
 
-/* ---------- contact ---------- */
+/* ---------- faq ---------- */
+.faq{margin-top:12px;border-top:1px solid var(--rule)}
+.faq details{border-bottom:1px solid var(--rule)}
+.faq summary{
+  cursor:pointer;list-style:none;padding:22px 40px 22px 0;position:relative;
+  font-size:clamp(17px,1.8vw,21px);font-weight:600;letter-spacing:-.015em;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"+";position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  font-family:var(--f-mono);font-size:21px;color:var(--accent);line-height:1;
+}
+.faq details[open] summary::after{content:"–"}
+.faq .a{padding:0 0 24px;max-width:66ch;color:var(--ink-2);font-size:16px;line-height:1.55}
+
+/* ---------- contacto ---------- */
 #contacto{background:var(--paper-2)}
-.contact-links{display:flex;flex-wrap:wrap;gap:12px 34px;margin-top:38px;font-family:var(--f-mono);font-size:14px}
+form{display:grid;gap:14px;max-width:560px;margin-top:34px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:560px){.f2{grid-template-columns:1fr}}
+label{font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:7px}
+input,select,textarea{
+  width:100%;font:inherit;font-size:15.5px;color:var(--ink);background:var(--paper);
+  border:1px solid var(--rule-hard);border-radius:3px;padding:13px 14px;
+}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+textarea{min-height:110px;resize:vertical}
+.contact-links{display:flex;flex-wrap:wrap;gap:12px 34px;margin-top:30px;font-family:var(--f-mono);font-size:14px}
 .contact-links a{text-decoration:none;border-bottom:1.5px solid var(--accent);padding-bottom:2px}
 
 footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
 .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:34px;max-width:1280px;margin:0 auto;width:100%}
 @media (max-width:760px){.foot-grid{grid-template-columns:1fr}}
 .foot-grid h4{font-family:var(--f-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0 0 16px;font-weight:500}
-.foot-grid ul{list-style:none;padding:0;margin:0;display:grid;gap:9px;font-size:14.5px}
+.foot-grid ul{list-style:none;padding:0;margin:0;display:grid;gap:9px;font-size:14.5px;color:var(--ink-2)}
 .foot-grid a{text-decoration:none;color:var(--ink-2)}
 .foot-grid a:hover{color:var(--ink)}
 .foot-bottom{
@@ -261,7 +260,7 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
 #switcher .hd{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.65}
 #switcher .hd button{background:none;border:none;color:inherit;cursor:pointer;font:inherit;font-size:13px;line-height:1;padding:2px 4px}
 #switcher .body{margin-top:10px;display:grid;gap:5px}
-#switcher.min .body{display:none}
+#switcher.min .body,#switcher.min .foot{display:none}
 #switcher .opt{
   display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;text-align:left;
   background:rgba(255,255,255,.06);border:1px solid transparent;color:inherit;
@@ -286,15 +285,19 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
     <span id="logo-slot"></span>
     <span class="word" id="word-slot">Zarpa</span>
   </a>
-  <button class="menu-btn" id="menu-open" aria-label="Abrir menú"><span></span><span></span></button>
+  <div class="nav-right">
+    <a class="nav-cta" href="#contacto">Pedir una visita</a>
+    <button class="menu-btn" id="menu-open" aria-label="Abrir menú"><span></span><span></span></button>
+  </div>
 </header>
 
 <nav id="overlay" aria-hidden="true">
   <button class="close" id="menu-close" aria-label="Cerrar menú">✕</button>
-  <a href="#servicio">El servicio</a>
-  <a href="#problema">El problema</a>
-  <a href="#razones">Por qué nos llaman</a>
-  <a href="#tarifas">Tarifas</a>
+  <a href="#servicio">Servicios</a>
+  <a href="#como">Cómo funciona</a>
+  <a href="#cobertura">Cobertura</a>
+  <a href="#entregables">Qué recibís</a>
+  <a href="#faq">Preguntas</a>
   <a href="#contacto">Contacto</a>
 </nav>
 
@@ -306,11 +309,11 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
     <span class="label">01 / Inicio</span>
     <div class="hero-grid">
       <div>
-        <h1><span class="mark" data-cycle>Recogemos</span>, <span class="mark off" data-cycle>guardamos</span> y <span class="mark off" data-cycle>entregamos</span> el equipo de tu gente</h1>
-        <p class="lede hero-sub">Recogemos el puesto de trabajo cuando alguien sale, lo guardamos mientras haga falta y lo entregamos armado cuando alguien entra. En cualquier parte de Costa Rica.</p>
+        <h1>El equipo de tu gente, <span class="mark" data-cycle>recogido</span>, <span class="mark off" data-cycle>guardado</span> y <span class="mark off" data-cycle>entregado</span> en todo el país</h1>
+        <p class="lede hero-sub">Manejamos el puesto de trabajo completo de las empresas que tienen personal remoto en Costa Rica. Vos nos decís el nombre y la dirección; nosotros hacemos el resto.</p>
         <div class="cta-row">
-          <a class="btn" href="#contacto">Hablemos <span aria-hidden="true">→</span></a>
-          <a class="btn ghost" href="#tarifas">Ver tarifas</a>
+          <a class="btn" href="#contacto">Pedir una visita <span aria-hidden="true">→</span></a>
+          <a class="btn ghost" href="#como">Cómo funciona</a>
         </div>
         <div class="scroll-hint">Bajá</div>
       </div>
@@ -327,49 +330,13 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
 
 <!-- 02 -->
 <section class="band">
-  <div class="marquee">
-    <div class="track" id="track"></div>
-  </div>
+  <div class="marquee"><div class="track" id="track"></div></div>
 </section>
 
 <!-- 03 -->
-<section id="quienes">
-  <div class="inner">
-    <span class="label rv">03 / Quiénes somos</span>
-    <div class="two-col">
-      <h2 class="rv">Un solo proveedor para el ciclo completo.</h2>
-      <div class="rv">
-        <p>Somos una operación costarricense de manejo de equipo de cómputo: mensajería propia, bodega bajo nuestro control y un solo interlocutor que contesta el teléfono.</p>
-        <p>Recursos Humanos escribe un correo con el nombre y la dirección de la persona. Nosotros coordinamos la visita, empacamos en sitio, inventariamos por número de serie, levantamos el acta firmada y entregamos el reporte. Ustedes no persiguen a nadie.</p>
-      </div>
-    </div>
-    <div class="stats rv">
-      <div><span class="n">48 h</span><span class="t">Dentro del GAM</span></div>
-      <div><span class="n">72 h</span><span class="t">Resto del país</span></div>
-      <div><span class="n">07</span><span class="t">Provincias cubiertas</span></div>
-      <div><span class="n">100%</span><span class="t">Inventario por serie</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- 04 -->
-<section id="problema">
-  <div class="inner">
-    <span class="label rv">04 / El problema</span>
-    <div class="two-col">
-      <h2 class="rv">La laptop no debería ser trabajo de Recursos Humanos.</h2>
-      <div class="rv">
-        <p>Alguien renuncia en Pérez Zeledón y su equipo se queda en la casa. Entra alguien nuevo en Liberia y hay que armarle el puesto para el lunes. En el medio, nadie sabe con certeza cuántas máquinas hay guardadas ni de quién eran.</p>
-        <p>Ningún proveedor global publica tarifa para Costa Rica. <strong>Retriever</strong> opera solo en Estados Unidos, Canadá y Reino Unido. <strong>Workwize</strong> pide mínimo de 150 asientos. <strong>Deel IT</strong> y <strong>Firstbase</strong> no publican cifras. El resultado es que el trabajo termina repartido entre RR.HH., IT y el buen corazón del que renunció.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 05 -->
 <section id="servicio">
   <div class="inner">
-    <span class="label rv">05 / El servicio</span>
+    <span class="label rv">02 / Servicios</span>
     <h2 class="rv">Tres cosas, y las tres las hacemos nosotros.</h2>
     <div class="cards">
       <div class="card rv">
@@ -382,155 +349,189 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
         <svg class="ico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="24" height="18" rx="2"/><path d="M4 13h24M12 7v18"/><circle cx="20" cy="19" r="1.6"/></svg>
         <span class="k">Mientras no se usa</span>
         <h3>Custodia</h3>
-        <p>El equipo entra a bodega y queda en inventario por el tiempo que haga falta, sin límite. Ustedes saben en todo momento qué hay guardado, de quién era y en qué estado está.</p>
+        <p>El equipo entra a bodega con acceso controlado y queda en inventario el tiempo que haga falta. Sabés en todo momento qué hay guardado, de quién era y en qué estado está.</p>
       </div>
       <div class="card rv">
         <svg class="ico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="20" height="14" rx="2"/><path d="M9 26h8"/><path d="M23 12h6v10h-6"/></svg>
         <span class="k">Cuando alguien entra</span>
         <h3>Despliegue</h3>
-        <p>Armamos el kit de bienvenida completo — laptop, dock, monitores y periféricos — y lo entregamos donde viva la persona nueva, listo para trabajar el día uno. Mismo kit y mismo checklist, sin importar la provincia.</p>
-      </div>
-    </div>
-
-    <div class="flow rv">
-      <div class="hub">Tu empresa</div>
-      <div class="spokes">
-        <div class="spoke"><span class="arrow">←</span><b>Recolección en sitio</b><span class="when">Alguien sale</span></div>
-        <div class="spoke"><span class="arrow">◇</span><b>Custodia en bodega</b><span class="when">Entre movimientos</span></div>
-        <div class="spoke"><span class="arrow">→</span><b>Despliegue del kit</b><span class="when">Alguien entra</span></div>
+        <p>Armamos el kit de bienvenida completo — laptop, dock, monitores y periféricos — y lo entregamos donde viva la persona nueva, listo para trabajar el día uno. Mismo kit y mismo checklist en toda provincia.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 06 -->
-<section id="razones">
+<!-- 04 -->
+<section id="como">
   <div class="inner">
-    <span class="label rv">06 / Por qué nos llaman</span>
-    <div class="reasons">
-      <div class="reason rv">
-        <span class="k">Razón 1</span>
-        <div>
-          <h3>Alguien renunció y el equipo quedó en su casa</h3>
-          <p>La persona ya no contesta los correos internos y el activo sigue a nombre de la empresa. Nosotros la contactamos, agendamos la visita y sacamos el equipo con acta firmada.</p>
-        </div>
-        <span class="big">1</span>
-      </div>
-      <div class="reason rv">
-        <span class="k">Razón 2</span>
-        <div>
-          <h3>Entra alguien nuevo y vive lejos del GAM</h3>
-          <p>Nadie en la oficina puede manejar cuatro horas para dejar una laptop. El kit sale de bodega armado y llega a la puerta de la persona antes del primer día.</p>
-        </div>
-        <span class="big">2</span>
-      </div>
-      <div class="reason rv">
-        <span class="k">Razón 3</span>
-        <div>
-          <h3>Nadie sabe cuántas máquinas hay ni dónde</h3>
-          <p>El inventario vive en una hoja de cálculo desactualizada. Cada pieza que pasa por nosotros queda registrada con serie, marca, modelo, fotos y ubicación.</p>
-        </div>
-        <span class="big">3</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 07 -->
-<section id="tarifas">
-  <div class="inner">
-    <span class="label rv">07 / Tarifas</span>
-    <h2 class="rv">Un movimiento es el puesto completo de una persona.</h2>
-    <p class="lede rv" style="margin-top:20px">No cobramos por pieza. Sale o entra el kit entero, en una sola visita y a un solo precio.</p>
-
-    <div class="chips rv">
-      <span>1 laptop</span><span>dock</span><span>hasta 2 monitores</span><span>headset</span>
-      <span>teclado</span><span>mouse</span><span>cargadores y cables</span>
-    </div>
-
-    <div class="prices rv">
-      <div class="price">
-        <span class="n">$200</span>
-        <span class="zone">Dentro del GAM</span>
-        <span class="sla">San José, Heredia, Alajuela y Cartago<br>48 horas hábiles</span>
-      </div>
-      <div class="price">
-        <span class="n">$300</span>
-        <span class="zone">Fuera del GAM</span>
-        <span class="sla">Todo el territorio nacional<br>72 horas hábiles</span>
-      </div>
-    </div>
-    <p class="note rv">Mismo precio para recoger que para entregar. Lo único que cambia es dónde vive la persona. El SLA corre desde que el colaborador confirma la ventana de visita. Piezas más allá del puesto estándar: $45 cada una.</p>
-
-    <div class="two-col rv" style="margin-top:72px">
-      <h2>La bodega no tiene reloj.</h2>
-      <div>
-        <p>El equipo se queda el tiempo que ustedes necesiten. Entre más puestos tengan guardados, menos cuesta cada uno. Se factura cada tres meses, no doce facturas pequeñas.</p>
-        <div class="tw">
-          <table>
-            <thead><tr><th>Puestos en custodia</th><th>Tarifa mensual por puesto</th></tr></thead>
-            <tbody>
-              <tr><td class="lead">1 a 10</td><td class="num">$18</td></tr>
-              <tr><td class="lead">11 a 25</td><td class="num">$15</td></tr>
-              <tr><td class="lead">26 en adelante</td><td class="num">$12</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 08 -->
-<section id="incluye">
-  <div class="inner">
-    <span class="label rv">08 / Qué incluye cada movimiento</span>
+    <span class="label rv">03 / Cómo funciona</span>
     <div class="two-col">
-      <h2 class="rv">Sin costos escondidos.</h2>
-      <div class="checks rv">
-        <div><span class="tick">✓</span><div><b>Coordinación con la persona</b><i>Nosotros la contactamos y agendamos la visita. Recursos Humanos no persigue a nadie.</i></div></div>
-        <div><span class="tick">✓</span><div><b>Empaque en sitio</b><i>Cajas y materiales de protección incluidos. Los monitores viajan embalados aparte.</i></div></div>
-        <div><span class="tick">✓</span><div><b>Inventario por número de serie</b><i>Cada pieza queda registrada con serie, marca y modelo, con fotos del estado.</i></div></div>
-        <div><span class="tick">✓</span><div><b>Acta con firma digital</b><i>La persona firma desde su celular. Ustedes reciben el PDF el mismo día.</i></div></div>
-        <div><span class="tick">✓</span><div><b>Reporte consolidado</b><i>Inventario vivo por número de serie, ubicación de cada puesto y estado del ciclo.</i></div></div>
+      <h2 class="rv">Un correo de tu parte. Cuatro pasos de la nuestra.</h2>
+      <div class="rv"><p>El equipo de Recursos Humanos no persigue a nadie, no busca cajas, no coordina taxis y no llama tres veces a alguien que ya renunció. Eso es trabajo nuestro.</p></div>
+    </div>
+    <div class="steps">
+      <div class="step rv">
+        <span class="n">01</span>
+        <div>
+          <h3>Nos escribís</h3>
+          <p>Nombre de la persona, dirección y si es una salida o un ingreso. Nada más. Respondemos el mismo día hábil con la ventana de visita disponible.</p>
+        </div>
+      </div>
+      <div class="step rv">
+        <span class="n">02</span>
+        <div>
+          <h3>Coordinamos con la persona</h3>
+          <p>La contactamos directamente por teléfono y WhatsApp, acordamos día y hora, y le explicamos qué va a pasar. Si no responde, insistimos y te avisamos.</p>
+        </div>
+      </div>
+      <div class="step rv">
+        <span class="n">03</span>
+        <div>
+          <h3>Hacemos la visita</h3>
+          <p>Empaque en sitio con materiales incluidos, inventario pieza por pieza con número de serie, fotos del estado y acta que la persona firma desde su propio celular.</p>
+        </div>
+      </div>
+      <div class="step rv">
+        <span class="n">04</span>
+        <div>
+          <h3>Recibís el reporte</h3>
+          <p>El acta en PDF el mismo día y el inventario actualizado con la ubicación de cada puesto. Sin pedirlo, sin abrir un ticket, sin esperar al cierre de mes.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 09 -->
-<section id="local">
+<!-- 05 -->
+<section id="paraquien">
   <div class="inner">
-    <span class="label rv">09 / Por qué local</span>
+    <span class="label rv">04 / Para quién</span>
     <div class="two-col">
-      <h2 class="rv">El que toca la puerta es empleado nuestro.</h2>
+      <h2 class="rv">Para empresas con gente en Costa Rica y sin manos en Costa Rica.</h2>
       <div class="rv">
         <ul class="plain">
-          <li><span><b>Mensajería propia.</b> Nadie subcontratado, nadie improvisado.</span></li>
-          <li><span><b>Bodega bajo nuestro control.</b> Espacio propio con acceso controlado.</span></li>
-          <li><span><b>Un solo interlocutor.</b> Un número que contesta, no un ticket en otro huso horario.</span></li>
-          <li><span><b>Tarifa en firme y en dólares.</b> Publicada, sin multiplicadores por país.</span></li>
-          <li><span><b>Sin contrato de permanencia</b> ni mínimo de volumen. Se factura contra movimientos ejecutados.</span></li>
-          <li><span><b>Si incumplimos el SLA, ese movimiento no se cobra.</b></span></li>
+          <li><span><b>Equipos de RR.HH. e IT en el exterior</b> que contratan tico remoto y no tienen a quién mandar a tocar la puerta.</span></li>
+          <li><span><b>BPO y operaciones nearshore</b> con rotación alta y colaboradores repartidos por todo el territorio.</span></li>
+          <li><span><b>Empresas sin oficina en el país</b> que igual necesitan un lugar físico donde guardar equipo entre un movimiento y otro.</span></li>
+          <li><span><b>ONG y organizaciones pequeñas</b> que no pueden sostener un encargado de activos de tiempo completo.</span></li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 10 -->
+<!-- 06 -->
+<section id="cobertura">
+  <div class="inner">
+    <span class="label rv">05 / Cobertura</span>
+    <h2 class="rv">Las siete provincias. Sin recargo por distancia sorpresa.</h2>
+    <div class="zones rv">
+      <div class="zone">
+        <span class="sla">48 h</span>
+        <span class="zn">Gran Área Metropolitana</span>
+        <span class="zl">San José · Heredia · Alajuela · Cartago<br>Horas hábiles desde que la persona confirma la visita</span>
+      </div>
+      <div class="zone">
+        <span class="sla">72 h</span>
+        <span class="zn">Resto del país</span>
+        <span class="zl">Guanacaste · Puntarenas · Limón · zonas rurales<br>Horas hábiles desde que la persona confirma la visita</span>
+      </div>
+    </div>
+    <div class="chips rv">
+      <span>Liberia</span><span>Nicoya</span><span>Pérez Zeledón</span><span>San Carlos</span>
+      <span>Puerto Viejo</span><span>Golfito</span><span>Turrialba</span><span>Upala</span><span>Jacó</span>
+    </div>
+    <p class="rv" style="margin-top:26px">Si la persona vive donde llega un camino, llegamos nosotros. Mensajería propia: el que toca la puerta es empleado nuestro, no un tercero subcontratado.</p>
+  </div>
+</section>
+
+<!-- 07 -->
+<section id="entregables">
+  <div class="inner">
+    <span class="label rv">06 / Qué recibís</span>
+    <div class="two-col">
+      <h2 class="rv">Todo movimiento deja papel.</h2>
+      <div class="checks rv">
+        <div><span class="tick">✓</span><div><b>Acta de entrega firmada</b><i>PDF con firma digital de la persona, el mismo día de la visita.</i></div></div>
+        <div><span class="tick">✓</span><div><b>Inventario por número de serie</b><i>Cada pieza con serie, marca, modelo y fotos del estado en que se recibió.</i></div></div>
+        <div><span class="tick">✓</span><div><b>Inventario vivo de bodega</b><i>Qué hay guardado, de quién era y en qué espacio está ubicado.</i></div></div>
+        <div><span class="tick">✓</span><div><b>Checklist de despliegue</b><i>Qué se entregó, a quién, dónde y en qué fecha, con la misma acta firmada.</i></div></div>
+        <div><span class="tick">✓</span><div><b>Un interlocutor</b><i>Un número que contesta, no un ticket en otro huso horario.</i></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section id="faq">
+  <div class="inner">
+    <span class="label rv">07 / Preguntas frecuentes</span>
+    <div class="two-col">
+      <h2 class="rv">Lo que preguntan siempre.</h2>
+      <div class="faq rv">
+        <details>
+          <summary>¿Cuánto cuesta?</summary>
+          <div class="a">Se cotiza por movimiento según la zona, y la custodia por puesto guardado al mes. Escribinos con el volumen aproximado y te pasamos la tarifa el mismo día hábil. Sin contrato de permanencia ni mínimo de volumen.</div>
+        </details>
+        <details>
+          <summary>¿Qué se considera un movimiento?</summary>
+          <div class="a">El puesto de trabajo completo de una persona: laptop, dock, hasta dos monitores, headset, teclado, mouse, cargadores y cables. No se cobra por pieza — sale o entra el kit entero en una sola visita.</div>
+        </details>
+        <details>
+          <summary>¿Cuánto tiempo puede quedarse el equipo en bodega?</summary>
+          <div class="a">El que haga falta. No hay plazo máximo ni penalización por dejarlo guardado. Entre más puestos tengas en custodia, menor es la tarifa mensual por puesto.</div>
+        </details>
+        <details>
+          <summary>¿Qué pasa si la persona no contesta?</summary>
+          <div class="a">Insistimos por teléfono, WhatsApp y correo durante varios días, en distintos horarios. Si aun así no hay respuesta, te lo reportamos con el detalle de los intentos para que decidas el siguiente paso.</div>
+        </details>
+        <details>
+          <summary>¿Hacen borrado certificado de datos o disposición final?</summary>
+          <div class="a">Hoy no. El equipo fuera de servicio se resguarda identificado y separado del inventario activo, y el destino final lo definís vos. Preferimos decirlo claro antes que prometerlo.</div>
+        </details>
+        <details>
+          <summary>¿El equipo está asegurado?</summary>
+          <div class="a">La póliza de transporte y responsabilidad de depositario está en gestión. Te confirmamos el alcance exacto antes de arrancar cualquier movimiento.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
 <section id="contacto">
   <div class="inner">
-    <span class="label rv">10 / Contacto</span>
-    <h2 class="rv">Empecemos por el próximo movimiento que tengan.</h2>
-    <p class="lede rv" style="margin-top:22px">Sin piloto de seis meses ni compromiso de volumen. Una salida o un ingreso, y ven cómo sale.</p>
+    <span class="label rv">08 / Contacto</span>
+    <h2 class="rv">Contanos el próximo movimiento que tengas.</h2>
+    <p class="lede rv" style="margin-top:20px">Una salida o un ingreso. Respondemos el mismo día hábil.</p>
+
+    <form id="form" class="rv" novalidate>
+      <div class="f2">
+        <div><label for="nombre">Tu nombre</label><input id="nombre" name="nombre" autocomplete="name" required></div>
+        <div><label for="empresa">Empresa</label><input id="empresa" name="empresa" autocomplete="organization" required></div>
+      </div>
+      <div class="f2">
+        <div><label for="correo">Correo</label><input id="correo" name="correo" type="email" autocomplete="email" required></div>
+        <div>
+          <label for="tipo">Qué necesitás</label>
+          <select id="tipo" name="tipo">
+            <option>Recolección — alguien sale</option>
+            <option>Despliegue — alguien entra</option>
+            <option>Custodia en bodega</option>
+            <option>Las tres cosas</option>
+          </select>
+        </div>
+      </div>
+      <div><label for="mensaje">Detalle</label><textarea id="mensaje" name="mensaje" placeholder="Cuántos movimientos, en qué zonas, para cuándo."></textarea></div>
+      <div class="cta-row" style="margin-top:6px">
+        <button class="btn" type="submit">Enviar <span aria-hidden="true">→</span></button>
+      </div>
+    </form>
+
     <div class="contact-links rv">
       <a href="mailto:hola@ejemplo.cr">hola@ejemplo.cr</a>
       <a href="tel:+50600000000">+506 0000 0000</a>
       <a href="https://wa.me/50600000000" target="_blank" rel="noopener">WhatsApp</a>
-    </div>
-    <div class="cta-row rv">
-      <a class="btn" href="mailto:hola@ejemplo.cr">Escribinos <span aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
@@ -547,11 +548,12 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
       <p style="max-width:34ch;font-size:15px" id="tagline-slot">Recolección, custodia y despliegue de equipo de cómputo, dentro de Costa Rica.</p>
     </div>
     <div>
-      <h4>Navegación</h4>
+      <h4>Sitio</h4>
       <ul>
-        <li><a href="#servicio">El servicio</a></li>
-        <li><a href="#tarifas">Tarifas</a></li>
-        <li><a href="#incluye">Qué incluye</a></li>
+        <li><a href="#servicio">Servicios</a></li>
+        <li><a href="#como">Cómo funciona</a></li>
+        <li><a href="#cobertura">Cobertura</a></li>
+        <li><a href="#faq">Preguntas</a></li>
         <li><a href="#contacto">Contacto</a></li>
       </ul>
     </div>
@@ -565,8 +567,8 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
     </div>
   </div>
   <div class="foot-bottom">
-    <span>Demo · Costa Rica <span id="year"></span></span>
-    <span>Contenido y tarifas de muestra</span>
+    <span>Costa Rica <span id="year"></span></span>
+    <span>Sitio demo · datos de contacto de muestra</span>
   </div>
 </footer>
 
@@ -628,7 +630,7 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
       tagline:'Recolección, custodia y despliegue de equipo de cómputo, dentro de Costa Rica.' },
     { id:'caucel', name:'Caucel', accent:'#C9743A',
       why:'Felino silvestre tico. Discreto, preciso, se mueve de noche.',
-      tagline:'El felino que mueve, guarda y entrega tu equipo en todo el país.' },
+      tagline:'El felino que mueve, guarda y entrega el equipo de tu gente.' },
     { id:'siete', name:'Siete', accent:'#3E9E7A',
       why:'Las siete vidas del gato: sale, se guarda y vuelve a salir.',
       tagline:'Cada equipo vuelve a la calle. Recolección, custodia y despliegue en Costa Rica.' },
@@ -651,14 +653,14 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
     });
     var tg = document.getElementById('tagline-slot');
     if (tg) tg.textContent = b.tagline;
-    document.title = b.name + ' · Recolección, custodia y despliegue de equipo de cómputo en Costa Rica';
+    document.title = b.name + ' · Equipo de cómputo para empresas con gente remota en Costa Rica';
     Array.prototype.forEach.call(document.querySelectorAll('#sw-body .opt'), function(btn){
       btn.setAttribute('aria-pressed', String(btn.dataset.id === b.id));
     });
     try { localStorage.setItem('brand', b.id); } catch(e){}
   }
 
-  var body = document.getElementById('sw-body');
+  var swBody = document.getElementById('sw-body');
   BRANDS.forEach(function(b){
     var btn = document.createElement('button');
     btn.className = 'opt';
@@ -668,7 +670,7 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
     btn.innerHTML = '<span style="color:' + b.accent + ';--accent:' + b.accent + '">' + LOGOS[b.id] + '</span>' +
                     '<span><b>' + b.name + '</b><small>' + b.why + '</small></span>';
     btn.addEventListener('click', function(){ applyBrand(b); });
-    body.appendChild(btn);
+    swBody.appendChild(btn);
   });
 
   var saved = null;
@@ -684,8 +686,8 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
 
   /* ---------------- marquee ---------------- */
   var ITEMS = ['San José','Heredia','Alajuela','Cartago','Guanacaste','Puntarenas','Limón',
-               '48 h en el GAM','72 h en el resto del país','Inventario por número de serie',
-               'Acta con firma digital','Empaque en sitio'];
+               'Recolección en sitio','Custodia en bodega','Despliegue del kit',
+               'Inventario por número de serie','Acta con firma digital'];
   var track = document.getElementById('track');
   var html = ITEMS.map(function(t){ return '<span>' + t + '</span>'; }).join('');
   track.innerHTML = html + html;
@@ -708,7 +710,7 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
       entries.forEach(function(e){
         if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
       });
-    }, { rootMargin:'0px 0px -12% 0px', threshold:0.08 });
+    }, { rootMargin:'0px 0px -10% 0px', threshold:0.05 });
     Array.prototype.forEach.call(rv, function(el, n){
       el.style.transitionDelay = (Math.min(n % 4, 3) * 70) + 'ms';
       io.observe(el);
@@ -730,6 +732,22 @@ footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
     a.addEventListener('click', function(){ setMenu(false); });
   });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape') setMenu(false); });
+
+  /* ---------------- formulario (sin backend: abre el correo) ---------------- */
+  var form = document.getElementById('form');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var d = new FormData(form);
+    var cuerpo =
+      'Nombre: ' + (d.get('nombre') || '') + '\n' +
+      'Empresa: ' + (d.get('empresa') || '') + '\n' +
+      'Correo: ' + (d.get('correo') || '') + '\n' +
+      'Necesita: ' + (d.get('tipo') || '') + '\n\n' +
+      (d.get('mensaje') || '');
+    window.location.href = 'mailto:hola@ejemplo.cr' +
+      '?subject=' + encodeURIComponent('Solicitud de visita — ' + (d.get('empresa') || 'sitio web')) +
+      '&body=' + encodeURIComponent(cuerpo);
+  });
 
   /* ---------------- loader ---------------- */
   var loader = document.getElementById('loader');
