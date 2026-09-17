@@ -67,3 +67,43 @@ git push
 ```
 
 GitHub Pages republica solo en un par de minutos.
+
+## Panel de operación
+
+`admin.html` es la consola de quien genera los movimientos. No tiene login.
+
+- **Hoy** — cinco indicadores, la lista de lo que vence o ya venció, y las
+  últimas ocho semanas en barras.
+- **Cola de despacho** — todos los clientes en una tabla. Se asigna mensajero
+  con el selector de la fila y se hace avanzar el estado con el botón:
+  sin agendar → agendado → en ruta → pendiente de firma → cerrado.
+- **Rutas del día** — las paradas de cada mensajero.
+- **Bodega** — ocupación por módulo.
+- **Clientes** — una fila por cuenta.
+
+El botón *Nuevo movimiento* (o la tecla **N**) abre el alta. La cédula se
+formatea sola a `1-1234-5678` y se valida antes de crear.
+
+El SLA se calcula contra la fecha objetivo: 48 horas dentro del GAM, 72 fuera.
+La fecha de "hoy" está fija en `data.js` para que la demo no se desactualice.
+
+## Colores
+
+La pareja recolección / despliegue y los estados salen de una paleta de señal
+plana y saturada, no de tintes pastel. Las dos parejas se verificaron con el
+validador de la guía de visualización (banda de luminosidad, croma mínimo,
+separación para daltonismo, separación en visión normal y contraste):
+
+| | Claro | Oscuro |
+|---|---|---|
+| Recolección | `#1E7FB8` | `#3C9ED2` |
+| Despliegue | `#C2681A` | `#C87C2E` |
+
+Los estados tienen su propia paleta reservada (verde, naranja, rojo, gris) y
+nunca se usan para otra cosa. Siempre llevan etiqueta de texto, nunca solo color.
+
+## Modo oscuro
+
+Botón en las cuatro páginas. Respeta la preferencia del sistema hasta que se
+elige a mano; la elección se recuerda. Los pasos oscuros son propios, no un
+volteo automático de los claros. El acta se imprime siempre en claro.
