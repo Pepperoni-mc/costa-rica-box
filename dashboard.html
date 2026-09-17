@@ -167,24 +167,24 @@ footer{
   <div class="head">
     <div>
       <span class="label" data-en="Account">Cuenta</span>
-      <h1>Compañía de prueba</h1>
+      <h1 data-en="Test company">Compañía de prueba</h1>
     </div>
     <span class="when" data-en="Updated today, 9:12 a.m.">Actualizado hoy, 9:12 a. m.</span>
   </div>
 
   <div class="kpis">
     <div class="kpi">
-      <span class="n">24</span>
-      <span class="t" data-en="Workstations in storage">Puestos en custodia</span>
-      <span class="d" data-en="3 came in this month">3 entraron este mes</span>
+      <span class="n" id="k-inv">—</span>
+      <span class="t" data-en="Items in storage">Piezas en bodega</span>
+      <span class="d" id="k-inv-d">—</span>
     </div>
     <div class="kpi">
-      <span class="n">7</span>
+      <span class="n" id="k-month">—</span>
       <span class="t" data-en="Moves this month">Movimientos este mes</span>
-      <span class="d" data-en="4 pickups · 3 deployments">4 recolecciones · 3 despliegues</span>
+      <span class="d" id="k-month-d">—</span>
     </div>
     <div class="kpi">
-      <span class="n">3</span>
+      <span class="n" id="k-transit">—</span>
       <span class="t" data-en="In transit right now">En tránsito ahora</span>
       <span class="d" data-en="2 of them outside the GAM">2 de ellos fuera del GAM</span>
     </div>
@@ -254,6 +254,7 @@ footer{
   <span data-en="Sample data">Datos de ejemplo</span>
 </footer>
 
+<script src="data.js"></script>
 <script>
 (function(){
   "use strict";
@@ -272,42 +273,16 @@ footer{
     pending:{es:'Pendiente', en:'Pending'},
     none:{es:'Nada que mostrar con ese filtro.', en:'Nothing matches that filter.'},
     title:{es:'Panel de cliente · Zarpa', en:'Client dashboard · Zarpa'},
-    person:{es:'Persona', en:'Person'}
+    person:{es:'Persona', en:'Person'},
+    ofPosts:{es:'de {n} puestos completos', en:'from {n} complete workstations'},
+    mix:{es:'{a} recolecciones · {b} despliegues', en:'{a} pickups · {b} deployments'}
   };
 
   /* los colaboradores son de prueba: se numeran, no se inventan nombres */
   function person(n){ return T.person[lang] + ' ' + n; }
 
-  var MOVES = [
-    {d:'2026-09-16', p:'01', k:'pickup', z:'Pérez Zeledón',   s:'transit',   doc:false},
-    {d:'2026-09-15', p:'02', k:'deploy', z:'Heredia centro',  s:'transit',   doc:false},
-    {d:'2026-09-15', p:'03', k:'pickup', z:'Liberia',         s:'transit',   doc:false},
-    {d:'2026-09-11', p:'04', k:'deploy', z:'Desamparados',    s:'done',      doc:true},
-    {d:'2026-09-09', p:'05', k:'pickup', z:'Cartago centro',  s:'signing',   doc:false},
-    {d:'2026-09-08', p:'06', k:'pickup', z:'Santa Cruz',      s:'done',      doc:true},
-    {d:'2026-09-04', p:'07', k:'deploy', z:'Alajuela centro', s:'done',      doc:true},
-    {d:'2026-09-02', p:'08', k:'pickup', z:'Limón centro',    s:'done',      doc:true},
-    {d:'2026-08-28', p:'09', k:'deploy', z:'Grecia',          s:'done',      doc:true},
-    {d:'2026-08-26', p:'10', k:'pickup', z:'San Ramón',       s:'done',      doc:true},
-    {d:'2026-09-22', p:'11', k:'deploy', z:'Nicoya',          s:'scheduled', doc:false},
-    {d:'2026-09-23', p:'12', k:'pickup', z:'Turrialba',       s:'scheduled', doc:false}
-  ];
-
-  var INV = [
-    {sn:'TP-T14-8842', it:'ThinkPad T14 Gen 4',        u:'06', c:'good', l:'A-03', since:'2026-09-08'},
-    {sn:'DL-U2722-1190',it:'Monitor Dell U2722D',      u:'06', c:'good', l:'A-03', since:'2026-09-08'},
-    {sn:'DL-U2722-1191',it:'Monitor Dell U2722D',      u:'06', c:'good', l:'A-03', since:'2026-09-08'},
-    {sn:'TP-T14-8720',  it:'ThinkPad T14 Gen 3',       u:'08', c:'fair', l:'A-05', since:'2026-09-02'},
-    {sn:'LN-DOCK-4411', it:'Dock Lenovo USB-C',        u:'08', c:'good', l:'A-05', since:'2026-09-02'},
-    {sn:'JB-EVO2-0098', it:'Headset Jabra Evolve2 40', u:'08', c:'good', l:'A-05', since:'2026-09-02'},
-    {sn:'TP-T14-8613',  it:'ThinkPad T14 Gen 3',       u:'10', c:'out',  l:'C-01', since:'2026-08-26'},
-    {sn:'DL-P2419-7732',it:'Monitor Dell P2419H',      u:'10', c:'fair', l:'B-02', since:'2026-08-26'},
-    {sn:'LG-MK270-3310',it:'Teclado y mouse Logitech',  en:'Logitech keyboard and mouse',
-                                                       u:'10', c:'good', l:'B-02', since:'2026-08-26'},
-    {sn:'TP-E14-5521',  it:'ThinkPad E14 Gen 5',       u:'13', c:'good', l:'B-04', since:'2026-07-30'},
-    {sn:'LN-DOCK-4402', it:'Dock Lenovo USB-C',        u:'13', c:'good', l:'B-04', since:'2026-07-30'},
-    {sn:'DL-U2419-6650',it:'Monitor Dell U2419H',      u:'14', c:'good', l:'B-06', since:'2026-07-14'}
-  ];
+  var MOVES = window.ZARPA.MOVES;
+  var INV   = window.ZARPA.INV;
 
   var BADGE = { scheduled:'wait', transit:'go', done:'ok', signing:'wait' };
   var COND  = { good:'ok', fair:'wait', out:'' };
@@ -345,7 +320,8 @@ footer{
         '<td>' + m.z + '</td>' +
         '<td><span class="badge ' + BADGE[m.s] + '">' + t(m.s) + '</span></td>' +
         '<td>' + (m.doc
-            ? '<a class="doc" href="#" onclick="return false">' + t('view') + '</a>'
+            ? '<a class="doc" href="acta.html?f=' + encodeURIComponent(m.f) + '" target="_blank" rel="noopener">' +
+              t('view') + '</a>'
             : '<span class="doc none">' + t('pending') + '</span>') + '</td>' +
       '</tr>';
     }).join('');
@@ -372,6 +348,24 @@ footer{
         '<td class="mono">' + fmtDate(r.since) + '</td>' +
       '</tr>';
     }).join('');
+  }
+
+  /* los indicadores salen de los mismos datos que las tablas */
+  function drawKpis(){
+    var owners = {};
+    INV.forEach(function(r){ owners[r.u] = true; });
+    document.getElementById('k-inv').textContent = INV.length;
+    document.getElementById('k-inv-d').textContent =
+      t('ofPosts').replace('{n}', Object.keys(owners).length);
+
+    var month = MOVES.filter(function(m){ return m.d.indexOf('2026-09') === 0; });
+    var a = month.filter(function(m){ return m.k === 'pickup'; }).length;
+    document.getElementById('k-month').textContent = month.length;
+    document.getElementById('k-month-d').textContent =
+      t('mix').replace('{a}', a).replace('{b}', month.length - a);
+
+    document.getElementById('k-transit').textContent =
+      MOVES.filter(function(m){ return m.s === 'transit'; }).length;
   }
 
   Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(btn){
@@ -409,7 +403,7 @@ footer{
     document.documentElement.lang = next;
     document.title = t('title');
     document.getElementById('lang').textContent = next === 'en' ? 'ES' : 'EN';
-    drawMoves(); drawInv();
+    drawMoves(); drawInv(); drawKpis();
     try { localStorage.setItem('lang', next); } catch(e){}
   }
 
@@ -418,7 +412,7 @@ footer{
   });
 
   if (lang === 'en') setLang('en');
-  else { drawMoves(); drawInv(); }
+  else { drawMoves(); drawInv(); drawKpis(); }
 })();
 </script>
 </body>

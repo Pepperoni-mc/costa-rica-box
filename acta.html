@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Acta de entrega · Zarpa</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+
+<style>
+:root{
+  --paper:#EFEDEA;
+  --sheet:#FAFAF9;
+  --ink:#26262A;
+  --ink-2:#4E4E52;
+  --muted:#8B8B84;
+  --rule:#D9D5CE;
+  --rule-hard:#C2BDB3;
+  --accent:#2FB5EE;
+  --off:#FAFAF9;
+  --ease:cubic-bezier(.2,0,0,1);
+  --f-display:"IBM Plex Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--f-display);font-size:16px;line-height:1.5;letter-spacing:-.011em;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+
+/* ---------- barra (no se imprime) ---------- */
+.bar{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  padding:16px clamp(18px,4vw,40px);border-bottom:1px solid var(--rule);
+  position:sticky;top:0;background:var(--paper);z-index:10;
+}
+.bar-left{display:flex;align-items:center;gap:10px}
+.bar svg{width:26px;height:26px;display:block;flex:none}
+.bar .word{font-weight:700;font-size:20px;letter-spacing:-.035em}
+.bar-right{display:flex;align-items:center;gap:10px}
+.mini{
+  display:inline-flex;align-items:center;white-space:nowrap;
+  font-family:var(--f-display);font-size:15px;font-weight:500;letter-spacing:normal;
+  text-decoration:none;border:2px solid var(--ink);color:var(--ink);border-radius:999px;
+  height:46px;padding:0 20px;cursor:pointer;background:var(--sheet);line-height:1;
+  transition:background-color .15s var(--ease),color .15s var(--ease),transform .08s var(--ease);
+}
+.mini:hover{background:var(--ink);color:var(--off)}
+.mini:active{transform:scale(.98)}
+.mini.solid{background:var(--ink);color:var(--off);border-color:transparent}
+.mini.solid:hover{background:var(--ink-2)}
+
+/* ---------- hoja ---------- */
+.wrap{padding:clamp(20px,4vh,44px) clamp(16px,4vw,40px) 90px}
+.sheet{
+  position:relative;overflow:hidden;
+  max-width:840px;margin:0 auto;background:var(--sheet);
+  border:1px solid var(--rule);padding:clamp(26px,5vw,58px);
+}
+.sheet::after{
+  content:"MUESTRA";position:absolute;top:44%;left:50%;
+  transform:translate(-50%,-50%) rotate(-24deg);
+  font-weight:700;font-size:clamp(70px,15vw,150px);letter-spacing:-.04em;
+  color:rgba(38,38,42,.05);pointer-events:none;white-space:nowrap;
+}
+.sheet > *{position:relative;z-index:1}
+
+.doc-head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  padding-bottom:22px;border-bottom:2px solid var(--ink);
+}
+.doc-head .id{text-align:right;font-family:var(--f-mono);font-size:12px;color:var(--muted);line-height:1.8}
+.doc-head .id b{display:block;color:var(--ink);font-size:14px;font-weight:600;letter-spacing:.02em}
+.issuer{display:flex;align-items:center;gap:10px}
+.issuer svg{width:28px;height:28px;display:block}
+.issuer .word{font-weight:700;font-size:21px;letter-spacing:-.035em;display:block}
+.issuer .sub{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:block;margin-top:2px}
+
+h1{font-size:clamp(25px,3.4vw,36px);font-weight:700;letter-spacing:-.035em;line-height:1.08;margin:28px 0 0}
+.kicker{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:0 0 20px;display:block}
+
+.meta{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:30px}
+@media (max-width:640px){.meta{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:420px){.meta{grid-template-columns:1fr}}
+.meta > div{background:var(--sheet);padding:16px 18px}
+.meta dt{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.meta dd{margin:0;font-size:16px;font-weight:600;letter-spacing:-.015em}
+
+h2{font-size:17px;font-weight:700;letter-spacing:-.02em;margin:38px 0 0}
+.tw{overflow-x:auto;margin-top:14px;border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14.5px}
+th{
+  font-family:var(--f-mono);font-size:9.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);text-align:left;padding:11px 16px;border-bottom:1px solid var(--rule-hard);
+  white-space:nowrap;background:var(--paper);
+}
+td{padding:12px 16px;border-bottom:1px solid var(--rule);color:var(--ink-2)}
+tr:last-child td{border-bottom:none}
+td.mono{font-family:var(--f-mono);font-size:13px;white-space:nowrap;color:var(--ink)}
+td.n{font-family:var(--f-mono);font-size:12.5px;color:var(--muted);width:34px}
+td.lead{color:var(--ink);font-weight:600}
+
+.cond{
+  display:inline-flex;align-items:center;font-size:13.5px;font-weight:500;
+  padding:5px 13px;border-radius:999px;white-space:nowrap;background:var(--paper);color:var(--ink-2);
+}
+.cond.good{background:#DCEDE5;color:#256B51}
+.cond.fair{background:#FAE6C4;color:#87590C}
+.cond.out{background:#E6E3DD;color:#5A574F}
+
+.decl{margin-top:30px;font-size:15px;line-height:1.6;color:var(--ink-2)}
+.decl p{margin:0 0 12px;max-width:78ch}
+.attach{
+  margin-top:18px;padding:14px 18px;background:var(--paper);border-left:3px solid var(--accent);
+  font-size:14px;color:var(--ink-2);
+}
+
+.signs{display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:40px}
+@media (max-width:640px){.signs{grid-template-columns:1fr}}
+.sign{border-top:1px solid var(--rule-hard);padding-top:14px}
+.sign .ink{height:64px;display:flex;align-items:flex-end;margin-bottom:6px}
+.sign .ink svg{width:180px;height:56px;color:var(--ink)}
+.sign .who{font-size:15.5px;font-weight:600;letter-spacing:-.015em}
+.sign .role{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.sign .stamp{font-family:var(--f-mono);font-size:11px;color:var(--muted);margin-top:10px;line-height:1.7;word-break:break-all}
+
+.foot{margin-top:42px;padding-top:18px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--muted);line-height:1.65}
+
+.missing{max-width:640px;margin:70px auto;text-align:center}
+.missing h1{margin-bottom:14px}
+
+/* ---------- impresión ---------- */
+@media print{
+  @page{size:letter portrait;margin:14mm}
+  .bar,.wrap{padding:0}
+  .bar{display:none}
+  body{background:#fff;font-size:12.5px}
+  .sheet{max-width:none;margin:0;border:none;padding:0;background:#fff}
+  .sheet::after{color:rgba(38,38,42,.06)}
+  .meta > div,th{background:#fff}
+  .attach{background:#f5f5f4}
+  h1{font-size:25px}
+  table{min-width:0;font-size:12px}
+  th,td{padding:7px 10px}
+  .signs{margin-top:26px;break-inside:avoid}
+  .foot{margin-top:24px}
+  tr,.sign{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <a class="bar-left" href="dashboard.html" style="text-decoration:none">
+    <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <ellipse cx="7.5" cy="10.5" rx="3" ry="4" fill="currentColor"/>
+      <ellipse cx="15.2" cy="7.6" rx="3.1" ry="4.3" fill="currentColor"/>
+      <ellipse cx="23" cy="10.5" rx="3" ry="4" fill="currentColor"/>
+      <rect x="6.5" y="16.6" width="19" height="11.4" rx="4" fill="var(--accent)"/>
+      <path d="M16 16.6v11.4M6.5 21.5h19" stroke="var(--sheet)" stroke-width="1.7"/>
+    </svg>
+    <span class="word">Zarpa</span>
+  </a>
+  <div class="bar-right">
+    <button class="mini" id="lang" type="button">EN</button>
+    <a class="mini" href="dashboard.html" data-en="Back to dashboard">Volver al panel</a>
+    <button class="mini solid" id="print" type="button" data-en="Save as PDF">Guardar como PDF</button>
+  </div>
+</div>
+
+<div class="wrap"><div id="out"></div></div>
+
+<script src="data.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var T = {
+    pickup:{es:'Recolección', en:'Pickup'},
+    deploy:{es:'Despliegue', en:'Deployment'},
+    good:{es:'Bueno', en:'Good'},
+    fair:{es:'Con desgaste', en:'Worn'},
+    out:{es:'Fuera de servicio', en:'Decommissioned'},
+    title:{es:'Acta de entrega y recepción de equipo', en:'Equipment handover record'},
+    kicker:{es:'Documento del movimiento', en:'Movement document'},
+    issuer:{es:'Costa Rica', en:'Costa Rica'},
+    folio:{es:'Folio', en:'Reference'},
+    issued:{es:'Emitida', en:'Issued'},
+    company:{es:'Empresa', en:'Company'},
+    person:{es:'Colaborador', en:'Employee'},
+    type:{es:'Tipo de movimiento', en:'Movement type'},
+    date:{es:'Fecha de la visita', en:'Visit date'},
+    zone:{es:'Zona', en:'Area'},
+    courier:{es:'Mensajero asignado', en:'Assigned courier'},
+    courierN:{es:'Mensajero', en:'Courier'},
+    personN:{es:'Persona', en:'Person'},
+    items:{es:'Detalle del equipo', en:'Equipment detail'},
+    thN:{es:'#', en:'#'},
+    thSn:{es:'Número de serie', en:'Serial number'},
+    thIt:{es:'Equipo', en:'Item'},
+    thC:{es:'Estado', en:'Condition'},
+    count:{es:'piezas en total', en:'items in total'},
+    declTitle:{es:'Declaración', en:'Declaration'},
+    declPick:{
+      es:'El colaborador declara haber entregado a Zarpa las piezas descritas en este documento, en el estado que se consigna, y que no quedan en su poder otros activos propiedad de la empresa. Zarpa las recibe bajo custodia y responde por ellas desde este momento hasta su entrega posterior.',
+      en:'The employee declares having handed over to Zarpa the items described in this document, in the condition recorded, and that no other company-owned assets remain in their possession. Zarpa takes them into custody and is responsible for them from this moment until their later delivery.'
+    },
+    declDep:{
+      es:'El colaborador declara haber recibido de Zarpa las piezas descritas en este documento, en el estado que se consigna, y se compromete a resguardarlas mientras dure la relación laboral con la empresa.',
+      en:'The employee declares having received from Zarpa the items described in this document, in the condition recorded, and undertakes to safeguard them for the duration of their employment with the company.'
+    },
+    attach:{
+      es:'Se adjuntan al expediente digital fotografías del estado de cada pieza al momento de la visita, tomadas por el mensajero y firmadas con la misma marca de tiempo de esta acta.',
+      en:'Photographs of the condition of every item at the time of the visit are attached to the digital file, taken by the courier and stamped with the same timestamp as this record.'
+    },
+    signedBy:{es:'Firmado digitalmente desde su dispositivo', en:'Signed digitally from their device'},
+    roleP:{es:'Colaborador', en:'Employee'},
+    roleC:{es:'Mensajero · Zarpa', en:'Courier · Zarpa'},
+    footNote:{
+      es:'Documento generado automáticamente por Zarpa. La firma electrónica simple que consta en esta acta tiene valor probatorio según la evidencia que la acompaña — marca de tiempo, ubicación de la visita y fotografías del estado del equipo. Este es un documento de muestra: los datos no corresponden a ninguna persona ni empresa real.',
+      en:'Document generated automatically by Zarpa. The simple electronic signature recorded here carries evidentiary weight together with the evidence attached to it — timestamp, visit location and photographs of the equipment condition. This is a sample document: the data does not correspond to any real person or company.'
+    },
+    notFound:{es:'No encontramos esa acta.', en:'We could not find that record.'},
+    notFoundP:{es:'El folio no existe o el movimiento todavía no se ha cerrado.', en:'The reference does not exist or the movement has not been closed yet.'},
+    back:{es:'Volver al panel', en:'Back to dashboard'}
+  };
+
+  var lang = 'es';
+  try { lang = localStorage.getItem('lang') === 'en' ? 'en' : 'es'; } catch(e){}
+  function t(k){ return (T[k] && T[k][lang]) || k; }
+
+  function fmtDate(iso){
+    var p = iso.split('-'), d = new Date(+p[0], +p[1] - 1, +p[2]);
+    return d.toLocaleDateString(lang === 'en' ? 'en-US' : 'es-CR',
+      { day:'2-digit', month:'long', year:'numeric' });
+  }
+  function fmtStamp(iso){
+    return fmtDate(iso) + ' · ' + (lang === 'en' ? '11:42 a.m. (UTC-6)' : '11:42 a. m. (UTC-6)');
+  }
+  /* huella estable a partir del folio: no es criptografía, es continuidad visual */
+  function hash(seed){
+    var h = 2166136261, out = '';
+    for (var i = 0; i < seed.length; i++){ h ^= seed.charCodeAt(i); h = (h * 16777619) >>> 0; }
+    for (var j = 0; j < 8; j++){ h = (h * 16777619 + j) >>> 0; out += ('0000000' + h.toString(16)).slice(-8); }
+    return out.slice(0, 64);
+  }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  function squiggle(seed){
+    var n = 0; for (var i = 0; i < seed.length; i++) n += seed.charCodeAt(i);
+    var a = 8 + (n % 9), b = 30 + (n % 17), c = 12 + (n % 11);
+    return '<svg viewBox="0 0 180 56" fill="none" stroke="currentColor" stroke-width="2.2" ' +
+      'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M6 ' + (40 - a) + ' C 26 ' + (6 + c) + ', 40 ' + (48 - c) + ', 58 ' + (26 + a) +
+      ' S 84 ' + (8 + a) + ', 98 ' + (34 - c) + ' S 126 ' + (b + 6) + ', 146 ' + (18 + c) +
+      ' S 166 ' + (34 - a) + ', 174 ' + (26 + c) + '"/>' +
+      '<path d="M40 46 L150 44"/></svg>';
+  }
+
+  var LOGO =
+    '<svg viewBox="0 0 32 32" fill="none" aria-hidden="true">' +
+    '<ellipse cx="7.5" cy="10.5" rx="3" ry="4" fill="currentColor"/>' +
+    '<ellipse cx="15.2" cy="7.6" rx="3.1" ry="4.3" fill="currentColor"/>' +
+    '<ellipse cx="23" cy="10.5" rx="3" ry="4" fill="currentColor"/>' +
+    '<rect x="6.5" y="16.6" width="19" height="11.4" rx="4" fill="var(--accent)"/>' +
+    '<path d="M16 16.6v11.4M6.5 21.5h19" stroke="var(--sheet)" stroke-width="1.7"/>' +
+    '</svg>';
+
+  function folioFromUrl(){
+    var m = /[?&]f=([^&]+)/.exec(window.location.search);
+    return m ? decodeURIComponent(m[1]) : '';
+  }
+
+  function render(){
+    var out = document.getElementById('out');
+    var mv = window.ZARPA.byFolio(folioFromUrl());
+
+    document.documentElement.lang = lang;
+    document.getElementById('lang').textContent = lang === 'en' ? 'ES' : 'EN';
+    Array.prototype.forEach.call(document.querySelectorAll('[data-en]'), function(el){
+      if (!el.hasAttribute('data-es')) el.setAttribute('data-es', el.innerHTML);
+      el.innerHTML = el.getAttribute(lang === 'en' ? 'data-en' : 'data-es');
+    });
+
+    if (!mv || !mv.items){
+      document.title = t('notFound') + ' · Zarpa';
+      out.innerHTML =
+        '<div class="missing"><h1>' + t('notFound') + '</h1>' +
+        '<p>' + t('notFoundP') + '</p>' +
+        '<a class="mini" href="dashboard.html" style="margin-top:14px">' + t('back') + '</a></div>';
+      return;
+    }
+
+    document.title = t('title') + ' ' + mv.f + ' · Zarpa';
+    var person = t('personN') + ' ' + mv.p;
+    var courier = t('courierN') + ' ' + mv.courier;
+
+    var rows = mv.items.map(function(it, i){
+      return '<tr>' +
+        '<td class="n">' + ('0' + (i + 1)).slice(-2) + '</td>' +
+        '<td class="mono">' + esc(it.sn) + '</td>' +
+        '<td class="lead">' + esc(lang === 'en' && it.en ? it.en : it.it) + '</td>' +
+        '<td><span class="cond ' + it.c + '">' + t(it.c) + '</span></td>' +
+      '</tr>';
+    }).join('');
+
+    out.innerHTML =
+      '<div class="sheet">' +
+        '<div class="doc-head">' +
+          '<div class="issuer">' + LOGO +
+            '<span><span class="word">Zarpa</span>' +
+            '<span class="sub">' + t('issuer') + '</span></span>' +
+          '</div>' +
+          '<div class="id"><b>' + esc(mv.f) + '</b>' +
+            t('issued') + ' ' + fmtDate(mv.d) + '</div>' +
+        '</div>' +
+
+        '<h1>' + t('title') + '</h1>' +
+
+        '<dl class="meta">' +
+          '<div><dt>' + t('company') + '</dt><dd>' + esc(window.ZARPA.company[lang]) + '</dd></div>' +
+          '<div><dt>' + t('person') + '</dt><dd>' + person + '</dd></div>' +
+          '<div><dt>' + t('type') + '</dt><dd>' + t(mv.k) + '</dd></div>' +
+          '<div><dt>' + t('date') + '</dt><dd>' + fmtDate(mv.d) + '</dd></div>' +
+          '<div><dt>' + t('zone') + '</dt><dd>' + esc(mv.z) + '</dd></div>' +
+          '<div><dt>' + t('courier') + '</dt><dd>' + courier + '</dd></div>' +
+        '</dl>' +
+
+        '<h2>' + t('items') + '</h2>' +
+        '<div class="tw"><table>' +
+          '<thead><tr><th>' + t('thN') + '</th><th>' + t('thSn') + '</th>' +
+          '<th>' + t('thIt') + '</th><th>' + t('thC') + '</th></tr></thead>' +
+          '<tbody>' + rows + '</tbody>' +
+        '</table></div>' +
+        '<p class="foot" style="margin-top:12px;padding:0;border:0">' +
+          mv.items.length + ' ' + t('count') + '</p>' +
+
+        '<h2>' + t('declTitle') + '</h2>' +
+        '<div class="decl"><p>' + (mv.k === 'pickup' ? t('declPick') : t('declDep')) + '</p></div>' +
+        '<div class="attach">' + t('attach') + '</div>' +
+
+        '<div class="signs">' +
+          '<div class="sign">' +
+            '<div class="ink">' + squiggle(mv.f + mv.p) + '</div>' +
+            '<div class="who">' + person + '</div>' +
+            '<div class="role">' + t('roleP') + '</div>' +
+            '<div class="stamp">' + t('signedBy') + '<br>' + fmtStamp(mv.d) +
+              '<br>' + hash(mv.f + ':' + mv.p) + '</div>' +
+          '</div>' +
+          '<div class="sign">' +
+            '<div class="ink">' + squiggle(mv.f + 'c' + mv.courier) + '</div>' +
+            '<div class="who">' + courier + '</div>' +
+            '<div class="role">' + t('roleC') + '</div>' +
+            '<div class="stamp">' + t('signedBy') + '<br>' + fmtStamp(mv.d) +
+              '<br>' + hash(mv.f + ':c' + mv.courier) + '</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<p class="foot">' + t('footNote') + '</p>' +
+      '</div>';
+  }
+
+  document.getElementById('lang').addEventListener('click', function(){
+    lang = lang === 'en' ? 'es' : 'en';
+    try { localStorage.setItem('lang', lang); } catch(e){}
+    render();
+  });
+  document.getElementById('print').addEventListener('click', function(){ window.print(); });
+
+  render();
+})();
+</script>
+</body>
+</html>
