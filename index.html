@@ -231,12 +231,17 @@ body.menu-open .nav-cta{background:#fff;color:#262626}
   *{cursor:none}
   #cursor{
     display:block;position:fixed;top:0;left:0;width:11px;height:11px;
-    border-radius:999px;background:var(--ink);pointer-events:none;
+    border-radius:999px;background:var(--ink);pointer-events:none;border:0 solid var(--ink);
     z-index:2147483647;opacity:0;transform:translate(-100px,-100px);
-    transition:opacity .12s linear,background-color .12s linear,width .14s,height .14s;
+    transition:opacity .12s linear,background-color .12s linear,
+                width .14s,height .14s,border-width .14s;
   }
   #cursor.on{opacity:1}
-  #cursor.hot{width:30px;height:30px}
+  /* sobre algo tocable se abre en anillo: crece pero deja ver el elemento */
+  #cursor.hot{
+    width:36px;height:36px;background:transparent;
+    border:2px solid var(--ink);box-sizing:border-box;
+  }
 }
 
 /* ---------- layout ---------- */
