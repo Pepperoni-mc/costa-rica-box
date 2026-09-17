@@ -1020,21 +1020,25 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
   var loader = document.getElementById('loader');
   var num = loader.querySelector('.n');
   var v = 0;
+
+  function revealHero(){
+    loader.classList.add('done');
+    var h1 = document.querySelector('#hero h1');
+    if (h1) h1.classList.add('in');
+    Array.prototype.forEach.call(document.querySelectorAll('.hero-late'), function(el, n){
+      el.style.transitionDelay = (260 + n * 110) + 'ms';
+      el.classList.add('in');
+    });
+  }
+  /* red de seguridad: si el contador se atrasa o el navegador lo frena,
+     la portada aparece igual. Nunca una pantalla en blanco. */
+  setTimeout(revealHero, 2600);
   var tick = setInterval(function(){
     v = Math.min(100, v + Math.ceil(Math.random() * 11));
     num.textContent = ('00' + v).slice(-3);
     if (v >= 100){
       clearInterval(tick);
-      setTimeout(function(){
-        loader.classList.add('done');
-        /* la portada entra cuando se va el cargador */
-        var h1 = document.querySelector('#hero h1');
-        if (h1) h1.classList.add('in');
-        Array.prototype.forEach.call(document.querySelectorAll('.hero-late'), function(el, n){
-          el.style.transitionDelay = (260 + n * 110) + 'ms';
-          el.classList.add('in');
-        });
-      }, 220);
+      setTimeout(revealHero, 220);
     }
   }, 60);
 
