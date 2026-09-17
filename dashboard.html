@@ -588,6 +588,60 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
   <span data-en="Sample data">Datos de ejemplo</span>
 </footer>
 
+<div id="toast" role="status" aria-live="polite"></div>
+
+<div id="modal" aria-hidden="true">
+  <div class="back" id="modal-back"></div>
+  <div class="box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <h3 id="modal-title" data-en="Request a movement">Solicitar un movimiento</h3>
+    <p class="lede" data-en="Tell us who and where. We contact the person, agree on a window and take it from there.">Decinos quién y dónde. Nosotros contactamos a la persona, acordamos la ventana y nos encargamos del resto.</p>
+    <form class="form" id="req-form">
+      <div>
+        <label data-en="What do you need">Qué necesitás</label>
+        <div class="pickers">
+          <label class="picker">
+            <input type="radio" name="kind" value="pickup" checked>
+            <span class="pk">
+              <b data-en="Pickup">Recolección</b>
+              <i data-en="Someone is leaving and their gear has to come back">Alguien sale y hay que traer su equipo</i>
+            </span>
+          </label>
+          <label class="picker">
+            <input type="radio" name="kind" value="deploy">
+            <span class="pk">
+              <b data-en="Delivery">Entrega</b>
+              <i data-en="Someone is joining and needs their workstation">Alguien entra y necesita su puesto</i>
+            </span>
+          </label>
+        </div>
+      </div>
+      <div class="row2">
+        <div><label for="r-ced" data-en="ID number">Cédula</label>
+          <input class="field" id="r-ced" inputmode="numeric" placeholder="1-1234-5678" maxlength="11" autocomplete="off"></div>
+        <div><label for="r-person" data-en="Employee number">Número de colaborador</label>
+          <input class="field" id="r-person" inputmode="numeric" placeholder="27"></div>
+      </div>
+      <div class="row2">
+        <div><label for="r-zone" data-en="Area">Zona</label>
+          <input class="field" id="r-zone" placeholder="Santa Ana"></div>
+        <div><label for="r-gam" data-en="Coverage">Cobertura</label>
+          <select class="field" id="r-gam">
+            <option value="1" data-en="Inside the GAM · 48 h">Dentro del GAM · 48 h</option>
+            <option value="0" data-en="Outside the GAM · 72 h">Fuera del GAM · 72 h</option>
+          </select></div>
+      </div>
+      <div><label for="r-date" data-en="Preferred date">Fecha deseada</label>
+        <input class="field" id="r-date" type="date"></div>
+      <div><label for="r-note" data-en="Address and notes">Dirección y notas</label>
+        <textarea class="field ta" id="r-note" placeholder="Dirección exacta, horario en que la persona puede recibir, piezas extra." data-en-ph="Exact address, when the person can be reached, any extra items."></textarea></div>
+      <div class="form-actions">
+        <button class="mini" type="button" id="modal-cancel" data-en="Cancel">Cancelar</button>
+        <button class="mini solid" type="submit" data-en="Send request">Enviar solicitud</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script src="data.js"></script>
 <script>
 (function(){
@@ -884,58 +938,5 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
 })();
 </script>
 
-<div id="toast" role="status" aria-live="polite"></div>
-
-<div id="modal" aria-hidden="true">
-  <div class="back" id="modal-back"></div>
-  <div class="box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <h3 id="modal-title" data-en="Request a movement">Solicitar un movimiento</h3>
-    <p class="lede" data-en="Tell us who and where. We contact the person, agree on a window and take it from there.">Decinos quién y dónde. Nosotros contactamos a la persona, acordamos la ventana y nos encargamos del resto.</p>
-    <form class="form" id="req-form">
-      <div>
-        <label data-en="What do you need">Qué necesitás</label>
-        <div class="pickers">
-          <label class="picker">
-            <input type="radio" name="kind" value="pickup" checked>
-            <span class="pk">
-              <b data-en="Pickup">Recolección</b>
-              <i data-en="Someone is leaving and their gear has to come back">Alguien sale y hay que traer su equipo</i>
-            </span>
-          </label>
-          <label class="picker">
-            <input type="radio" name="kind" value="deploy">
-            <span class="pk">
-              <b data-en="Delivery">Entrega</b>
-              <i data-en="Someone is joining and needs their workstation">Alguien entra y necesita su puesto</i>
-            </span>
-          </label>
-        </div>
-      </div>
-      <div class="row2">
-        <div><label for="r-ced" data-en="ID number">Cédula</label>
-          <input class="field" id="r-ced" inputmode="numeric" placeholder="1-1234-5678" maxlength="11" autocomplete="off"></div>
-        <div><label for="r-person" data-en="Employee number">Número de colaborador</label>
-          <input class="field" id="r-person" inputmode="numeric" placeholder="27"></div>
-      </div>
-      <div class="row2">
-        <div><label for="r-zone" data-en="Area">Zona</label>
-          <input class="field" id="r-zone" placeholder="Santa Ana"></div>
-        <div><label for="r-gam" data-en="Coverage">Cobertura</label>
-          <select class="field" id="r-gam">
-            <option value="1" data-en="Inside the GAM · 48 h">Dentro del GAM · 48 h</option>
-            <option value="0" data-en="Outside the GAM · 72 h">Fuera del GAM · 72 h</option>
-          </select></div>
-      </div>
-      <div><label for="r-date" data-en="Preferred date">Fecha deseada</label>
-        <input class="field" id="r-date" type="date"></div>
-      <div><label for="r-note" data-en="Address and notes">Dirección y notas</label>
-        <textarea class="field ta" id="r-note" placeholder="Dirección exacta, horario en que la persona puede recibir, piezas extra." data-en-ph="Exact address, when the person can be reached, any extra items."></textarea></div>
-      <div class="form-actions">
-        <button class="mini" type="button" id="modal-cancel" data-en="Cancel">Cancelar</button>
-        <button class="mini solid" type="submit" data-en="Send request">Enviar solicitud</button>
-      </div>
-    </form>
-  </div>
-</div>
 </body>
 </html>
