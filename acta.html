@@ -364,12 +364,14 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
     <button class="mini iconbtn" id="theme" type="button" aria-label="Tema"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button>
     <button class="mini" id="lang" type="button">EN</button>
     <a class="mini" href="dashboard.html" data-en="Back to dashboard">Volver al panel</a>
-    <button class="mini solid" id="print" type="button" data-en="Save as PDF">Guardar como PDF</button>
+    <button class="mini" id="print" type="button" data-en="Print">Imprimir</button>
+    <button class="mini solid" id="export" type="button" data-en="Export PDF">Exportar PDF</button>
   </div>
 </div>
 
 <div class="wrap"><div id="out"></div></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 <script src="data.js"></script>
 <script>
 (function(){
@@ -473,9 +475,191 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
     return m ? decodeURIComponent(m[1]) : '';
   }
 
+  /* ---------------- exportar a PDF ----------------
+     Se dibuja el documento con texto real, no una captura: pesa poco,
+     se puede buscar y copiar, y las tildes salen bien. */
+  var CURRENT = null;
+
+  function exportPdf(){
+    var mv = CURRENT;
+    if (!mv) return;
+    if (!window.jspdf || !window.jspdf.jsPDF){ window.print(); return; }
+
+    var doc = new window.jspdf.jsPDF({ unit:'mm', format:'letter', compress:true });
+    var W = doc.internal.pageSize.getWidth();
+    var H = doc.internal.pageSize.getHeight();
+    var M = 16, CW = W - M * 2;
+
+    var INK = [28, 30, 34], MUTED = [107, 112, 118], RULE = [211, 216, 222];
+    var BLUE = [30, 127, 184], ORANGE = [194, 104, 26];
+    var tone = mv.k === 'pickup' ? BLUE : ORANGE;
+
+    function setC(c){ doc.setTextColor(c[0], c[1], c[2]); }
+    function line(y, c){
+      c = c || RULE;
+      doc.setDrawColor(c[0], c[1], c[2]);
+      doc.setLineWidth(0.2);
+      doc.line(M, y, M + CW, y);
+    }
+
+    /* marca de agua */
+    doc.saveGraphicsState();
+    doc.setGState(new doc.GState({ opacity:0.06 }));
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(74);
+    setC(INK);
+    doc.text(lang === 'en' ? 'SAMPLE' : 'MUESTRA', W / 2, H / 2 + 14, { align:'center', angle:24 });
+    doc.restoreGraphicsState();
+
+    var y = M + 4;
+
+    /* encabezado */
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(17); setC(INK);
+    doc.text('Zarpa', M, y);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); setC(MUTED);
+    doc.text('COSTA RICA', M, y + 4.6, { charSpace:0.5 });
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(11); setC(INK);
+    doc.text(mv.f, M + CW, y, { align:'right' });
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); setC(MUTED);
+    doc.text(t('issued') + ' ' + fmtDate(mv.d), M + CW, y + 4.6, { align:'right' });
+    y += 8.5;
+    doc.setDrawColor(INK[0], INK[1], INK[2]); doc.setLineWidth(0.6);
+    doc.line(M, y, M + CW, y);
+
+    /* título */
+    y += 11;
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(19); setC(INK);
+    doc.text(t('title'), M, y);
+
+    /* datos del movimiento */
+    y += 8;
+    var cols = 3, cw = CW / cols, rowH = 15;
+    var meta = [
+      [t('company'), window.ZARPA.company[lang]],
+      [t('person'),  t('personN') + ' ' + mv.p],
+      [t('ced'),     window.ZARPA.ced(mv.p)],
+      [t('type'),    t(mv.k)],
+      [t('date'),    fmtDate(mv.d)],
+      [t('zone'),    mv.z]
+    ];
+    line(y);
+    meta.forEach(function(pair, i){
+      var cx = M + (i % cols) * cw, cy = y + Math.floor(i / cols) * rowH;
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(6.6); setC(MUTED);
+      doc.text(pair[0].toUpperCase(), cx, cy + 5.4, { charSpace:0.4 });
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(10); setC(INK);
+      if (pair[0] === t('type')){
+        doc.setFillColor(tone[0], tone[1], tone[2]);
+        doc.circle(cx + 1.4, cy + 10.2, 1.1, 'F');
+        doc.text(String(pair[1]), cx + 4.4, cy + 11);
+      } else {
+        doc.text(String(pair[1]), cx, cy + 11);
+      }
+      if (i % cols === cols - 1) line(cy + rowH);
+    });
+    y += rowH * 2 + 9;
+
+    /* detalle del equipo */
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(10.5); setC(INK);
+    doc.text(t('items'), M, y);
+    y += 4;
+
+    var c1 = M + 2, c2 = M + 12, c3 = M + 52, c4 = M + CW - 2;
+    doc.setFillColor(243, 244, 246);
+    doc.rect(M, y, CW, 7.5, 'F');
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(6.6); setC(MUTED);
+    doc.text('#', c1, y + 5);
+    doc.text(t('thSn').toUpperCase(), c2, y + 5, { charSpace:0.4 });
+    doc.text(t('thIt').toUpperCase(), c3, y + 5, { charSpace:0.4 });
+    doc.text(t('thC').toUpperCase(), c4, y + 5, { align:'right', charSpace:0.4 });
+    y += 7.5;
+
+    mv.items.forEach(function(it, i){
+      var h = 8;
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(8); setC(MUTED);
+      doc.text(('0' + (i + 1)).slice(-2), c1, y + 5.4);
+      doc.setFontSize(8.6); setC(INK);
+      doc.text(it.sn, c2, y + 5.4);
+      doc.setFont('helvetica', 'bold');
+      doc.text(String(lang === 'en' && it.en ? it.en : it.it), c3, y + 5.4);
+      doc.setFont('helvetica', 'normal'); setC(MUTED);
+      doc.text(t(it.c), c4, y + 5.4, { align:'right' });
+      y += h;
+      line(y);
+    });
+
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.6); setC(MUTED);
+    doc.text(mv.items.length + ' ' + t('count'), M, y + 5);
+    y += 12;
+
+    /* declaración */
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(10.5); setC(INK);
+    doc.text(t('declTitle'), M, y);
+    y += 5.5;
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(9); setC([69, 74, 82]);
+    var decl = doc.splitTextToSize(mv.k === 'pickup' ? t('declPick') : t('declDep'), CW);
+    doc.text(decl, M, y);
+    y += decl.length * 4.4 + 4;
+
+    /* nota de fotografías */
+    var att = doc.splitTextToSize(t('attach'), CW - 8);
+    var attH = att.length * 4.2 + 7;
+    doc.setFillColor(243, 244, 246);
+    doc.rect(M, y, CW, attH, 'F');
+    doc.setFillColor(tone[0], tone[1], tone[2]);
+    doc.rect(M, y, 1.1, attH, 'F');
+    doc.setFontSize(8.4); setC([69, 74, 82]);
+    doc.text(att, M + 5, y + 5);
+    y += attH + 14;
+
+    /* firmas */
+    var half = CW / 2 - 6;
+    function rubric(x, base, seed){
+      var n = 0;
+      for (var i = 0; i < seed.length; i++) n += seed.charCodeAt(i);
+      doc.setDrawColor(INK[0], INK[1], INK[2]);
+      doc.setLineWidth(0.5);
+      var prevX = x, prevY = base;
+      for (var s = 1; s <= 34; s++){
+        var p = s / 34;
+        var px = x + p * (half - 12);
+        var py = base - Math.sin(p * Math.PI * 2.6 + n % 7) * (3.4 + (n % 5) * 0.5) - p * 1.5;
+        doc.line(prevX, prevY, px, py);
+        prevX = px; prevY = py;
+      }
+      doc.setLineWidth(0.3);
+      doc.line(x + 6, base + 2.4, x + half - 14, base + 2.4);
+    }
+    [[M, t('personN') + ' ' + mv.p, t('roleP') + ' · ' + t('ced') + ' ' + window.ZARPA.ced(mv.p), mv.f + mv.p],
+     [M + CW / 2 + 6, t('courierN') + ' ' + mv.courier, t('roleC'), mv.f + 'c' + mv.courier]
+    ].forEach(function(col){
+      var x = col[0];
+      rubric(x, y, col[3]);
+      doc.setDrawColor(RULE[0], RULE[1], RULE[2]); doc.setLineWidth(0.2);
+      doc.line(x, y + 7, x + half, y + 7);
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(9.5); setC(INK);
+      doc.text(col[1], x, y + 12);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(6.6); setC(MUTED);
+      doc.text(col[2].toUpperCase(), x, y + 16, { charSpace:0.3 });
+      doc.setFontSize(7.4);
+      doc.text(doc.splitTextToSize(t('signedBy') + '\n' + fmtStamp(mv.d), half), x, y + 21);
+      doc.setFontSize(6.2);
+      doc.text(doc.splitTextToSize(hash(mv.f + ':' + col[3]), half), x, y + 29);
+    });
+    y += 40;
+
+    /* pie */
+    line(y);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7); setC(MUTED);
+    doc.text(doc.splitTextToSize(t('footNote'), CW), M, y + 5);
+
+    doc.save('acta-' + mv.f + '.pdf');
+  }
+
   function render(){
     var out = document.getElementById('out');
     var mv = window.ZARPA.byFolio(folioFromUrl());
+    CURRENT = mv && mv.items ? mv : null;
 
     document.documentElement.lang = lang;
     document.getElementById('lang').textContent = lang === 'en' ? 'ES' : 'EN';
@@ -569,6 +753,7 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
     render();
   });
   document.getElementById('print').addEventListener('click', function(){ window.print(); });
+  document.getElementById('export').addEventListener('click', exportPdf);
 
   render();
 })();
