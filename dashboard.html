@@ -245,9 +245,11 @@ tbody tr.k-deploy td:first-child{box-shadow:inset 3px 0 0 var(--dep)}
 @media (max-width:760px){
   .topbar{padding:12px var(--pad);gap:10px}
   .brandmark .sep,.brandmark .sub{display:none}
-  .top-right{width:100%;gap:8px}
-  .top-right .mini{flex:1;justify-content:center;height:44px;padding:0 12px;font-size:14px}
+  .top-right{width:100%;gap:8px;flex-wrap:wrap}
+  .top-right .mini{flex:1 1 auto;min-width:0;justify-content:center;height:44px;padding:0 12px;font-size:14px}
   .top-right #lang{flex:0 0 auto;padding:0 16px}
+  .top-right .iconbtn{flex:0 0 auto}
+  .top-right .mini.solid{flex:1 1 100%}
 
   main{padding-top:22px}
   .head{align-items:flex-start}

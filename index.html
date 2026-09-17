@@ -186,20 +186,18 @@ header.nav{
   font-size:20px;line-height:1;cursor:pointer;
 }
 
-/* ---------- cursor circular ---------- */
+/* ---------- cursor circular, con las medidas del sitio de referencia ---------- */
 #cursor{display:none}
 @media (hover:hover) and (pointer:fine){
-  body,a,button,.menu-btn,summary{cursor:none}
-  input,textarea,select{cursor:auto}
+  *{cursor:none}
   #cursor{
-    display:block;position:fixed;top:0;left:0;width:26px;height:26px;z-index:300;
-    border:2px solid var(--ink);border-radius:50%;pointer-events:none;
-    transition:width .2s var(--ease),height .2s var(--ease),opacity .2s var(--ease),
-               background-color .2s var(--ease),border-color .2s var(--ease);
-    will-change:transform;
+    display:block;position:fixed;top:0;left:0;width:18px;height:18px;
+    border-radius:999px;background:var(--ink);pointer-events:none;
+    z-index:2147483647;opacity:0;transform:translate(-100px,-100px);
+    transition:opacity .12s linear,background-color .12s linear,width .14s,height .14s;
   }
-  #cursor.hot{width:58px;height:58px;background:var(--ink);border-color:var(--ink);mix-blend-mode:difference}
-  #cursor.hide{opacity:0}
+  #cursor.on{opacity:1}
+  #cursor.hot{width:48px;height:48px}
 }
 
 /* ---------- layout ---------- */
@@ -939,36 +937,25 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
     }, {passive:true});
   }
 
-  /* ---------------- cursor circular ---------------- */
+  /* ---------------- cursor circular ----------------
+     Sigue al puntero sin retraso, como el del sitio de referencia:
+     la posición se escribe en el mismo evento, sin interpolación. */
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches){
     var dot = document.createElement('div');
     dot.id = 'cursor';
     document.body.appendChild(dot);
-    var cx = -100, cy = -100, tx = -100, ty = -100;
-    var soft = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     document.addEventListener('mousemove', function(e){
-      tx = e.clientX; ty = e.clientY;
-      if (!soft){ cx = tx; cy = ty; place(); }
-      dot.classList.remove('hide');
+      dot.style.transform = 'translate(' + e.clientX + 'px,' + e.clientY + 'px) translate(-50%,-50%)';
+      dot.classList.add('on');
     }, {passive:true});
-    document.addEventListener('mouseleave', function(){ dot.classList.add('hide'); });
-    function place(){
-      dot.style.transform = 'translate(' + cx + 'px,' + cy + 'px) translate(-50%,-50%)';
-    }
-    if (soft){
-      (function loop(){
-        cx += (tx - cx) * 0.22;
-        cy += (ty - cy) * 0.22;
-        place();
-        window.requestAnimationFrame(loop);
-      })();
-    }
-    var HOT = 'a,button,summary,label,.card,.step';
+
+    document.addEventListener('mouseleave', function(){ dot.classList.remove('on'); });
+    document.addEventListener('mouseenter', function(){ dot.classList.add('on'); });
+
+    var HOT = 'a,button,summary,label,input,textarea,select,.card,.step';
     document.addEventListener('mouseover', function(e){
-      var el = e.target.closest ? e.target.closest(HOT) : null;
-      var field = e.target.closest ? e.target.closest('input,textarea,select') : null;
-      dot.classList.toggle('hot', !!el && !field);
-      dot.classList.toggle('hide', !!field);
+      dot.classList.toggle('hot', !!(e.target.closest && e.target.closest(HOT)));
     });
   }
 
