@@ -304,17 +304,19 @@ tbody tr:nth-child(even) td{background:var(--paper)}
 
 /* el tipo va sin caja: la fila ya lleva su barra de color */
 .type{border:0;padding-left:0;padding-right:0;min-width:124px;color:var(--ink)}
+.type.pickup{background:transparent;color:var(--ink)}
 .type.pickup::before{background:var(--sig-blue)}
+.type.deploy{background:transparent;color:var(--ink)}
 .type.deploy::before{background:var(--sig-orange)}
 
 /* estados: contorno del color, texto del color, sin relleno */
-.badge.ok,.cond.good{color:var(--sig-green);border-color:currentColor}
+.badge.ok,.cond.good{background:transparent;color:var(--sig-green);border-color:currentColor}
 .badge.ok::before,.cond.good::before{background:currentColor}
-.badge.go{color:var(--sig-blue);border-color:currentColor}
+.badge.go{background:transparent;color:var(--sig-blue);border-color:currentColor}
 .badge.go::before{background:currentColor}
-.badge.wait,.cond.fair{color:var(--sig-orange);border-color:currentColor}
+.badge.wait,.cond.fair{background:transparent;color:var(--sig-orange);border-color:currentColor}
 .badge.wait::before,.cond.fair::before{background:currentColor}
-.cond.out{color:var(--sig-gray);border-color:currentColor}
+.cond.out{background:transparent;color:var(--sig-gray);border-color:currentColor}
 .cond.out::before{background:currentColor}
 
 /* lo único que grita es lo vencido */
