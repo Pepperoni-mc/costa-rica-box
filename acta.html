@@ -44,78 +44,81 @@
   --sig-red:#B8352A;
   --sig-gray:#5A574F;
   --chip-fg:#FFFFFF;
+  --th-bg:#1C1E22;  --th-fg:#F4F5F7;
   color-scheme:light;
 }
 
 /* ---------- modo oscuro: pasos propios, validados contra el fondo oscuro ---------- */
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-  --paper:#15161A;
-  --paper-2:#1D1F25;
-  --raised:#1A1C21;
-  --sheet:#1B1D22;
-  --off:#1E2026;
-  --ink:#ECEAE4;
-  --ink-2:#C2BFB8;
-  --muted:#93908A;
-  --rule:#2C2E34;
-  --rule-hard:#474A52;
-  --rule-2:#3A3D45;
+  --paper:#131519;
+  --paper-2:#1B1E24;
+  --raised:#22262D;
+  --sheet:#1A1D23;
+  --off:#1B1E24;
+  --ink:#E9ECEF;
+  --ink-2:#B6BCC4;
+  --muted:#878E98;
+  --rule:#272B32;
+  --rule-hard:#454C56;
+  --rule-2:#343941;
   --amber:#F2A63C;
-  --accent:#4FC3F0;
+  --accent:#57C4F2;
   --green:#4FB894;
   --pick:#25A2B1;   --pick-bg:#10333A;  --pick-fg:#7FDCE8;
   --dep:#9575EC;    --dep-bg:#251E3E;   --dep-fg:#C6B1FF;
-  --ok-bg:#16302A;  --ok-fg:#74D6AE;
-  --go-bg:#10303F;  --go-fg:#72C9EE;
-  --wait-bg:#3A2C12;--wait-fg:#EBB763;
-  --bad-bg:#3B1D18; --bad-fg:#F2958A;
-  --row-hover:#24262C;
-  --invert-bg:#0E0F12; --invert-fg:#ECEAE4;
-  --mark-fg:#17181C;
-  --wm:rgba(255,255,255,.055);
-  --shadow:0 1px 2px rgba(0,0,0,.45),0 16px 32px -22px rgba(0,0,0,.95);
   --sig-blue:#3C9ED2;
   --sig-orange:#C87C2E;
   --sig-green:#3DA35F;
   --sig-red:#D9544A;
-  --sig-gray:#8C8880;
-  --chip-fg:#141519;
+  --sig-gray:#868C94;
+  --chip-fg:#12141A;
+  --th-bg:#1F232A;  --th-fg:#C9CFD6;
+  --ok-bg:#16302A;  --ok-fg:#74D6AE;
+  --go-bg:#10303F;  --go-fg:#72C9EE;
+  --wait-bg:#3A2C12;--wait-fg:#EBB763;
+  --bad-bg:#3B1D18; --bad-fg:#F2958A;
+  --row-hover:#20242A;
+  --invert-bg:#0E0F12; --invert-fg:#E9ECEF;
+  --mark-fg:#15171C;
+  --wm:rgba(255,255,255,.06);
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 16px 32px -22px rgba(0,0,0,.95);
   color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --paper:#15161A;
-  --paper-2:#1D1F25;
-  --raised:#1A1C21;
-  --sheet:#1B1D22;
-  --off:#1E2026;
-  --ink:#ECEAE4;
-  --ink-2:#C2BFB8;
-  --muted:#93908A;
-  --rule:#2C2E34;
-  --rule-hard:#474A52;
-  --rule-2:#3A3D45;
+  --paper:#131519;
+  --paper-2:#1B1E24;
+  --raised:#22262D;
+  --sheet:#1A1D23;
+  --off:#1B1E24;
+  --ink:#E9ECEF;
+  --ink-2:#B6BCC4;
+  --muted:#878E98;
+  --rule:#272B32;
+  --rule-hard:#454C56;
+  --rule-2:#343941;
   --amber:#F2A63C;
-  --accent:#4FC3F0;
+  --accent:#57C4F2;
   --green:#4FB894;
   --pick:#25A2B1;   --pick-bg:#10333A;  --pick-fg:#7FDCE8;
   --dep:#9575EC;    --dep-bg:#251E3E;   --dep-fg:#C6B1FF;
-  --ok-bg:#16302A;  --ok-fg:#74D6AE;
-  --go-bg:#10303F;  --go-fg:#72C9EE;
-  --wait-bg:#3A2C12;--wait-fg:#EBB763;
-  --bad-bg:#3B1D18; --bad-fg:#F2958A;
-  --row-hover:#24262C;
-  --invert-bg:#0E0F12; --invert-fg:#ECEAE4;
-  --mark-fg:#17181C;
-  --wm:rgba(255,255,255,.055);
-  --shadow:0 1px 2px rgba(0,0,0,.45),0 16px 32px -22px rgba(0,0,0,.95);
   --sig-blue:#3C9ED2;
   --sig-orange:#C87C2E;
   --sig-green:#3DA35F;
   --sig-red:#D9544A;
-  --sig-gray:#8C8880;
-  --chip-fg:#141519;
+  --sig-gray:#868C94;
+  --chip-fg:#12141A;
+  --th-bg:#1F232A;  --th-fg:#C9CFD6;
+  --ok-bg:#16302A;  --ok-fg:#74D6AE;
+  --go-bg:#10303F;  --go-fg:#72C9EE;
+  --wait-bg:#3A2C12;--wait-fg:#EBB763;
+  --bad-bg:#3B1D18; --bad-fg:#F2958A;
+  --row-hover:#20242A;
+  --invert-bg:#0E0F12; --invert-fg:#E9ECEF;
+  --mark-fg:#15171C;
+  --wm:rgba(255,255,255,.06);
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 16px 32px -22px rgba(0,0,0,.95);
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -320,7 +323,7 @@ tbody tr:nth-child(even) td{background:var(--paper)}
 .cond.out::before{background:currentColor}
 
 /* lo único que grita es lo vencido */
-.badge.bad{background:var(--sig-red);color:#fff;border-color:transparent;font-weight:600}
+.badge.bad{background:var(--sig-red);color:var(--chip-fg);border-color:transparent;font-weight:600}
 .badge.bad::before{background:#fff}
 
 /* sin sombras suaves: la jerarquía la dan las reglas y el peso */
@@ -328,7 +331,7 @@ tbody tr:nth-child(even) td{background:var(--paper)}
 .tw,.panel,.kpis{border:1px solid var(--rule-2)}
 
 /* cabecera de tabla en negativo, como una herramienta de verdad */
-th{background:var(--ink);color:var(--paper);border-bottom:0;font-weight:600;letter-spacing:.13em}
+th{background:var(--th-bg);color:var(--th-fg);border-bottom:0;font-weight:600;letter-spacing:.13em}
 
 /* el borde de color de la fila se engrosa y usa la paleta de señal */
 tbody tr td:first-child{box-shadow:inset 4px 0 0 var(--rule-hard)}
