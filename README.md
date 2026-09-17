@@ -1,50 +1,50 @@
-# Sitio del servicio — equipo de cómputo en Costa Rica
+# Zarpa — sitio del servicio
 
-Web de una página para el servicio de **recolección, custodia y despliegue de equipo de
-cómputo dentro de Costa Rica**: la versión local de lo que Retriever, Workwize o Firstbase
-hacen en Estados Unidos.
+Web del servicio de **recolección, custodia y despliegue de equipo de cómputo dentro de
+Costa Rica**, para empresas extranjeras con personal remoto tico. Es la versión local de lo
+que hacen Retriever, Workwize, Deel IT y Firstbase, que no operan en el país.
 
-Es el sitio de la empresa, no la propuesta comercial. No lleva tarifas: el precio se cotiza
-por movimiento desde el formulario de contacto.
-
-Dirección de arte inspirada en [indisea.com](https://indisea.com): papel crema, tipografía
-grotesca enorme, resaltador ámbar, secciones numeradas en mono y un acento de color en línea fina.
+Dirección de arte inspirada en [indisea.com](https://indisea.com).
 
 ## Archivos
 
-- `index.html` — el sitio completo. Un solo archivo, sin build, sin dependencias.
-  Las tipografías (Archivo + IBM Plex Mono) vienen de Google Fonts; sin internet cae a las
-  del sistema y se ve bien igual.
+- `index.html` — el sitio. Un solo archivo, sin build, sin dependencias.
+- `dashboard.html` — panel de cliente de muestra, sin login, con datos de ejemplo.
 
-## Secciones
+Las tipografías (Archivo + IBM Plex Mono) vienen de Google Fonts; sin internet cae a las del
+sistema y se ve bien igual.
 
-1. Inicio
-2. Servicios — recolección, custodia, despliegue
-3. Cómo funciona — cuatro pasos
-4. Para quién
-5. Cobertura — GAM 48 h, resto del país 72 h
-6. Qué recibís — actas, inventario, reportes
-7. Preguntas frecuentes
-8. Contacto — formulario
+## Idiomas
 
-## El selector de marca
+Botón **EN / ES** en la barra superior. El español vive en el HTML y el inglés en atributos
+`data-en` (y `data-en-ph` para los placeholders). Para cambiar un texto hay que tocar los dos.
+El idioma elegido se recuerda y se comparte entre el sitio y el panel.
 
-Abajo a la izquierda hay un panel de demo que cambia **nombre, logo y color de acento**
-en vivo entre cinco opciones: Zarpa, Caucel, Siete, Gatera y Manigordo. Para producción:
+## Animaciones
 
-1. Borrar el `<div id="switcher">…</div>`.
-2. Borrar el bloque CSS `/* demo brand switcher */`.
-3. En el JS, dejar solo la marca elegida en `BRANDS`.
+- Cargador que cuenta de 000 a 100.
+- Titulares que se revelan por líneas enmascaradas (el partidor de líneas está en el JS y
+  se vuelve a correr al cambiar de idioma, al cargar las tipografías y al cambiar el ancho).
+- Resaltador ámbar que barre de palabra en palabra.
+- El gráfico de la portada se dibuja trazo por trazo.
+- Los cuatro pasos de "Cómo funciona" se apilan uno sobre otro al bajar (`position:sticky`).
+- Números que cuentan al entrar en pantalla, botones que se rellenan al pasar el mouse.
 
-## Qué falta para que sea real
+Todo respeta `prefers-reduced-motion`.
 
-- Nombre definitivo, dominio y correo — hoy son `hola@ejemplo.cr` y `+506 0000 0000`.
-- Logo vectorial final. Los cinco de la demo son bocetos SVG, sirven de punto de partida.
-- Fotos reales: bodega, mensajero, equipo empacado. Hoy no hay ninguna.
-- El formulario no tiene backend: arma un `mailto:`. Para recibirlo en el correo de verdad,
-  conectarlo a Formspree, Basin o un Google Form.
-- Confirmar la póliza de seguro antes de publicar cualquier promesa de cobertura.
-- Versión en inglés si el comprador es una empresa de Estados Unidos.
+## Panel de cliente
+
+`dashboard.html` no tiene login ni backend: los movimientos y el inventario son arreglos en
+el JS (`MOVES` e `INV`). Los filtros y la búsqueda funcionan de verdad sobre esos datos.
+Sirve para enseñar la idea; para que sea real hay que conectarlo a una base y ponerle acceso.
+
+## Qué falta
+
+- Correo, teléfono y dominio reales — hoy son `hola@ejemplo.cr` y `+506 0000 0000`.
+- Logo vectorial final. El de la demo es un SVG hecho a mano, sirve de punto de partida.
+- Fotos: bodega, mensajero, equipo empacado. No hay ninguna.
+- El formulario arma un `mailto:`. Para recibirlo de verdad: Formspree, Basin o un Google Form.
+- Confirmar la póliza de seguro antes de sostener lo que dice la sección de preguntas.
 
 ## Publicar cambios
 
