@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zarpa · Recolección, custodia y despliegue de equipo de cómputo en Costa Rica</title>
+<meta name="description" content="Recogemos el puesto de trabajo cuando alguien sale, lo guardamos mientras haga falta y lo entregamos armado cuando alguien entra. En todo el territorio nacional.">
+<meta property="og:title" content="Zarpa · Equipo de cómputo, manejado dentro de Costa Rica">
+<meta property="og:description" content="Recolección, custodia y despliegue del puesto de trabajo completo. 48 h en el GAM, 72 h en el resto del país.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --paper:#EFEDEA;
+  --paper-2:#E6E3DD;
+  --raised:#F7F5F2;
+  --ink:#26262A;
+  --ink-2:#4E4E52;
+  --muted:#8B8B84;
+  --rule:#D9D5CE;
+  --rule-hard:#C2BDB3;
+  --amber:#F2A63C;
+  --accent:#3FC0F5;
+  --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --pad:clamp(20px,5vw,72px);
+  color-scheme:light;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--f-display);font-size:16px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+img{max-width:100%}
+a{color:inherit}
+
+/* ---------- loader ---------- */
+#loader{
+  position:fixed;inset:0;z-index:200;background:var(--paper);
+  display:flex;align-items:flex-end;padding:var(--pad);
+  transition:opacity .5s ease,visibility .5s ease;
+}
+#loader.done{opacity:0;visibility:hidden}
+#loader .n{
+  font-family:var(--f-display);font-weight:700;font-size:clamp(56px,11vw,120px);
+  letter-spacing:-.05em;line-height:.8;font-variant-numeric:tabular-nums;
+}
+#loader .w{
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);margin-left:14px;padding-bottom:10px;
+}
+
+/* ---------- nav ---------- */
+header.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px var(--pad);
+  background:linear-gradient(to bottom,var(--paper) 62%,transparent);
+}
+.brandmark{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brandmark svg{width:30px;height:30px;display:block;flex:none}
+.brandmark .word{font-weight:700;font-size:23px;letter-spacing:-.035em}
+.menu-btn{
+  width:42px;height:42px;border-radius:50%;border:1.5px solid var(--ink);
+  background:transparent;cursor:pointer;display:grid;place-items:center;gap:4px;
+  padding:0;transition:background .2s,color .2s;color:var(--ink);
+}
+.menu-btn:hover{background:var(--ink);color:var(--paper)}
+.menu-btn span{display:block;width:16px;height:1.6px;background:currentColor;border-radius:2px}
+
+#overlay{
+  position:fixed;inset:0;z-index:99;background:var(--ink);color:var(--paper);
+  display:flex;flex-direction:column;justify-content:center;padding:var(--pad);
+  transform:translateY(-101%);transition:transform .55s cubic-bezier(.76,0,.24,1);
+}
+#overlay.open{transform:translateY(0)}
+#overlay a{
+  display:block;text-decoration:none;font-weight:700;letter-spacing:-.03em;
+  font-size:clamp(30px,6.5vw,68px);line-height:1.12;opacity:.55;transition:opacity .2s,padding-left .2s;
+}
+#overlay a:hover{opacity:1;padding-left:14px}
+#overlay .close{
+  position:absolute;top:20px;right:var(--pad);width:42px;height:42px;border-radius:50%;
+  border:1.5px solid var(--paper);background:transparent;color:var(--paper);
+  font-size:20px;line-height:1;cursor:pointer;
+}
+
+/* ---------- layout ---------- */
+section{padding:clamp(72px,11vh,132px) var(--pad);position:relative;border-bottom:1px solid var(--rule)}
+.inner{max-width:1280px;margin:0 auto;width:100%}
+.label{
+  font-family:var(--f-mono);font-size:10.5px;font-weight:500;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 30px;display:block;
+}
+h1,h2{font-weight:700;letter-spacing:-.04em;line-height:.96;text-wrap:balance;margin:0}
+h1{font-size:clamp(42px,8.4vw,116px)}
+h2{font-size:clamp(32px,5.4vw,74px);line-height:1}
+h3{font-size:19px;font-weight:600;letter-spacing:-.01em;margin:0 0 8px}
+p{margin:0 0 16px;max-width:62ch;color:var(--ink-2);font-size:clamp(15px,1.3vw,17.5px);line-height:1.52}
+.lede{font-size:clamp(17px,1.9vw,23px);line-height:1.38;color:var(--ink-2);max-width:48ch}
+
+.mark{
+  background:var(--amber);padding:0 .1em;margin:0 -.04em;
+  box-decoration-break:clone;-webkit-box-decoration-break:clone;
+  transition:background .35s ease;
+}
+.mark.off{background:transparent}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+/* ---------- hero ---------- */
+#hero{min-height:100svh;display:flex;align-items:center;padding-top:120px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:40px;align-items:center}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr}.hero-art{display:none}}
+.hero-art svg{width:100%;height:auto;color:var(--accent)}
+.hero-sub{margin-top:34px;max-width:46ch}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:34px}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer;
+  font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  padding:15px 26px;border-radius:999px;border:1.5px solid var(--ink);
+  background:var(--ink);color:var(--paper);transition:transform .2s,background .2s,color .2s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--paper)}
+.scroll-hint{
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);margin-top:56px;display:flex;align-items:center;gap:10px;
+}
+.scroll-hint::after{content:"";width:46px;height:1px;background:var(--rule-hard)}
+
+/* ---------- marquee ---------- */
+.marquee{overflow:hidden;padding:26px 0;border-block:1px solid var(--rule);background:var(--paper-2);white-space:nowrap}
+section.band{padding-inline:0;border-bottom:none}
+.marquee .track{display:inline-flex;gap:0;animation:slide 38s linear infinite;will-change:transform}
+@media (prefers-reduced-motion:reduce){.marquee .track{animation:none}}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee span{
+  font-family:var(--f-mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-2);padding:0 26px;position:relative;
+}
+.marquee span::after{content:"·";position:absolute;right:-3px;color:var(--rule-hard)}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:52px}
+@media (max-width:860px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stats > div{background:var(--paper);padding:26px 22px}
+.stats .n{font-size:clamp(34px,4.4vw,56px);font-weight:700;letter-spacing:-.05em;line-height:1;display:block;font-variant-numeric:tabular-nums}
+.stats .t{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:12px;display:block}
+
+.two-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(24px,5vw,80px);align-items:start}
+@media (max-width:860px){.two-col{grid-template-columns:1fr}}
+
+/* ---------- cards ---------- */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:52px}
+@media (max-width:860px){.cards{grid-template-columns:1fr}}
+.card{background:var(--paper);padding:32px 26px 36px;transition:background .3s}
+.card:hover{background:var(--raised)}
+.card .k{font-family:var(--f-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:24px}
+.card p{font-size:15px;margin:0}
+.card .ico{width:34px;height:34px;color:var(--ink);margin-bottom:22px;display:block}
+
+/* ---------- flow diagram ---------- */
+.flow{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;margin-top:46px}
+@media (max-width:760px){.flow{grid-template-columns:1fr}}
+.flow .hub{
+  border:1.5px solid var(--ink);border-radius:4px;padding:22px 20px;text-align:center;
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;min-width:190px;
+}
+.flow .spokes{display:grid;gap:10px}
+.flow .spoke{
+  display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;
+  border:1px solid var(--rule);border-radius:4px;padding:15px 18px;background:var(--raised);
+}
+.flow .spoke b{font-size:15.5px;font-weight:600}
+.flow .spoke .arrow{color:var(--accent);font-family:var(--f-mono);font-weight:600}
+.flow .spoke .when{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:right}
+
+/* ---------- reasons ---------- */
+.reasons{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:52px}
+.reason{background:var(--paper);display:grid;grid-template-columns:120px minmax(0,1fr) 90px;gap:24px;padding:36px 26px;align-items:start}
+@media (max-width:760px){.reason{grid-template-columns:1fr;gap:12px}.reason .big{text-align:left}}
+.reason .k{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.reason h3{font-size:clamp(21px,2.6vw,32px);font-weight:700;letter-spacing:-.03em;line-height:1.08;margin-bottom:14px}
+.reason p{margin:0;font-size:15.5px}
+.reason .big{font-size:56px;font-weight:700;letter-spacing:-.05em;color:var(--rule-hard);text-align:right;line-height:.8}
+
+/* ---------- pricing ---------- */
+.prices{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:46px}
+@media (max-width:700px){.prices{grid-template-columns:1fr}}
+.price{background:var(--paper);padding:34px 28px}
+.price .n{font-size:clamp(48px,6.6vw,84px);font-weight:700;letter-spacing:-.05em;line-height:1;display:block}
+.price .zone{font-size:18px;font-weight:600;margin-top:16px;display:block}
+.price .sla{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;color:var(--muted);margin-top:6px;display:block;line-height:1.5}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:30px}
+.chips span{
+  font-family:var(--f-mono);font-size:12px;padding:8px 13px;border-radius:999px;
+  border:1px solid var(--rule-hard);color:var(--ink-2);background:var(--raised);
+}
+table{border-collapse:collapse;width:100%;margin-top:34px;font-size:15.5px}
+th{
+  font-family:var(--f-mono);font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--rule-hard);
+}
+td{padding:14px 16px;border-bottom:1px solid var(--rule);color:var(--ink-2)}
+td.lead{color:var(--ink);font-weight:600}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink)}
+.tw{overflow-x:auto}
+.note{font-size:13px;color:var(--muted);line-height:1.55;margin-top:20px;max-width:78ch}
+
+/* ---------- checklist ---------- */
+.checks{margin-top:44px;border-top:1px solid var(--rule)}
+.checks > div{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:18px 0;border-bottom:1px solid var(--rule);align-items:start}
+.checks .tick{color:var(--accent);font-family:var(--f-mono);font-weight:600}
+.checks b{font-size:16.5px;font-weight:600;display:block;margin-bottom:3px}
+.checks i{font-style:normal;font-size:15px;color:var(--ink-2)}
+
+/* ---------- why local ---------- */
+.plain{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:16px}
+.plain li{display:grid;grid-template-columns:auto 1fr;gap:14px;font-size:16px;color:var(--ink-2);line-height:1.45}
+.plain li::before{content:"→";font-family:var(--f-mono);color:var(--accent);font-weight:600}
+.plain b{color:var(--ink);font-weight:600}
+
+/* ---------- contact ---------- */
+#contacto{background:var(--paper-2)}
+.contact-links{display:flex;flex-wrap:wrap;gap:12px 34px;margin-top:38px;font-family:var(--f-mono);font-size:14px}
+.contact-links a{text-decoration:none;border-bottom:1.5px solid var(--accent);padding-bottom:2px}
+
+footer{padding:56px var(--pad) 40px;display:grid;gap:36px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:34px;max-width:1280px;margin:0 auto;width:100%}
+@media (max-width:760px){.foot-grid{grid-template-columns:1fr}}
+.foot-grid h4{font-family:var(--f-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0 0 16px;font-weight:500}
+.foot-grid ul{list-style:none;padding:0;margin:0;display:grid;gap:9px;font-size:14.5px}
+.foot-grid a{text-decoration:none;color:var(--ink-2)}
+.foot-grid a:hover{color:var(--ink)}
+.foot-bottom{
+  max-width:1280px;margin:0 auto;width:100%;display:flex;flex-wrap:wrap;gap:12px;
+  justify-content:space-between;border-top:1px solid var(--rule);padding-top:22px;
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+}
+
+/* ---------- demo brand switcher ---------- */
+#switcher{
+  position:fixed;left:14px;bottom:14px;z-index:150;font-family:var(--f-mono);
+  background:var(--ink);color:var(--paper);border-radius:10px;padding:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.22);max-width:268px;
+}
+#switcher.min{padding:8px 10px}
+#switcher .hd{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.65}
+#switcher .hd button{background:none;border:none;color:inherit;cursor:pointer;font:inherit;font-size:13px;line-height:1;padding:2px 4px}
+#switcher .body{margin-top:10px;display:grid;gap:5px}
+#switcher.min .body{display:none}
+#switcher .opt{
+  display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;text-align:left;
+  background:rgba(255,255,255,.06);border:1px solid transparent;color:inherit;
+  border-radius:7px;padding:8px 10px;cursor:pointer;font:inherit;
+}
+#switcher .opt:hover{background:rgba(255,255,255,.13)}
+#switcher .opt[aria-pressed="true"]{border-color:var(--accent);background:rgba(255,255,255,.15)}
+#switcher .opt svg{width:22px;height:22px;display:block}
+#switcher .opt b{font-family:var(--f-display);font-size:14px;letter-spacing:-.02em;display:block}
+#switcher .opt small{font-size:9.5px;opacity:.6;letter-spacing:.04em;display:block;line-height:1.35;margin-top:2px}
+#switcher .foot{font-size:9px;opacity:.45;margin-top:9px;line-height:1.5;letter-spacing:.06em}
+@media (max-width:620px){#switcher{max-width:calc(100vw - 28px)}}
+@media print{#switcher,#loader,header.nav{display:none}}
+</style>
+</head>
+<body>
+
+<div id="loader"><span class="n">000</span><span class="w">cargando</span></div>
+
+<header class="nav">
+  <a class="brandmark" href="#hero" aria-label="Inicio">
+    <span id="logo-slot"></span>
+    <span class="word" id="word-slot">Zarpa</span>
+  </a>
+  <button class="menu-btn" id="menu-open" aria-label="Abrir menú"><span></span><span></span></button>
+</header>
+
+<nav id="overlay" aria-hidden="true">
+  <button class="close" id="menu-close" aria-label="Cerrar menú">✕</button>
+  <a href="#servicio">El servicio</a>
+  <a href="#problema">El problema</a>
+  <a href="#razones">Por qué nos llaman</a>
+  <a href="#tarifas">Tarifas</a>
+  <a href="#contacto">Contacto</a>
+</nav>
+
+<main>
+
+<!-- 01 -->
+<section id="hero">
+  <div class="inner">
+    <span class="label">01 / Inicio</span>
+    <div class="hero-grid">
+      <div>
+        <h1><span class="mark" data-cycle>Recogemos</span>, <span class="mark off" data-cycle>guardamos</span> y <span class="mark off" data-cycle>entregamos</span> el equipo de tu gente</h1>
+        <p class="lede hero-sub">Recogemos el puesto de trabajo cuando alguien sale, lo guardamos mientras haga falta y lo entregamos armado cuando alguien entra. En cualquier parte de Costa Rica.</p>
+        <div class="cta-row">
+          <a class="btn" href="#contacto">Hablemos <span aria-hidden="true">→</span></a>
+          <a class="btn ghost" href="#tarifas">Ver tarifas</a>
+        </div>
+        <div class="scroll-hint">Bajá</div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 200 320" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="100" cy="72" r="56"/>
+          <path d="M100 128v150"/>
+          <path d="M62 250l38 38 38-38"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="band">
+  <div class="marquee">
+    <div class="track" id="track"></div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section id="quienes">
+  <div class="inner">
+    <span class="label rv">03 / Quiénes somos</span>
+    <div class="two-col">
+      <h2 class="rv">Un solo proveedor para el ciclo completo.</h2>
+      <div class="rv">
+        <p>Somos una operación costarricense de manejo de equipo de cómputo: mensajería propia, bodega bajo nuestro control y un solo interlocutor que contesta el teléfono.</p>
+        <p>Recursos Humanos escribe un correo con el nombre y la dirección de la persona. Nosotros coordinamos la visita, empacamos en sitio, inventariamos por número de serie, levantamos el acta firmada y entregamos el reporte. Ustedes no persiguen a nadie.</p>
+      </div>
+    </div>
+    <div class="stats rv">
+      <div><span class="n">48 h</span><span class="t">Dentro del GAM</span></div>
+      <div><span class="n">72 h</span><span class="t">Resto del país</span></div>
+      <div><span class="n">07</span><span class="t">Provincias cubiertas</span></div>
+      <div><span class="n">100%</span><span class="t">Inventario por serie</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="problema">
+  <div class="inner">
+    <span class="label rv">04 / El problema</span>
+    <div class="two-col">
+      <h2 class="rv">La laptop no debería ser trabajo de Recursos Humanos.</h2>
+      <div class="rv">
+        <p>Alguien renuncia en Pérez Zeledón y su equipo se queda en la casa. Entra alguien nuevo en Liberia y hay que armarle el puesto para el lunes. En el medio, nadie sabe con certeza cuántas máquinas hay guardadas ni de quién eran.</p>
+        <p>Ningún proveedor global publica tarifa para Costa Rica. <strong>Retriever</strong> opera solo en Estados Unidos, Canadá y Reino Unido. <strong>Workwize</strong> pide mínimo de 150 asientos. <strong>Deel IT</strong> y <strong>Firstbase</strong> no publican cifras. El resultado es que el trabajo termina repartido entre RR.HH., IT y el buen corazón del que renunció.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="servicio">
+  <div class="inner">
+    <span class="label rv">05 / El servicio</span>
+    <h2 class="rv">Tres cosas, y las tres las hacemos nosotros.</h2>
+    <div class="cards">
+      <div class="card rv">
+        <svg class="ico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l12-6 12 6-12 6z"/><path d="M4 11v10l12 6 12-6V11"/><path d="M16 17v10"/></svg>
+        <span class="k">Cuando alguien sale</span>
+        <h3>Recolección</h3>
+        <p>Vamos donde esté la persona, en cualquier parte del país. Empacamos el puesto completo en sitio, lo inventariamos por número de serie y levantamos acta con firma digital y fotos del estado.</p>
+      </div>
+      <div class="card rv">
+        <svg class="ico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="24" height="18" rx="2"/><path d="M4 13h24M12 7v18"/><circle cx="20" cy="19" r="1.6"/></svg>
+        <span class="k">Mientras no se usa</span>
+        <h3>Custodia</h3>
+        <p>El equipo entra a bodega y queda en inventario por el tiempo que haga falta, sin límite. Ustedes saben en todo momento qué hay guardado, de quién era y en qué estado está.</p>
+      </div>
+      <div class="card rv">
+        <svg class="ico" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="20" height="14" rx="2"/><path d="M9 26h8"/><path d="M23 12h6v10h-6"/></svg>
+        <span class="k">Cuando alguien entra</span>
+        <h3>Despliegue</h3>
+        <p>Armamos el kit de bienvenida completo — laptop, dock, monitores y periféricos — y lo entregamos donde viva la persona nueva, listo para trabajar el día uno. Mismo kit y mismo checklist, sin importar la provincia.</p>
+      </div>
+    </div>
+
+    <div class="flow rv">
+      <div class="hub">Tu empresa</div>
+      <div class="spokes">
+        <div class="spoke"><span class="arrow">←</span><b>Recolección en sitio</b><span class="when">Alguien sale</span></div>
+        <div class="spoke"><span class="arrow">◇</span><b>Custodia en bodega</b><span class="when">Entre movimientos</span></div>
+        <div class="spoke"><span class="arrow">→</span><b>Despliegue del kit</b><span class="when">Alguien entra</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section id="razones">
+  <div class="inner">
+    <span class="label rv">06 / Por qué nos llaman</span>
+    <div class="reasons">
+      <div class="reason rv">
+        <span class="k">Razón 1</span>
+        <div>
+          <h3>Alguien renunció y el equipo quedó en su casa</h3>
+          <p>La persona ya no contesta los correos internos y el activo sigue a nombre de la empresa. Nosotros la contactamos, agendamos la visita y sacamos el equipo con acta firmada.</p>
+        </div>
+        <span class="big">1</span>
+      </div>
+      <div class="reason rv">
+        <span class="k">Razón 2</span>
+        <div>
+          <h3>Entra alguien nuevo y vive lejos del GAM</h3>
+          <p>Nadie en la oficina puede manejar cuatro horas para dejar una laptop. El kit sale de bodega armado y llega a la puerta de la persona antes del primer día.</p>
+        </div>
+        <span class="big">2</span>
+      </div>
+      <div class="reason rv">
+        <span class="k">Razón 3</span>
+        <div>
+          <h3>Nadie sabe cuántas máquinas hay ni dónde</h3>
+          <p>El inventario vive en una hoja de cálculo desactualizada. Cada pieza que pasa por nosotros queda registrada con serie, marca, modelo, fotos y ubicación.</p>
+        </div>
+        <span class="big">3</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section id="tarifas">
+  <div class="inner">
+    <span class="label rv">07 / Tarifas</span>
+    <h2 class="rv">Un movimiento es el puesto completo de una persona.</h2>
+    <p class="lede rv" style="margin-top:20px">No cobramos por pieza. Sale o entra el kit entero, en una sola visita y a un solo precio.</p>
+
+    <div class="chips rv">
+      <span>1 laptop</span><span>dock</span><span>hasta 2 monitores</span><span>headset</span>
+      <span>teclado</span><span>mouse</span><span>cargadores y cables</span>
+    </div>
+
+    <div class="prices rv">
+      <div class="price">
+        <span class="n">$200</span>
+        <span class="zone">Dentro del GAM</span>
+        <span class="sla">San José, Heredia, Alajuela y Cartago<br>48 horas hábiles</span>
+      </div>
+      <div class="price">
+        <span class="n">$300</span>
+        <span class="zone">Fuera del GAM</span>
+        <span class="sla">Todo el territorio nacional<br>72 horas hábiles</span>
+      </div>
+    </div>
+    <p class="note rv">Mismo precio para recoger que para entregar. Lo único que cambia es dónde vive la persona. El SLA corre desde que el colaborador confirma la ventana de visita. Piezas más allá del puesto estándar: $45 cada una.</p>
+
+    <div class="two-col rv" style="margin-top:72px">
+      <h2>La bodega no tiene reloj.</h2>
+      <div>
+        <p>El equipo se queda el tiempo que ustedes necesiten. Entre más puestos tengan guardados, menos cuesta cada uno. Se factura cada tres meses, no doce facturas pequeñas.</p>
+        <div class="tw">
+          <table>
+            <thead><tr><th>Puestos en custodia</th><th>Tarifa mensual por puesto</th></tr></thead>
+            <tbody>
+              <tr><td class="lead">1 a 10</td><td class="num">$18</td></tr>
+              <tr><td class="lead">11 a 25</td><td class="num">$15</td></tr>
+              <tr><td class="lead">26 en adelante</td><td class="num">$12</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section id="incluye">
+  <div class="inner">
+    <span class="label rv">08 / Qué incluye cada movimiento</span>
+    <div class="two-col">
+      <h2 class="rv">Sin costos escondidos.</h2>
+      <div class="checks rv">
+        <div><span class="tick">✓</span><div><b>Coordinación con la persona</b><i>Nosotros la contactamos y agendamos la visita. Recursos Humanos no persigue a nadie.</i></div></div>
+        <div><span class="tick">✓</span><div><b>Empaque en sitio</b><i>Cajas y materiales de protección incluidos. Los monitores viajan embalados aparte.</i></div></div>
+        <div><span class="tick">✓</span><div><b>Inventario por número de serie</b><i>Cada pieza queda registrada con serie, marca y modelo, con fotos del estado.</i></div></div>
+        <div><span class="tick">✓</span><div><b>Acta con firma digital</b><i>La persona firma desde su celular. Ustedes reciben el PDF el mismo día.</i></div></div>
+        <div><span class="tick">✓</span><div><b>Reporte consolidado</b><i>Inventario vivo por número de serie, ubicación de cada puesto y estado del ciclo.</i></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section id="local">
+  <div class="inner">
+    <span class="label rv">09 / Por qué local</span>
+    <div class="two-col">
+      <h2 class="rv">El que toca la puerta es empleado nuestro.</h2>
+      <div class="rv">
+        <ul class="plain">
+          <li><span><b>Mensajería propia.</b> Nadie subcontratado, nadie improvisado.</span></li>
+          <li><span><b>Bodega bajo nuestro control.</b> Espacio propio con acceso controlado.</span></li>
+          <li><span><b>Un solo interlocutor.</b> Un número que contesta, no un ticket en otro huso horario.</span></li>
+          <li><span><b>Tarifa en firme y en dólares.</b> Publicada, sin multiplicadores por país.</span></li>
+          <li><span><b>Sin contrato de permanencia</b> ni mínimo de volumen. Se factura contra movimientos ejecutados.</span></li>
+          <li><span><b>Si incumplimos el SLA, ese movimiento no se cobra.</b></span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section id="contacto">
+  <div class="inner">
+    <span class="label rv">10 / Contacto</span>
+    <h2 class="rv">Empecemos por el próximo movimiento que tengan.</h2>
+    <p class="lede rv" style="margin-top:22px">Sin piloto de seis meses ni compromiso de volumen. Una salida o un ingreso, y ven cómo sale.</p>
+    <div class="contact-links rv">
+      <a href="mailto:hola@ejemplo.cr">hola@ejemplo.cr</a>
+      <a href="tel:+50600000000">+506 0000 0000</a>
+      <a href="https://wa.me/50600000000" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+    <div class="cta-row rv">
+      <a class="btn" href="mailto:hola@ejemplo.cr">Escribinos <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-grid">
+    <div>
+      <a class="brandmark" href="#hero" style="margin-bottom:16px">
+        <span id="logo-slot-2"></span>
+        <span class="word" id="word-slot-2">Zarpa</span>
+      </a>
+      <p style="max-width:34ch;font-size:15px" id="tagline-slot">Recolección, custodia y despliegue de equipo de cómputo, dentro de Costa Rica.</p>
+    </div>
+    <div>
+      <h4>Navegación</h4>
+      <ul>
+        <li><a href="#servicio">El servicio</a></li>
+        <li><a href="#tarifas">Tarifas</a></li>
+        <li><a href="#incluye">Qué incluye</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Cobertura</h4>
+      <ul>
+        <li>GAM · 48 horas hábiles</li>
+        <li>Resto del país · 72 horas hábiles</li>
+        <li>Las siete provincias</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>Demo · Costa Rica <span id="year"></span></span>
+    <span>Contenido y tarifas de muestra</span>
+  </div>
+</footer>
+
+<div id="switcher">
+  <div class="hd"><span>Demo · nombre y logo</span><button id="sw-toggle" aria-label="Minimizar">—</button></div>
+  <div class="body" id="sw-body"></div>
+  <div class="foot">Panel solo para la demo. Se elimina en producción.</div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- opciones de marca ---------------- */
+  var LOGOS = {
+    zarpa:
+      '<svg viewBox="0 0 32 32" fill="none" aria-hidden="true">' +
+      '<ellipse cx="7.5" cy="10.5" rx="3" ry="4" fill="currentColor"/>' +
+      '<ellipse cx="15.2" cy="7.6" rx="3.1" ry="4.3" fill="currentColor"/>' +
+      '<ellipse cx="23" cy="10.5" rx="3" ry="4" fill="currentColor"/>' +
+      '<rect x="6.5" y="16.6" width="19" height="11.4" rx="4" fill="var(--accent)"/>' +
+      '<path d="M16 16.6v11.4M6.5 21.5h19" stroke="var(--paper)" stroke-width="1.7"/>' +
+      '</svg>',
+    caucel:
+      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M6 14V5l6.5 4.2" stroke="var(--accent)"/>' +
+      '<path d="M26 14V5l-6.5 4.2" stroke="var(--accent)"/>' +
+      '<path d="M6 14v5a10 10 0 0 0 20 0v-5"/>' +
+      '<path d="M12.5 17.5h.01M19.5 17.5h.01" stroke-width="3"/>' +
+      '<path d="M13.5 23h5"/>' +
+      '</svg>',
+    siete:
+      '<svg viewBox="0 0 32 32" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<circle cx="18" cy="12.5" r="7.5" stroke="var(--accent)" stroke-width="3.2"/>' +
+      '<path d="M25.5 12.5v7A8.5 8.5 0 0 1 17 28H8" stroke="currentColor" stroke-width="3.2"/>' +
+      '<circle cx="18" cy="12.5" r="2.2" fill="currentColor"/>' +
+      '</svg>',
+    gatera:
+      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M4 28V15a12 12 0 0 1 24 0v13"/>' +
+      '<path d="M3 28h26"/>' +
+      '<path d="M11 28v-7a5 5 0 0 1 10 0v7" fill="var(--accent)" stroke="var(--accent)"/>' +
+      '<path d="M16 21.5v6.5" stroke="var(--paper)"/>' +
+      '</svg>',
+    manigordo:
+      '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M5 12V6l5.5 3.4M27 12V6l-5.5 3.4" stroke="var(--accent)"/>' +
+      '<rect x="4" y="12" width="24" height="16" rx="2.5"/>' +
+      '<path d="M4 17.5h24"/>' +
+      '<circle cx="11" cy="23" r="1.6" fill="var(--accent)" stroke="none"/>' +
+      '<circle cx="16.5" cy="24.5" r="1.2" fill="var(--accent)" stroke="none"/>' +
+      '<circle cx="21.5" cy="22.5" r="1.4" fill="var(--accent)" stroke="none"/>' +
+      '</svg>'
+  };
+
+  var BRANDS = [
+    { id:'zarpa', name:'Zarpa', accent:'#2FB5EE',
+      why:'Pata de gato + zarpar. Logística y felino en una palabra.',
+      tagline:'Recolección, custodia y despliegue de equipo de cómputo, dentro de Costa Rica.' },
+    { id:'caucel', name:'Caucel', accent:'#C9743A',
+      why:'Felino silvestre tico. Discreto, preciso, se mueve de noche.',
+      tagline:'El felino que mueve, guarda y entrega tu equipo en todo el país.' },
+    { id:'siete', name:'Siete', accent:'#3E9E7A',
+      why:'Las siete vidas del gato: sale, se guarda y vuelve a salir.',
+      tagline:'Cada equipo vuelve a la calle. Recolección, custodia y despliegue en Costa Rica.' },
+    { id:'gatera', name:'Gatera', accent:'#6E63D8',
+      why:'La puerta por donde el equipo sale y regresa.',
+      tagline:'La puerta por donde sale y vuelve el equipo de tu gente.' },
+    { id:'manigordo', name:'Manigordo', accent:'#D9A227',
+      why:'Ocelote tico. Manos anchas que cargan sin romper nada.',
+      tagline:'Manos ticas para el equipo de cómputo de tu gente.' }
+  ];
+
+  function applyBrand(b){
+    document.documentElement.style.setProperty('--accent', b.accent);
+    var logo = LOGOS[b.id];
+    ['logo-slot','logo-slot-2'].forEach(function(id){
+      var el = document.getElementById(id); if (el) el.innerHTML = logo;
+    });
+    ['word-slot','word-slot-2'].forEach(function(id){
+      var el = document.getElementById(id); if (el) el.textContent = b.name;
+    });
+    var tg = document.getElementById('tagline-slot');
+    if (tg) tg.textContent = b.tagline;
+    document.title = b.name + ' · Recolección, custodia y despliegue de equipo de cómputo en Costa Rica';
+    Array.prototype.forEach.call(document.querySelectorAll('#sw-body .opt'), function(btn){
+      btn.setAttribute('aria-pressed', String(btn.dataset.id === b.id));
+    });
+    try { localStorage.setItem('brand', b.id); } catch(e){}
+  }
+
+  var body = document.getElementById('sw-body');
+  BRANDS.forEach(function(b){
+    var btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.type = 'button';
+    btn.dataset.id = b.id;
+    btn.setAttribute('aria-pressed','false');
+    btn.innerHTML = '<span style="color:' + b.accent + ';--accent:' + b.accent + '">' + LOGOS[b.id] + '</span>' +
+                    '<span><b>' + b.name + '</b><small>' + b.why + '</small></span>';
+    btn.addEventListener('click', function(){ applyBrand(b); });
+    body.appendChild(btn);
+  });
+
+  var saved = null;
+  try { saved = localStorage.getItem('brand'); } catch(e){}
+  var start = BRANDS.filter(function(b){ return b.id === saved; })[0] || BRANDS[0];
+  applyBrand(start);
+
+  var sw = document.getElementById('switcher');
+  document.getElementById('sw-toggle').addEventListener('click', function(){
+    sw.classList.toggle('min');
+    this.textContent = sw.classList.contains('min') ? '+' : '—';
+  });
+
+  /* ---------------- marquee ---------------- */
+  var ITEMS = ['San José','Heredia','Alajuela','Cartago','Guanacaste','Puntarenas','Limón',
+               '48 h en el GAM','72 h en el resto del país','Inventario por número de serie',
+               'Acta con firma digital','Empaque en sitio'];
+  var track = document.getElementById('track');
+  var html = ITEMS.map(function(t){ return '<span>' + t + '</span>'; }).join('');
+  track.innerHTML = html + html;
+
+  /* ---------------- resaltador que rota ---------------- */
+  var marks = document.querySelectorAll('[data-cycle]');
+  if (marks.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    var i = 0;
+    setInterval(function(){
+      marks[i].classList.add('off');
+      i = (i + 1) % marks.length;
+      marks[i].classList.remove('off');
+    }, 2200);
+  }
+
+  /* ---------------- reveal ---------------- */
+  var rv = document.querySelectorAll('.rv');
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin:'0px 0px -12% 0px', threshold:0.08 });
+    Array.prototype.forEach.call(rv, function(el, n){
+      el.style.transitionDelay = (Math.min(n % 4, 3) * 70) + 'ms';
+      io.observe(el);
+    });
+  } else {
+    Array.prototype.forEach.call(rv, function(el){ el.classList.add('in'); });
+  }
+
+  /* ---------------- menú ---------------- */
+  var ov = document.getElementById('overlay');
+  function setMenu(open){
+    ov.classList.toggle('open', open);
+    ov.setAttribute('aria-hidden', String(!open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  document.getElementById('menu-open').addEventListener('click', function(){ setMenu(true); });
+  document.getElementById('menu-close').addEventListener('click', function(){ setMenu(false); });
+  Array.prototype.forEach.call(ov.querySelectorAll('a'), function(a){
+    a.addEventListener('click', function(){ setMenu(false); });
+  });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') setMenu(false); });
+
+  /* ---------------- loader ---------------- */
+  var loader = document.getElementById('loader');
+  var num = loader.querySelector('.n');
+  var v = 0;
+  var tick = setInterval(function(){
+    v = Math.min(100, v + Math.ceil(Math.random() * 11));
+    num.textContent = ('00' + v).slice(-3);
+    if (v >= 100){
+      clearInterval(tick);
+      setTimeout(function(){ loader.classList.add('done'); }, 220);
+    }
+  }, 60);
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
