@@ -480,6 +480,12 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
      se puede buscar y copiar, y las tildes salen bien. */
   var CURRENT = null;
 
+  /* el movimiento guarda el id del mensajero; el nombre vive en el catálogo */
+  function courierName(id){
+    var c = window.ZARPA.courier(id);
+    return c ? c.n[lang] : '—';
+  }
+
   function exportPdf(){
     var mv = CURRENT;
     if (!mv) return;
@@ -647,7 +653,7 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
       doc.line(x + 6, base + 2.4, x + half - 14, base + 2.4);
     }
     [[M, t('personN') + ' ' + mv.p, t('roleP') + ' · ' + t('ced') + ' ' + window.ZARPA.ced(mv.p), mv.f + mv.p],
-     [M + CW / 2 + 6, t('courierN') + ' ' + mv.m, t('roleC'), mv.f + 'c' + mv.m]
+     [M + CW / 2 + 6, courierName(mv.m), t('roleC'), mv.f + 'c' + mv.m]
     ].forEach(function(col){
       var x = col[0];
       rubric(x, y, col[3]);
@@ -695,7 +701,7 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
 
     document.title = t('title') + ' ' + mv.f + ' · Zarpa';
     var person = t('personN') + ' ' + mv.p;
-    var courier = t('courierN') + ' ' + mv.m;
+    var courier = courierName(mv.m);
 
     var rows = mv.items.map(function(it, i){
       return '<tr>' +
