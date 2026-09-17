@@ -266,9 +266,10 @@ p{margin:0 0 16px;max-width:62ch;color:var(--ink-2);font-size:clamp(15px,1.3vw,1
   background-repeat:no-repeat;background-position:0 0;background-size:100% 100%;
   padding:0 .1em;margin:0 -.1em;color:var(--mark-fg);
   box-decoration-break:clone;-webkit-box-decoration-break:clone;
-  transition:background-size .55s cubic-bezier(.76,0,.24,1);
+  transition:background-size .55s cubic-bezier(.76,0,.24,1),color .3s var(--ease);
 }
-.mark.off{background-size:0% 100%}
+/* sin resaltar vuelve a la tinta normal: en oscuro, si no, queda invisible */
+.mark.off{background-size:0% 100%;color:var(--ink)}
 
 /* revelado por líneas enmascaradas */
 .w{display:inline-block}
@@ -282,7 +283,7 @@ p{margin:0 0 16px;max-width:62ch;color:var(--ink-2);font-size:clamp(15px,1.3vw,1
 @media (prefers-reduced-motion:reduce){
   .rv{opacity:1;transform:none;transition:none}
   .line-i{transform:none;transition:none}
-  .mark,.mark.off{background-size:100% 100%;transition:none}
+  .mark,.mark.off{background-size:100% 100%;color:var(--mark-fg);transition:none}
 }
 
 .two-col{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:start}
