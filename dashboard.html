@@ -317,20 +317,36 @@ tbody tr.k-deploy td:first-child{box-shadow:inset 3px 0 0 var(--dep)}
    con tipografía mono en versales, esquina recta y texto de alto contraste.
    La pareja recolección / despliegue pasó el validador en claro y en oscuro. */
 .badge,.type,.cond{
-  border-radius:2px;padding:5px 9px;gap:0;
-  font-family:var(--f-mono);font-size:10.5px;font-weight:600;
-  letter-spacing:.1em;text-transform:uppercase;
-  background:var(--sig-gray);color:var(--chip-fg);
+  display:inline-flex;align-items:center;gap:8px;box-sizing:border-box;
+  min-width:132px;padding:4px 11px;border-radius:4px;
+  font-family:var(--f-display);font-size:13.5px;font-weight:500;
+  letter-spacing:normal;text-transform:none;line-height:1.35;
+  background:transparent;color:var(--ink-2);border:1px solid var(--rule-2);
 }
-.badge::before,.type::before,.cond::before{display:none}
+.badge::before,.type::before,.cond::before{
+  content:"";display:block;width:7px;height:7px;border-radius:50%;
+  flex:none;background:var(--sig-gray);
+}
 .badge .gl{display:none}
-.type.pickup{background:var(--sig-blue);color:var(--chip-fg)}
-.type.deploy{background:var(--sig-orange);color:var(--chip-fg)}
-.badge.ok,.cond.good{background:var(--sig-green);color:var(--chip-fg)}
-.badge.go{background:var(--sig-blue);color:var(--chip-fg)}
-.badge.wait,.cond.fair{background:var(--sig-orange);color:var(--chip-fg)}
-.badge.bad{background:var(--sig-red);color:var(--chip-fg)}
-.cond.out{background:var(--sig-gray);color:var(--chip-fg)}
+
+/* el tipo va sin caja: la fila ya lleva su barra de color */
+.type{border:0;padding-left:0;padding-right:0;min-width:124px;color:var(--ink)}
+.type.pickup::before{background:var(--sig-blue)}
+.type.deploy::before{background:var(--sig-orange)}
+
+/* estados: contorno del color, texto del color, sin relleno */
+.badge.ok,.cond.good{color:var(--sig-green);border-color:currentColor}
+.badge.ok::before,.cond.good::before{background:currentColor}
+.badge.go{color:var(--sig-blue);border-color:currentColor}
+.badge.go::before{background:currentColor}
+.badge.wait,.cond.fair{color:var(--sig-orange);border-color:currentColor}
+.badge.wait::before,.cond.fair::before{background:currentColor}
+.cond.out{color:var(--sig-gray);border-color:currentColor}
+.cond.out::before{background:currentColor}
+
+/* lo único que grita es lo vencido */
+.badge.bad{background:var(--sig-red);color:#fff;border-color:transparent;font-weight:600}
+.badge.bad::before{background:#fff}
 
 /* sin sombras suaves: la jerarquía la dan las reglas y el peso */
 .tw,.panel,.kpis,.sheet{box-shadow:none}
