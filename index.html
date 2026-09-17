@@ -143,7 +143,7 @@ p{margin:0 0 16px;max-width:62ch;color:var(--ink-2);font-size:clamp(15px,1.3vw,1
 
 /* ---------- marquee ---------- */
 .marquee{overflow:hidden;padding:26px 0;border-block:1px solid var(--rule);background:var(--paper-2);white-space:nowrap}
-section.band{padding-inline:0;border-bottom:none}
+section.band{padding-inline:0;padding-block:clamp(36px,5vh,64px);border-bottom:none}
 .marquee .track{display:inline-flex;gap:0;animation:slide 38s linear infinite;will-change:transform}
 @media (prefers-reduced-motion:reduce){.marquee .track{animation:none}}
 @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -160,7 +160,7 @@ section.band{padding-inline:0;border-bottom:none}
 .stats .n{font-size:clamp(34px,4.4vw,56px);font-weight:700;letter-spacing:-.05em;line-height:1;display:block;font-variant-numeric:tabular-nums}
 .stats .t{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:12px;display:block}
 
-.two-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(24px,5vw,80px);align-items:start}
+.two-col{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:start}
 @media (max-width:860px){.two-col{grid-template-columns:1fr}}
 
 /* ---------- cards ---------- */
