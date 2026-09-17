@@ -202,6 +202,16 @@ header.nav{
 }
 #overlay .close:hover{border-color:#fff}
 
+/* con el menú abierto la barra se invierte y deja ver el panel completo */
+body.menu-open header.nav{background:transparent}
+body.menu-open .brandmark,
+body.menu-open .lang,
+body.menu-open .menu-btn{color:#fff;border-color:#fff}
+body.menu-open .lang{background:transparent}
+body.menu-open .lang:hover,
+body.menu-open .menu-btn:hover{background:#fff;color:#262626}
+body.menu-open .nav-cta{background:#fff;color:#262626}
+
 /* ---------- cursor circular, con las medidas del sitio de referencia ---------- */
 #cursor{display:none}
 @media (hover:hover) and (pointer:fine){
@@ -914,9 +924,12 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
   function setMenu(open){
     ov.classList.toggle('open', open);
     ov.setAttribute('aria-hidden', String(!open));
+    document.body.classList.toggle('menu-open', open);
     document.body.style.overflow = open ? 'hidden' : '';
   }
-  document.getElementById('menu-open').addEventListener('click', function(){ setMenu(true); });
+  document.getElementById('menu-open').addEventListener('click', function(){
+    setMenu(!ov.classList.contains('open'));
+  });
   document.getElementById('menu-close').addEventListener('click', function(){ setMenu(false); });
   Array.prototype.forEach.call(ov.querySelectorAll('a'), function(a){
     a.addEventListener('click', function(){ setMenu(false); });
