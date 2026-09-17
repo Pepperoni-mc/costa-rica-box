@@ -167,7 +167,10 @@ header.nav{
   padding:0;transition:background-color .15s var(--ease),color .15s var(--ease);color:var(--ink);
 }
 .menu-btn:hover{background:var(--ink);color:var(--off)}
-.menu-btn span{display:block;width:16px;height:1.6px;background:currentColor;border-radius:2px}
+.menu-btn span{display:block;width:16px;height:1.6px;background:currentColor;border-radius:2px;transition:transform .28s var(--ease)}
+/* con el menú abierto las dos barras se cruzan */
+body.menu-open .menu-btn span:nth-child(1){transform:translateY(2.8px) rotate(45deg)}
+body.menu-open .menu-btn span:nth-child(2){transform:translateY(-2.8px) rotate(-45deg)}
 
 #overlay{
   position:fixed;inset:0;z-index:99;background:#262626;color:#fff;
@@ -195,12 +198,7 @@ header.nav{
 #overlay a:nth-child(5) .n{color:#A78BFA}
 #overlay a:nth-child(6) .n{color:#F2D03C}
 #overlay a:nth-child(7) .n{color:#F062A8}
-#overlay .close{
-  position:absolute;top:20px;right:var(--pad);width:42px;height:42px;border-radius:50%;
-  border:1.5px solid #8C8C8C;background:transparent;color:#fff;
-  font-size:20px;line-height:1;cursor:pointer;transition:border-color .18s var(--ease);
-}
-#overlay .close:hover{border-color:#fff}
+#overlay .close{display:none}
 
 /* con el menú abierto la barra se invierte y deja ver el panel completo */
 body.menu-open header.nav{background:transparent}
@@ -217,13 +215,13 @@ body.menu-open .nav-cta{background:#fff;color:#262626}
 @media (hover:hover) and (pointer:fine){
   *{cursor:none}
   #cursor{
-    display:block;position:fixed;top:0;left:0;width:18px;height:18px;
+    display:block;position:fixed;top:0;left:0;width:11px;height:11px;
     border-radius:999px;background:var(--ink);pointer-events:none;
     z-index:2147483647;opacity:0;transform:translate(-100px,-100px);
     transition:opacity .12s linear,background-color .12s linear,width .14s,height .14s;
   }
   #cursor.on{opacity:1}
-  #cursor.hot{width:48px;height:48px}
+  #cursor.hot{width:30px;height:30px}
 }
 
 /* ---------- layout ---------- */
