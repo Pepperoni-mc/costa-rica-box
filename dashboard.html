@@ -464,6 +464,46 @@ td.ch{display:none}
 .picker input:checked + .pk{border-color:var(--ink);background:var(--raised)}
 .picker:nth-child(1) input:checked + .pk b::before{background:var(--sig-blue)}
 .picker:nth-child(2) input:checked + .pk b::before{background:var(--sig-orange)}
+
+/* ---------- la solicitud en pantalla chica ----------
+   Deja de ser una tarjeta flotante y pasa a ocupar la pantalla, con el
+   titulo arriba y los botones abajo siempre a la vista mientras el
+   formulario rueda en el medio. */
+.m-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.m-head .x{
+  flex:none;width:40px;height:40px;border-radius:50%;border:2px solid var(--rule-2);
+  background:transparent;color:var(--ink-2);font-size:16px;line-height:1;cursor:pointer;
+  transition:background-color .15s var(--ease),color .15s var(--ease),border-color .15s var(--ease);
+}
+.m-head .x:hover{background:var(--ink);border-color:var(--ink);color:var(--off)}
+
+@media (max-width:640px){
+  #modal .box{
+    left:0;top:0;transform:none;width:100%;
+    height:100dvh;max-height:100dvh;border:0;border-radius:0;
+    padding:0;display:flex;flex-direction:column;
+  }
+  #modal .m-head{
+    position:sticky;top:0;z-index:2;background:var(--paper);
+    padding:16px 18px 14px;border-bottom:1px solid var(--rule-2);
+  }
+  #modal .lede{margin:6px 0 0;font-size:14px}
+  #modal form{
+    flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:18px 18px 0;gap:17px;
+  }
+  #modal .form-actions{
+    position:sticky;bottom:0;margin:4px -18px 0;padding:14px 18px;
+    padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));
+    background:var(--paper);border-top:1px solid var(--rule-2);
+    display:flex;gap:10px;
+  }
+  #modal .form-actions .mini{flex:1;justify-content:center;height:52px;font-size:16px}
+  .picker .pk{padding:13px 15px}
+  .picker .pk i{font-size:13px}
+  .form .field{height:52px;font-size:16px}
+  .form .ta{height:96px}
+}
 </style>
 <script>(function(){try{if(!sessionStorage.getItem('zarpa_rol'))location.replace('login.html');}catch(e){}})();</script>
 <script>(function(){try{var t=localStorage.getItem('theme');
@@ -595,8 +635,13 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
 <div id="modal" aria-hidden="true">
   <div class="back" id="modal-back"></div>
   <div class="box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <h3 id="modal-title" data-en="Request a movement">Solicitar un movimiento</h3>
-    <p class="lede" data-en="Tell us who and where. We contact the person, agree on a window and take it from there.">Decinos quién y dónde. Nosotros contactamos a la persona, acordamos la ventana y nos encargamos del resto.</p>
+    <div class="m-head">
+      <div>
+        <h3 id="modal-title" data-en="Request a movement">Solicitar un movimiento</h3>
+        <p class="lede" data-en="Tell us who and where. We contact the person, agree on a window and take it from there.">Decinos quién y dónde. Nosotros contactamos a la persona, acordamos la ventana y nos encargamos del resto.</p>
+      </div>
+      <button class="x" id="modal-x" type="button" aria-label="Cerrar" data-en-label="Close">✕</button>
+    </div>
     <form class="form" id="req-form">
       <div>
         <label data-en="What do you need">Qué necesitás</label>
@@ -864,6 +909,7 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
   document.getElementById('new-req').addEventListener('click', openReq);
   document.getElementById('modal-back').addEventListener('click', closeReq);
   document.getElementById('modal-cancel').addEventListener('click', closeReq);
+  document.getElementById('modal-x').addEventListener('click', closeReq);
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape' && modal.classList.contains('on')) closeReq();
   });
