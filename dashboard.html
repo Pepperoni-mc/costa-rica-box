@@ -465,6 +465,7 @@ td.ch{display:none}
 .picker:nth-child(1) input:checked + .pk b::before{background:var(--sig-blue)}
 .picker:nth-child(2) input:checked + .pk b::before{background:var(--sig-orange)}
 </style>
+<script>(function(){try{if(!sessionStorage.getItem('zarpa_rol'))location.replace('login.html');}catch(e){}})();</script>
 <script>(function(){try{var t=localStorage.getItem('theme');
 if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
@@ -488,6 +489,7 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
     <button class="mini" id="lang" type="button">EN</button>
     <a class="mini" href="admin.html" data-en="Operations">Operación</a>
     <a class="mini" href="index.html" data-en="Site">Sitio</a>
+    <button class="mini" id="salir" type="button" data-en="Sign out">Salir</button>
     <button class="mini solid" id="new-req" type="button" data-en="Request a move">Solicitar movimiento</button>
   </div>
 </header>
@@ -911,6 +913,14 @@ if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)
     document.getElementById('movimientos').scrollIntoView({ behavior:'smooth', block:'start' });
   });
 
+
+
+  /* cerrar sesión: vuelve a la pantalla de ingreso */
+  var salir = document.getElementById('salir');
+  if (salir) salir.addEventListener('click', function(){
+    try { sessionStorage.removeItem('zarpa_rol'); } catch(e){}
+    window.location.href = 'login.html';
+  });
 
   if (lang === 'en') setLang('en');
   else { drawMoves(); drawInv(); drawKpis(); }
