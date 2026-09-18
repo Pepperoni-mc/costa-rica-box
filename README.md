@@ -6,9 +6,14 @@ que hacen Retriever, Workwize, Deel IT y Firstbase, que no operan en el país.
 
 Dirección de arte inspirada en [indisea.com](https://indisea.com).
 
+> Para retomar el proyecto después de un tiempo, empezá por **[CONTEXTO.md](CONTEXTO.md)**:
+> ahí están las decisiones y el porqué, que es lo que no se deduce leyendo el código.
+
 ## Archivos
 
 - `index.html` — el sitio. Sin build, sin dependencias.
+- `login.html` — ingreso, con dos botones de test que entran directo.
+- `admin.html` — panel de operación.
 - `dashboard.html` — panel de cliente de muestra, sin login.
 - `acta.html` — el acta de entrega de un movimiento; recibe el folio por query string
   (`acta.html?f=ZRP-2026-0032`) y se guarda como PDF con el botón o con Ctrl+P.
